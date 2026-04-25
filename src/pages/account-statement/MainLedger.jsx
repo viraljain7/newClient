@@ -1,9 +1,10 @@
 import React from 'react'
+import MainLedger from '../../myapp/acc-stmt/main-stmt'
 
-function MainLedger() {
+function MainLedgerReport() {
   return (
-    <div>MainLedger</div>
+    <MainLedger/>
   )
 }
 
-export default MainLedger
+export default MainLedgerReport
