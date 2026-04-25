@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchTransactions } from './TransactionApi';
 import { DEFAULT_PER_PAGE } from '../../../../shared/Constants';
+import { useSelector } from 'react-redux';
 
 export function useTransactions({
   fromDate,
@@ -26,6 +27,7 @@ export function useTransactions({
     perPage: initialPerPage,
     total: 0
   });
+const profile = useSelector((state) => state.user.profile);
 
   // -------------------- FETCH FUNCTION --------------------
   const fetchData = async () => {
@@ -34,12 +36,7 @@ export function useTransactions({
 
     try {
       const res = await fetchTransactions({
-        fromDate,
-        toDate,
-        page,
-        perPage,
-        search,
-        filters
+        user_id:profile.id
       });
 
       const body = res.data;

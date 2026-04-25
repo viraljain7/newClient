@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import {
@@ -39,6 +39,15 @@ import avatar1 from 'assets/images/users/avatar-1.png';
 import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
+import { useDispatch } from "react-redux";
+
+
+
+import api from '../../shared/BaseApi';
+import { setUserProfile } from '../../store/slices/userSlice';
+
+  // import api from "./baseApi";
+
 
 // styles
 const avatarSX = { width: 32, height: 32 };
@@ -52,6 +61,39 @@ const cardSX = {
 export default function DashboardDefault() {
   const [orderMenuAnchor, setOrderMenuAnchor] = useState(null);
   const [analyticsMenuAnchor, setAnalyticsMenuAnchor] = useState(null);
+const dispatch = useDispatch();
+
+
+const getUserProfile = async () => {
+  const formData = new FormData();
+  formData.append("type", "profile");
+
+  const res = await api.post("/member/transaction", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
+};
+
+useEffect(()=>{
+  fetchProfile();
+},[])
+
+
+
+const fetchProfile = async () => {
+  try {
+    const res = await getUserProfile();
+
+    if (res.statuscode === "TXN") {
+        dispatch(setUserProfile(res.data)); // ✅ correct
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   return (
     <Grid container rowSpacing={2} columnSpacing={2}>

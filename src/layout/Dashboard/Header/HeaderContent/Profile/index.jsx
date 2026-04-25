@@ -29,6 +29,12 @@ import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import avatar1 from 'assets/images/users/avatar-1.png';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { CustomerServiceOutlined } from '@ant-design/icons';
+import { logoutUser } from '../../../../../sections/auth/helper/api';
+import { clearUserProfile } from '../../../../../store/slices/userSlice';
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -50,6 +56,12 @@ function a11yProps(index) {
 
 export default function Profile() {
   const theme = useTheme();
+// ----------------------------------//
+const dispatch = useDispatch();
+
+  const profile = useSelector((state) => state.user.profile);
+// ----------------------------------//
+
 
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -70,6 +82,27 @@ export default function Profile() {
     setValue(newValue);
   };
 
+const navigate = useNavigate();
+
+  const userLogoutHandler=async()=>{
+    try {
+      const res = await logoutUser();
+
+      if (res?.statuscode === "TXN") {
+        toast.success(res.message);
+      }
+      console.log(res)
+
+    } catch (err) {
+      // even if API fails, still logout locally
+      toast.error("Session expired");
+    } finally {
+      localStorage.removeItem("app-token");
+          dispatch(clearUserProfile()); // ✅ IMPORTANT
+
+      navigate("/login");
+    }
+  }
   return (
     <Box sx={{ flexShrink: 0, ml: 'auto' }}>
       <Tooltip title="Profile" disableInteractive>
@@ -117,16 +150,17 @@ export default function Profile() {
                         <Stack direction="row" sx={{ gap: 1.25, alignItems: 'center' }}>
                           <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                           <Stack>
-                            <Typography variant="h6">John Doe</Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              UI/UX Designer
+                            <Typography variant="h6" fontWeight={600}>{profile.name}</Typography>
+                            <Typography variant="body2"  fontWeight={600} color="text.secondary">
+                              {profile.role.name}
                             </Typography>
                           </Stack>
                         </Stack>
                       </Grid>
                       <Grid>
                         <Tooltip title="Logout">
-                          <IconButton size="large" sx={{ color: 'text.primary' }}>
+                          <IconButton size="large" sx={{ color: 'text.primary' }}   onClick={userLogoutHandler}
+>
                             <LogoutOutlined />
                           </IconButton>
                         </Tooltip>
@@ -164,8 +198,8 @@ export default function Profile() {
                             marginBottom: 0
                           }
                         }}
-                        icon={<SettingOutlined />}
-                        label="Setting"
+                        icon={<CustomerServiceOutlined />}
+                        label="Support"
                         {...a11yProps(1)}
                       />
                     </Tabs>

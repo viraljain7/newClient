@@ -1,152 +1,259 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-
-// material-ui
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-
-// third-party
-import * as Yup from 'yup';
+import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
-// project imports
-import IconButton from 'components/@extended/IconButton';
+import { useNavigate } from "react-router-dom";
+
+import {
+  Button,
+  Stack,
+  Typography,
+  FormHelperText,
+  Grid,
+  Checkbox,
+  FormControlLabel,
+  Link,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+  TextField,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  Box
+} from '@mui/material';
+
+import { Link as RouterLink } from 'react-router-dom';
 import AnimateButton from 'components/@extended/AnimateButton';
+import IconButton from 'components/@extended/IconButton';
 
-// assets
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
+import { loginUser } from './helper/api';
+import toast from 'react-hot-toast';
 
-// ============================|| JWT - LOGIN ||============================ //
+// ==============================
+// 🔹 API
+// ==============================
 
-export default function AuthLogin({ isDemo = false }) {
-  const [checked, setChecked] = React.useState(false);
+// ==============================
+// 🔹 OTP MODAL
+// ==============================
+function OTPDialog({ open, onClose, loginPayload }) {
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const inputsRef = useRef([]);
+const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
+  const handleChange = (value, index) => {
+    if (!/^[0-9]?$/.test(value)) return;
+
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    if (value && index < 5) {
+      inputsRef.current[index + 1].focus();
+    }
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    const finalOtp = otp.join('');
+
+    try {
+      const res = await loginUser({
+        ...loginPayload,
+        via: 'otp',
+        value: finalOtp
+      });
+
+      if (res.statuscode === 200) {
+        localStorage.setItem('app-token', res.token);
+        onClose();
+
+navigate("/");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
-    <>
-      <Formik
-        initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
-          submit: null
-        }}
-        validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string()
-            .required('Password is required')
-            .test('no-leading-trailing-whitespace', 'Password cannot start or end with spaces', (value) => value === value.trim())
-            .max(10, 'Password must be less than 10 characters')
-        })}
-      >
-        {({ errors, handleBlur, handleChange, touched, values }) => (
-          <form noValidate>
-            <Grid container spacing={3}>
-              <Grid size={12}>
-                <Stack sx={{ gap: 1 }}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
-                  <OutlinedInput
-                    id="email-login"
-                    type="email"
-                    value={values.email}
-                    name="email"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="Enter email address"
-                    fullWidth
-                    error={Boolean(touched.email && errors.email)}
-                  />
-                </Stack>
-                {touched.email && errors.email && (
-                  <FormHelperText error id="standard-weight-helper-text-email-login">
-                    {errors.email}
-                  </FormHelperText>
-                )}
-              </Grid>
-              <Grid size={12}>
-                <Stack sx={{ gap: 1 }}>
-                  <InputLabel htmlFor="password-login">Password</InputLabel>
-                  <OutlinedInput
-                    fullWidth
-                    error={Boolean(touched.password && errors.password)}
-                    id="-password-login"
-                    type={showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    name="password"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                          color="secondary"
-                        >
-                          {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    placeholder="Enter password"
-                  />
-                </Stack>
-                {touched.password && errors.password && (
-                  <FormHelperText error id="standard-weight-helper-text-password-login">
-                    {errors.password}
-                  </FormHelperText>
-                )}
-              </Grid>
-              <Grid sx={{ mt: -1 }} size={12}>
-                <Stack direction="row" sx={{ gap: 2, alignItems: 'baseline', justifyContent: 'space-between' }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checked}
-                        onChange={(event) => setChecked(event.target.checked)}
-                        name="checked"
-                        color="primary"
-                        size="small"
-                      />
-                    }
-                    label={<Typography variant="h6">Keep me sign in</Typography>}
-                  />
-                  <Link variant="h6" component={RouterLink} to="#" color="text.primary">
-                    Forgot Password?
-                  </Link>
-                </Stack>
-              </Grid>
-              <Grid size={12}>
-                <AnimateButton>
-                  <Button fullWidth size="large" variant="contained" color="primary">
-                    Login
-                  </Button>
-                </AnimateButton>
-              </Grid>
-            </Grid>
-          </form>
-        )}
-      </Formik>
-    </>
+    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
+      <DialogTitle>Verify OTP</DialogTitle>
+
+      <DialogContent>
+        <Typography variant="body2" textAlign="center" mb={2}>
+          Enter OTP sent to <b>{loginPayload?.mobile}</b>
+        </Typography>
+
+        <Stack direction="row" spacing={1} justifyContent="center">
+          {otp.map((digit, index) => (
+            <TextField
+              key={index}
+              inputRef={(el) => (inputsRef.current[index] = el)}
+              value={digit}
+              placeholder="•"
+              onChange={(e) => handleChange(e.target.value, index)}
+              inputProps={{
+                maxLength: 1,
+                style: {
+                  textAlign: 'center',
+                  fontSize: '20px',
+                  width: '42px'
+                }
+              }}
+            />
+          ))}
+        </Stack>
+      </DialogContent>
+
+      <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button variant="contained" onClick={handleSubmit}>
+          Verify OTP
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 
-AuthLogin.propTypes = { isDemo: PropTypes.bool };
+// ==============================
+// 🔹 MAIN LOGIN
+// ==============================
+const AuthLogin = () => {
+  const [otpOpen, setOtpOpen] = useState(false);
+  const [loginPayload, setLoginPayload] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+const navigate = useNavigate();
+
+  return (
+    <Formik
+      initialValues={{
+        mobile: '',
+        password: '',
+        submit: null
+      }}
+      validationSchema={Yup.object({
+        mobile: Yup.string()
+          .matches(/^[0-9]{10}$/, 'Enter valid mobile number')
+          .required('Mobile is required'),
+        password: Yup.string().required('Password is required')
+      })}
+      onSubmit={async (values, { setSubmitting, setErrors }) => {
+        try {
+          const res = await loginUser({
+            ...values,
+            via: 'otp'
+          });
+
+          if (res.statuscode === 1300) {
+            toast.success(res.message);
+
+            setLoginPayload(values);
+            setOtpOpen(true);
+            return;
+          }
+
+          if (res.statuscode === 200) {
+            toast.success(res.message);
+
+            localStorage.setItem('app-token', res.token);
+            navigate("/");
+
+          }
+
+          if (res.statuscode === 401) {
+            toast.error(res.message);
+          }
+        } catch (err) {
+          setErrors({
+            submit: err?.response?.data?.message || 'Login failed'
+          });
+        } finally {
+          setSubmitting(false);
+        }
+      }}
+    >
+      {(formik) => (
+        <form onSubmit={formik.handleSubmit}>
+          <Grid container spacing={3}>
+            {/* MOBILE */}
+            <Grid size={12}>
+              <Stack sx={{ gap: 1 }}>
+                <InputLabel>Mobile Number</InputLabel>
+                <OutlinedInput
+                  fullWidth
+                  name="mobile"
+                  placeholder="Enter mobile number"
+                  value={formik.values.mobile}
+                  onChange={formik.handleChange}
+                  error={Boolean(formik.touched.mobile && formik.errors.mobile)}
+                />
+              </Stack>
+
+              {formik.touched.mobile && formik.errors.mobile && <FormHelperText error>{formik.errors.mobile}</FormHelperText>}
+            </Grid>
+
+            {/* PASSWORD */}
+            <Grid size={12}>
+              <Stack sx={{ gap: 1 }}>
+                <InputLabel>Password</InputLabel>
+
+                <OutlinedInput
+                  fullWidth
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  placeholder="Enter password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  error={Boolean(formik.touched.password && formik.errors.password)}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => setShowPassword((prev) => !prev)}>
+                        {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </Stack>
+
+              {formik.touched.password && formik.errors.password && <FormHelperText error>{formik.errors.password}</FormHelperText>}
+            </Grid>
+
+            {/* OPTIONS */}
+            <Grid size={12}>
+              <Stack direction="row" justifyContent="space-between">
+                <FormControlLabel control={<Checkbox />} label="Keep me signed in" />
+                <Link component={RouterLink} to="#">
+                  Forgot Password?
+                </Link>
+              </Stack>
+            </Grid>
+
+            {/* ERROR */}
+            {formik.errors.submit && (
+              <Grid size={12}>
+                <FormHelperText error>{formik.errors.submit}</FormHelperText>
+              </Grid>
+            )}
+
+            {/* BUTTON */}
+            <Grid size={12}>
+              <AnimateButton>
+                <Button fullWidth variant="contained" type="submit" disabled={formik.isSubmitting}>
+                  {formik.isSubmitting ? 'Logging in...' : 'Login'}
+                </Button>
+              </AnimateButton>
+            </Grid>
+          </Grid>
+
+          {/* OTP MODAL */}
+          <OTPDialog open={otpOpen} onClose={() => setOtpOpen(false)} loginPayload={loginPayload} />
+        </form>
+      )}
+    </Formik>
+  );
+};
+
+export default AuthLogin;
