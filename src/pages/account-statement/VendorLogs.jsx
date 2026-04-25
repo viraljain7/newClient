@@ -1,5 +1,5 @@
 import React from 'react'
-import VendorLogs from '../../myapp/roles-permission/vendor-logs'
+import VendorLogs from '../../myapp/acc-stmt/vendor-logs'
 
 const VendorLogsReport = () => {
   return (
