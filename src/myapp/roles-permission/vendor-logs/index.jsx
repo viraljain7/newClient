@@ -10,7 +10,7 @@ import { useTransactions } from "./api/useTransactions";
 import { TRANSACTION_COLUMNS } from "./columns";
 import { handleExportAllTxnReport } from "./api/TransactionApi";
 
-const PosReport = () => {
+const VendorLogs = () => {
   const { fromDate: defaultFrom, toDate: defaultTo } = getDefaultDateRange(0);
  
   const [fromDate, setFromDate] = useState(defaultFrom);
@@ -29,7 +29,6 @@ const PosReport = () => {
     toDate,
     initialPerPage: ROWS_PER_PAGE_OPTIONS[0],
   });
-
 
 
   const handleExport = () => {
@@ -60,7 +59,7 @@ const PosReport = () => {
         gap={2}
       >
         <Box>
-          <Typography variant="h5" fontWeight={700}>POS Report</Typography>
+          <Typography variant="h5" fontWeight={700}>Vendor Logs</Typography>
           <Typography variant="body2" color="text.secondary">
             {pagination.total?.toLocaleString() ?? 0} total records
           </Typography>
@@ -103,5 +102,5 @@ const PosReport = () => {
   );
 };
  
-export default PosReport;
+export default VendorLogs;
  

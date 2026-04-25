@@ -40,20 +40,21 @@ export function useTransactions({
         toDate,
         page,
         perPage,
-      
+        search,
+        filters
       });
 
       const body = res.data;
 
-
       // set table data
       setRows(body?.data || []);
+
       // set pagination
       setPagination({
-        currentPage: body.current_page,
-        lastPage: body.total_pages,
-        perPage,
-        total: body.total
+        currentPage: body.pagination.current_page,
+        lastPage: body.pagination.last_page,
+        perPage: body.pagination.per_page,
+        total: body.pagination.total
       });
 
     } catch (err) {
