@@ -11,6 +11,8 @@ import PG4Page from '../pages/services/PG4Page';
 import PG5Page from '../pages/services/PG5Page';
 import PG6Page from '../pages/services/PG6Page';
 import InvoicePage from '../pages/InvoicePage';
+import BBPSPage from '../pages/services/BBPSPage';
+import FetchBBPSBillPage from '../pages/services/FetchBBPSBillPage';
 // import SchemeManager from '../pages/master/SchemeManager';
 
 // dashboard
@@ -137,12 +139,14 @@ const MainRoutes = {
     { path: 'services/add-money/payment6', element: <PG6Page /> },
 
     { path: 'invoice/:txnid', element: <InvoicePage /> },
-    { path: 'invoice/:txnid/:orderid', element: <InvoicePage /> }
+    { path: 'invoice/:txnid/:orderid', element: <InvoicePage /> },
 
 
 
 
-    // { path: 'services/bbps', element: <Bbps /> },
+    { path: 'services/bbps', element: <BBPSPage /> },
+    { path: 'services/bbps/c15', element: <FetchBBPSBillPage /> },
+
     // { path: 'services/payout', element: <Payout /> },
     // { path: 'services/pos-money-request', element: <PosMoneyRequest /> },
   ]

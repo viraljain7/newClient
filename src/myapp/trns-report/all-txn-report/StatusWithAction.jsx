@@ -2,16 +2,23 @@ import { Chip, IconButton, Menu, MenuItem, Stack } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import { colorMap } from '../../../shared/Constants';
+import { useNavigate } from 'react-router';
 
 const StatusWithActions = ({ row }) => {
   const status = row.status?.toLowerCase();
-
+  
+  
   // ---------------- Status Colors (Modern + Soft) ----------------
-
+  
   const colors = colorMap[status] || {
     bg: '#6B7280',
     text: '#ffffff',
     border: '#4B5563'
+  };
+  
+  const navigate = useNavigate();
+  const printInvoice = () => {
+    navigate(`/invoice/${row.txnid}`);
   };
 
   // ---------------- Menu Logic ----------------
@@ -34,7 +41,7 @@ const StatusWithActions = ({ row }) => {
           borderRadius: 2,
 
           backgroundColor: colors.bg,
-          color: colors.text,
+          color: colors.text
         }}
       />
 
@@ -46,7 +53,7 @@ const StatusWithActions = ({ row }) => {
       {/* ✅ Dropdown Menu */}
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={handleClose}>check status</MenuItem>
-        <MenuItem onClick={handleClose}>invoice</MenuItem>
+        <MenuItem onClick={printInvoice}>invoice</MenuItem>
       </Menu>
     </Stack>
   );

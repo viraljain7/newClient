@@ -2,6 +2,7 @@ import { Chip, IconButton, Menu, MenuItem, Stack } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import { colorMap } from '../../../shared/Constants';
+import { useNavigate } from 'react-router';
 
 const StatusWithActions = ({ row }) => {
   const status = row.status?.toLowerCase();
@@ -20,6 +21,12 @@ const StatusWithActions = ({ row }) => {
 
   const handleClick = (e) => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
+
+    const navigate = useNavigate();
+  const printInvoice = () => {
+    navigate(`/invoice/${row.txnid}`);
+  };
+
 
   return (
     <Stack direction="row" alignItems="center" spacing={1}>
@@ -46,7 +53,7 @@ const StatusWithActions = ({ row }) => {
       {/* ✅ Dropdown Menu */}
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={handleClose}>check status</MenuItem>
-        <MenuItem onClick={handleClose}>invoice</MenuItem>
+        <MenuItem onClick={printInvoice}>invoice</MenuItem>
       </Menu>
     </Stack>
   );

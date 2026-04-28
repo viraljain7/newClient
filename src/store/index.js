@@ -8,7 +8,7 @@ import { persistReducer, persistStore } from "redux-persist";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user"], // only persist user
+  whitelist: ["user", "bbps"], // ✅ add this
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
