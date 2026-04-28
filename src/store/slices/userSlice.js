@@ -1,12 +1,12 @@
 // store/slices/userSlice.js
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  profile: null,
+  profile: null
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     setUserProfile: (state, action) => {
@@ -15,8 +15,11 @@ const userSlice = createSlice({
     clearUserProfile: (state) => {
       state.profile = null;
     },
-  },
+    setUserActiveService: (state, action) => {
+      state.service = action.payload;
+    }
+  }
 });
 
-export const { setUserProfile, clearUserProfile } = userSlice.actions;
+export const { setUserProfile, clearUserProfile, setUserActiveService } = userSlice.actions;
 export default userSlice.reducer;

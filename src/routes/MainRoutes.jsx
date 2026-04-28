@@ -3,6 +3,14 @@ import { lazy } from 'react';
 // project imports
 import Loadable from 'components/Loadable';
 import DashboardLayout from 'layout/Dashboard';
+import AddMoneyPage from '../pages/services/AddMoneyPage';
+import PG1Page from '../pages/services/PG1Page';
+import PG2Page from '../pages/services/PG2Page';
+import PG3Page from '../pages/services/PG3Page';
+import PG4Page from '../pages/services/PG4Page';
+import PG5Page from '../pages/services/PG5Page';
+import PG6Page from '../pages/services/PG6Page';
+import InvoicePage from '../pages/InvoicePage';
 // import SchemeManager from '../pages/master/SchemeManager';
 
 // dashboard
@@ -117,7 +125,26 @@ const MainRoutes = {
 
     // roles & permission
     { path: 'roles-permission/permission', element: <Permission /> },
-    { path: 'roles-permission/default-permission', element: <DefaultPermission /> }
+    { path: 'roles-permission/default-permission', element: <DefaultPermission /> },
+
+    // service
+    { path: 'services/add-money', element: <AddMoneyPage /> },
+    { path: 'services/add-money/payment1', element: <PG1Page /> },
+    { path: 'services/add-money/payment2', element: <PG2Page /> },
+    { path: 'services/add-money/payment3', element: <PG3Page /> },
+    { path: 'services/add-money/payment4', element: <PG4Page /> },
+    { path: 'services/add-money/payment5', element: <PG5Page /> },
+    { path: 'services/add-money/payment6', element: <PG6Page /> },
+
+    { path: 'invoice/:txnid', element: <InvoicePage /> },
+    { path: 'invoice/:txnid/:orderid', element: <InvoicePage /> }
+
+
+
+
+    // { path: 'services/bbps', element: <Bbps /> },
+    // { path: 'services/payout', element: <Payout /> },
+    // { path: 'services/pos-money-request', element: <PosMoneyRequest /> },
   ]
 };
 

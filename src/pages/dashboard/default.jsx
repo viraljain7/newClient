@@ -44,7 +44,7 @@ import { useDispatch } from "react-redux";
 
 
 import api from '../../shared/BaseApi';
-import { setUserProfile } from '../../store/slices/userSlice';
+import { setUserProfile,setUserActiveService } from '../../store/slices/userSlice';
 
   // import api from "./baseApi";
 
@@ -77,9 +77,25 @@ const getUserProfile = async () => {
   return res.data;
 };
 
-useEffect(()=>{
-  fetchProfile();
-},[])
+useEffect(() => {
+  const init = async () => {
+    await fetchProfile();
+    await fetchActiveService();
+  };
+
+  init();
+}, []);
+
+const getActiveService = async () => {
+  const formData = new FormData();
+  formData.append("type", "list");
+
+  const res = await api.post("/master/portal",formData);
+
+
+  return res.data;
+};
+
 
 
 
@@ -89,11 +105,29 @@ const fetchProfile = async () => {
 
     if (res.statuscode === "TXN") {
         dispatch(setUserProfile(res.data)); // ✅ correct
+        // console.log("profile:::",res.data)
+        
     }
   } catch (err) {
     console.error(err);
   }
 };
+
+const fetchActiveService = async () => {
+  try {
+    const res = await getActiveService();
+
+    if (res.statuscode === "TXN") {
+        dispatch(setUserActiveService(res.data)); // ✅ correct
+        // console.log("service:::",res.data)
+
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
 
   return (
     <Grid container rowSpacing={2} columnSpacing={2}>
