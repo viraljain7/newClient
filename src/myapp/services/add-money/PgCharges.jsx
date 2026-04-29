@@ -101,21 +101,18 @@ function PgCharges({ group }) {
 
 export default PgCharges;
 const cardStyle = {
-  border: '1px solid',
-  borderColor: 'divider',
+  border: '2px dashed #d1d5db',
   borderRadius: 3,
   p: 3,
-  width:"350px",
+  width: '350px',
   display: 'flex',
   flexDirection: 'column',
   gap: 2,
   height: '100%',
-  boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
   transition: '0.3s',
   backgroundColor: '#fff',
   '&:hover': {
     transform: 'translateY(-4px)',
-    boxShadow: '0 8px 20px rgba(0,0,0,0.12)'
   }
 };
 

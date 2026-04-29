@@ -9,6 +9,7 @@ function Pg2() {
   const [finalAmount, setFinalAmount] = useState(null);
 
   const user=useSelector(state=>state.user.profile)
+  
   const quickAmounts = [5, 7, 12, 15, 19];
 
 const handleSubmit = async (e) => {
