@@ -157,16 +157,16 @@ const dispatch=  useDispatch();
                 'https://static.vecteezy.com/system/resources/previews/000/357/048/large_2x/vector-credit-card-icon.jpg',
               defaultOpen: true
             },
-            {
-              title: 'Electricity',
-              list: data?.electricity,
-              icon: 'https://img.icons8.com/?size=50&id=ikLKrVmLdsmi&format=png'
-            },
-            {
-              title: 'FASTag',
-              list: data?.fastag,
-              icon: 'https://img.icons8.com/?size=96&id=3B1IMfcbCNeC&format=png'
-            }
+            // {
+            //   title: 'Electricity',
+            //   list: data?.electricity,
+            //   icon: 'https://img.icons8.com/?size=50&id=ikLKrVmLdsmi&format=png'
+            // },
+            // {
+            //   title: 'FASTag',
+            //   list: data?.fastag,
+            //   icon: 'https://img.icons8.com/?size=96&id=3B1IMfcbCNeC&format=png'
+            // }
           ].map((section) => (
             <SectionAccordion
               key={section.title}

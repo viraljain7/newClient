@@ -1,5 +1,5 @@
 import React from 'react'
-import Pg2 from '../../myapp/services/add-money/Pg/Pg2'
+import Pg2 from '../../../myapp/services/add-money/Pg/Pg2'
 
 function PG2Page() {
   return (

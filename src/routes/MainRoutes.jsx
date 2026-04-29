@@ -4,15 +4,16 @@ import { lazy } from 'react';
 import Loadable from 'components/Loadable';
 import DashboardLayout from 'layout/Dashboard';
 import AddMoneyPage from '../pages/services/AddMoneyPage';
-import PG1Page from '../pages/services/PG1Page';
-import PG2Page from '../pages/services/PG2Page';
-import PG3Page from '../pages/services/PG3Page';
-import PG4Page from '../pages/services/PG4Page';
-import PG5Page from '../pages/services/PG5Page';
-import PG6Page from '../pages/services/PG6Page';
+import PG1Page from '../pages/services/PG/PG1Page';
+import PG2Page from '../pages/services/PG/PG2Page';
+import PG3Page from '../pages/services/PG/PG3Page';
+import PG4Page from '../pages/services/PG/PG4Page';
+import PG5Page from '../pages/services/PG/PG5Page';
+import PG6Page from '../pages/services/PG/PG6Page';
 import InvoicePage from '../pages/InvoicePage';
 import BBPSPage from '../pages/services/BBPSPage';
 import FetchBBPSBillPage from '../pages/services/FetchBBPSBillPage';
+import PayoutPage from '../pages/services/PayoutPage';
 // import SchemeManager from '../pages/master/SchemeManager';
 
 // dashboard
@@ -147,7 +148,7 @@ const MainRoutes = {
     { path: 'services/bbps', element: <BBPSPage /> },
     { path: 'services/bbps/c15', element: <FetchBBPSBillPage /> },
 
-    // { path: 'services/payout', element: <Payout /> },
+    { path: 'services/payout', element: <PayoutPage /> },
     // { path: 'services/pos-money-request', element: <PosMoneyRequest /> },
   ]
 };
