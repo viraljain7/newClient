@@ -141,7 +141,6 @@ const fetchActiveService = async () => {
           Overview & insights
         </Typography>
       </Grid>
-
       {/* KPI CARDS */}
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
         <AnalyticEcommerce title="Page Views" count="4,42,236" percentage={59.3} extra="35k" sx={cardSX} />

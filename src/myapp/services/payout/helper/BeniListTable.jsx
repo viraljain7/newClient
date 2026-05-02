@@ -3,17 +3,31 @@ import { BlueButton, PendingChip, SuccessChip } from '../../../../components/Com
 import { Box, Card, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import AddBankDrawer from './AddBankDrawer';
 import TransferPayout from './TransferPayout';
+import VerifyBankAccount from './VerifyBankAccount';
 // ✅ Updated data structure
 
 export default function BeniListTable({ payoutUser, setLoading, setPayoutUser }) {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [openTransfer, setOpenTransfer] = useState(false);
-  const [userData,setUserData]=useState(null)
+  const [openVerifyDrawer, setOpenVerifyDrawer] = useState(false);
 
-  const handlePaymentTransfer=(row)=>{
-setUserData(row);
-setOpenTransfer(true);
-  }
+  const [openTransfer, setOpenTransfer] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  const handlePaymentTransfer = (row) => {
+    setUserData(row);
+    setOpenTransfer(true);
+  };
+
+  const handleClickOpen = (row) => {
+    setUserData(row);
+
+    setOpenVerifyDrawer(true);
+  };
+  const handleClose = () => {
+    setUserData(null);
+
+    setOpenVerifyDrawer(false);
+  };
 
   return (
     <Card sx={{ border: '2px dashed #d1d5db', borderRadius: 3 }}>
@@ -21,13 +35,15 @@ setOpenTransfer(true);
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} sx={{ p: 2 }}>
         <Typography fontWeight={700}> Payout Beneficiary List</Typography>
 
-        <BlueButton
-          label="+ Add Bank"
-          sx={{
-            width: 'auto'
-          }}
-          onClick={() => setOpenDrawer(true)}
-        />
+        {payoutUser && payoutUser.length < 11 && (
+          <BlueButton
+            label="+ Add Bank"
+            sx={{
+              width: 'auto'
+            }}
+            onClick={() => setOpenDrawer(true)}
+          />
+        )}
       </Box>
       <TableContainer
         sx={{
@@ -59,9 +75,9 @@ setOpenTransfer(true);
                     <TableCell>{row.ifsccode}</TableCell>
                     <TableCell align="center">
                       {row.is_verified === '1' ? (
-                        <SuccessChip label="pay" onClick={()=>handlePaymentTransfer(row)} />
+                        <SuccessChip label="pay" onClick={() => handlePaymentTransfer(row)} />
                       ) : (
-                        <PendingChip label="verify" />
+                        <PendingChip label="verify" onClick={() => handleClickOpen(row)} />
                       )}
                     </TableCell>
                   </TableRow>
@@ -85,6 +101,14 @@ setOpenTransfer(true);
         setLoading={setLoading}
       />
       <TransferPayout open={openTransfer} onClose={() => setOpenTransfer(false)} userData={userData} setLoading={setLoading} />
+      <VerifyBankAccount
+        open={openVerifyDrawer}
+        handleClickOpen={handleClickOpen}
+        userData={userData}
+        handleClose={handleClose}
+        setPayoutUser={setPayoutUser}
+        setLoading={setLoading}
+      />
     </Card>
   );
 }

@@ -31,43 +31,48 @@ function AddBankDrawer({ open, onClose, payoutUser, setLoading, setPayoutUser })
     getBanks();
   }, []);
 
-  // const fetchUser=
-
   const handleAddBankAccount = async () => {
-    setLoading(true);
-    let { bank: bankName, ifsc, account, name: userName } = form;
-    let { mobile } = payoutUser[0];
+    try {
+      setLoading(true);
 
-    if (!ifsc || !account || !bankName) {
-      toast.error('All Fields are required');
-      setLoading(false);
-      return;
+      const { bank: bankName, ifsc, account, name: userName } = form;
+      const mobile = payoutUser?.[0]?.mobile;
+
+      // ✅ Validation
+      if (!ifsc || !account || !bankName || !userName || !mobile) {
+        toast.error('All fields are required');
+        return;
+      }
+
+      // ✅ API Call
+      const res = await addBankAccount(bankName, account, ifsc, userName, mobile);
+
+      if (res?.statuscode === 'TXN') {
+        toast.success(res?.message || 'Bank added successfully');
+
+        // ✅ Refresh user data
+        const fetchUser = await fetchUserPayoutDetails(mobile);
+        setPayoutUser(fetchUser?.data);
+
+        // ✅ Reset form
+        setForm({
+          bank: '',
+          ifsc: '',
+          account: '',
+          name: ''
+        });
+
+        onClose && onClose(); // close only on success
+      } else {
+        toast.error(res?.message || 'Failed to add bank account');
+      }
+    } catch (error) {
+      console.error('Add Bank Error:', error);
+
+      toast.error(error?.response?.data?.message || error?.message || 'Something went wrong');
+    } finally {
+      setLoading(false); // ✅ always runs
     }
-    if (!mobile || !userName) {
-      toast.error('All Fields are required');
-      setLoading(false);
-
-      return;
-    }
-
-    const res = await addBankAccount(bankName, account, ifsc, userName, mobile);
-    if (res.statuscode === 'TXN') {
-      toast.success(res.message);
-      let fetchUser = await fetchUserPayoutDetails(mobile);
-
-      setPayoutUser(fetchUser.data);
-
-      onClose && onClose();
-      setForm({
-        bank: '',
-        ifsc: '',
-        account: '',
-        name: ''
-      });
-    } else {
-      toast.error(res.message);
-    }
-    setLoading(false);
   };
 
   return (
