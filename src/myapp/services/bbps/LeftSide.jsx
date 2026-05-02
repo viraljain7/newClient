@@ -12,7 +12,6 @@ function LeftSide({ cardDetails, setBill,setLoading }) {
     setLoading(true);
     try {
       const res = await fetchBill(mobile, cardLast4, code);
-      console.log(res);
       if (res.statuscode === 'TXN') {
         setBill(res); // ✅ not res.data (your API already returns full object)
         toast.success(res.message);

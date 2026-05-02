@@ -15,7 +15,7 @@ const Row = ({ label, value, highlight, color }) => (
   </Box>
 );
 
-const RightSide = ({ bill,setLoading }) => {
+const RightSide = ({ bill,setLoading,setBill }) => {
   const [amount, setAmount] = useState('');
 
   // 🔹 Helpers
@@ -26,15 +26,8 @@ const RightSide = ({ bill,setLoading }) => {
     })}`;
   };
 
-const getInfo = (name) => {
-  return (
-    bill?.additionalInfo?.info?.find((i) =>
-      i.infoName.toLowerCase().includes(name.toLowerCase())
-    )?.infoValue || null
-  );
-};
 
-  const minDue = Number(getInfo('Minimum')) || 0;
+
   const maxAmount = Number(bill?.billAmount) / 100 || 0;
 
   const payHandler = async () => {
@@ -93,7 +86,6 @@ const getInfo = (name) => {
 
             {/* Amounts */}
             <Row label="Total Amount" value={formatAmount(bill?.billAmount)} highlight />
-            <Row label="Minimum Amount Due" value={minDue} highlight />
 
 
             <Divider />
@@ -142,7 +134,7 @@ const getInfo = (name) => {
                 </Grid>
               </Grid>
               {/* 🔹 Validation */}
-              <ErrorValidation amount={amount} minDue={minDue} maxAmount={maxAmount} />
+              <ErrorValidation amount={amount}  maxAmount={maxAmount} />
             </Box>
 
             <Divider />
@@ -157,7 +149,7 @@ const getInfo = (name) => {
 
 export default RightSide;
 
-const ErrorValidation = ({ amount, minDue, maxAmount }) => {
+const ErrorValidation = ({ amount,  maxAmount }) => {
   return (
     <>
     
