@@ -1,9 +1,10 @@
 import React from 'react'
+import NsmTable from '../../myapp/member/NsmTable'
 
-function NsmZsh() {
+function NsmZshPage() {
   return (
-    <div>NsmZsh</div>
+    <NsmTable/>
   )
 }
 
-export default NsmZsh
+export default NsmZshPage

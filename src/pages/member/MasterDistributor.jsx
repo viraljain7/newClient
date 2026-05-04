@@ -1,9 +1,10 @@
 import React from 'react'
+import MDTable from '../../myapp/member/MDTable'
 
-function MasterDistributor() {
+function MasterDistributorPage() {
   return (
-    <div>MasterDistributor</div>
+    <MDTable/>
   )
 }
 
-export default MasterDistributor
+export default MasterDistributorPage

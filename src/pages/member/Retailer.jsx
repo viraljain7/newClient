@@ -1,9 +1,10 @@
 import React from 'react'
+import RetailerTable from '../../myapp/member/RetailerTable'
 
-function Retailer() {
+function RetailerPage() {
   return (
-    <div>Retailer</div>
+    <RetailerTable/>
   )
 }
 
-export default Retailer
+export default RetailerPage

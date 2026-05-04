@@ -1,9 +1,10 @@
 import React from 'react'
+import CnfTable from '../../myapp/member/CnfTable'
 
-function CnfAsm() {
+function CnfAsmPage() {
   return (
-    <div>CnfAsm</div>
+    <CnfTable/>
   )
 }
 
-export default CnfAsm
+export default CnfAsmPage

@@ -1,9 +1,10 @@
 import React from 'react'
+import SadTable from '../../myapp/member/SadTable'
 
-function SubAdmin() {
+function SubAdminPage() {
   return (
-    <div>SubAdmin</div>
+    <SadTable/>
   )
 }
 
-export default SubAdmin
+export default SubAdminPage

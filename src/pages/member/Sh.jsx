@@ -1,9 +1,10 @@
 import React from 'react'
+import ShTable from '../../myapp/member/ShTable'
 
-function Sh() {
+function ShPage() {
   return (
-    <div>Sh</div>
+    <ShTable/>
   )
 }
 
-export default Sh
+export default ShPage

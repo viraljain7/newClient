@@ -1,9 +1,10 @@
 import React from 'react'
+import DtTable from '../../myapp/member/DtTable'
 
-function Distributor() {
+function DistributorPage() {
   return (
-    <div>Distributor</div>
+    <DtTable/>
   )
 }
 
-export default Distributor
+export default DistributorPage
