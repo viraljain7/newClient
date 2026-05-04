@@ -83,7 +83,7 @@ const TableSkeleton = ({ rows = 5 }) => {
 
 /* ================= MAIN COMPONENT ================= */
 export default function AgentTable({ agentType, agentCode }) {
-  const { data, total, loading, states, addAgent,  } = useMember(agentType);
+  const { data, total, loading, states, addAgent } = useMember(agentType);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -105,7 +105,8 @@ export default function AgentTable({ agentType, agentCode }) {
         pg: item.pgbalance,
         aeps: item.aepsbalance,
         lock: item.lockamount
-      }
+      },
+      role: item.role.name
     }));
   }, [data]);
 
@@ -156,6 +157,11 @@ export default function AgentTable({ agentType, agentCode }) {
             },
             '& td, & th': {
               borderBottom: '1px solid #eee'
+            },
+            '& .MuiTableCell-root': { border: '1px solid', borderColor: 'divider' },
+            '& .MuiTableHead-root .MuiTableCell-root': {
+              fontWeight: 700,
+              backgroundColor: 'grey.100'
             }
           }}
         >
@@ -183,6 +189,9 @@ export default function AgentTable({ agentType, agentCode }) {
                     <Typography fontWeight={600}>{row.name}</Typography>
                     <Typography variant="body2" fontWeight={600} color="text.secondary">
                       {row.mobile}
+                    </Typography>
+                    <Typography variant="body2" fontWeight={600} color="primary.main">
+                      {row.role}
                     </Typography>
                   </TableCell>
 
@@ -231,7 +240,7 @@ export default function AgentTable({ agentType, agentCode }) {
         sx={{ borderTop: '1px solid #eee' }}
       />
 
-      <AddAgentDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} agentCode={agentCode} states={states}/>
+      <AddAgentDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} agentCode={agentCode} states={states} agentType={agentType} />
     </Paper>
   );
 }

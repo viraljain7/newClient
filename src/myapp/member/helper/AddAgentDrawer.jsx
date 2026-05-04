@@ -2,9 +2,10 @@ import { Drawer, Box, Card, CardContent, Typography, IconButton, TextField, Butt
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { createAgent } from './memberApi';
+import { useMember } from './useMember';
+// import { createAgent } from './memberApi';
 
-function AddAgentDrawer({ open, onClose, agentCode, states }) {
+function AddAgentDrawer({ open, onClose, agentCode, states , agentType }) {
   const [form, setForm] = useState({
     name: '',
     company: '',
@@ -14,6 +15,9 @@ function AddAgentDrawer({ open, onClose, agentCode, states }) {
     city: '',
     role_id: ''
   });
+
+    const {  addAgent  } = useMember(agentType);
+  
 
 useEffect(() => {
   if (agentCode) {
@@ -26,8 +30,7 @@ useEffect(() => {
 
   const handleSubmit = async () => {
     try {
-      console.log(form, agentCode);
-      const res = await createAgent(form);
+      const res = await addAgent(form,  agentType);
       console.log(res);
 
       if (res?.statuscode === 'TXN') {
@@ -87,6 +90,7 @@ useEffect(() => {
               {/* Mobile */}
               <TextField
                 label="Mobile"
+                  inputProps={{ maxLength: 10 }}
                 value={form.mobile}
                 onChange={(e) => {
                   const val = e.target.value;

@@ -9,11 +9,10 @@ export const useMember = (type) => {
   const [creating, setCreating] = React.useState(false);
 
   // 🔹 Fetch Members
-  const getMembers = async () => {
+  const getMembers = async (type) => {
     try {
       setLoading(true);
       const res = await fetchMember(type);
-
       setData(res?.data || []);
       setTotal(res?.count || 0);
     } catch (e) {
@@ -34,14 +33,14 @@ export const useMember = (type) => {
   };
 
   // 🔹 Create Agent
-  const addAgent = async (form) => {
+  const addAgent = async (form,type) => {
     try {
       setCreating(true);
 
       const res = await createAgent(form);
 
       if (res?.statuscode === "TXN") {
-        await getMembers(); // refresh list
+        await getMembers(type); // refresh list
       }
 
       return res;
@@ -54,7 +53,7 @@ export const useMember = (type) => {
   };
 
   React.useEffect(() => {
-    if (type) getMembers();
+    if (type) getMembers(type);
     getStates();
   }, [type]);
 

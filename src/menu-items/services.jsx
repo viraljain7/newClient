@@ -32,13 +32,6 @@ const Services = {
       type: 'item',
       url: '/services/payout',           // ← fixed
       icon: SendOutlined
-    },
-    {
-      id: 'pos-money-request',
-      title: 'Pos Money Request',
-      type: 'item',
-      url: '/services/pos-money-request', // ← fixed
-      icon: ShopOutlined
     }
   ]
 };

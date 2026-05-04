@@ -1,8 +1,9 @@
 import React from 'react'
+import TRreport from '../../myapp/fund/TR-report'
 
 function TransferReturnReport() {
   return (
-    <div>TransferReturnReport</div>
+    <TRreport/>
   )
 }
 
