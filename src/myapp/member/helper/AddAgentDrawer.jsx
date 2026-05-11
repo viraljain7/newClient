@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useMember } from './useMember';
 // import { createAgent } from './memberApi';
 
-function AddAgentDrawer({ open, onClose, agentCode, states , agentType }) {
+function AddAgentDrawer({ open, onClose, agentCode, agentType, states, setLoading   }) {
   const [form, setForm] = useState({
     name: '',
     company: '',
@@ -16,10 +16,11 @@ function AddAgentDrawer({ open, onClose, agentCode, states , agentType }) {
     role_id: ''
   });
 
-    const {  addAgent  } = useMember(agentType);
+    const {  refetch ,addAgent } = useMember(agentType);
   
 
 useEffect(() => {
+
   if (agentCode) {
     setForm((prev) => ({
       ...prev,
@@ -29,10 +30,10 @@ useEffect(() => {
 }, [agentCode]);
 
   const handleSubmit = async () => {
-    try {
-      const res = await addAgent(form,  agentType);
-      console.log(res);
+    setLoading(true)
 
+    try {
+      const res = await addAgent(form);
       if (res?.statuscode === 'TXN') {
         toast.success(res.message);
         setForm({
@@ -43,12 +44,18 @@ useEffect(() => {
           state: '',
           city: ''
         });
+        refetch()
         onClose();
       } else {
         toast.error(res?.message);
       }
     } catch (e) {
+      console.log(e)
+
       toast.error('Something went wrong');
+    }finally{
+      setLoading(false)
+
     }
   };
 

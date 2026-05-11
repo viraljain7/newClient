@@ -5,16 +5,15 @@ import { Link } from 'react-router-dom';
 import ButtonBase from '@mui/material/ButtonBase';
 
 // project imports
-import Logo from './LogoMain';
-import LogoIcon from './LogoIcon';
 import { APP_DEFAULT_PATH } from 'config';
+import logo from "../../img/logo.jpeg"
 
 // ==============================|| MAIN LOGO ||============================== //
 
 export default function LogoSection({ reverse, isIcon, sx, to }) {
   return (
     <ButtonBase disableRipple component={Link} to={to || APP_DEFAULT_PATH} sx={sx} aria-label="Logo">
-      {isIcon ? <LogoIcon /> : <Logo reverse={reverse} />}
+      {isIcon ? <img src={logo} alt="logo" width={60} height={40}/> : <img src={logo} alt="logo" width={200} height={100}/>}
     </ButtonBase>
   );
 }

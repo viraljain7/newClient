@@ -15,7 +15,9 @@ import {
   Typography,
   Skeleton,
   Menu,
-  MenuItem
+  MenuItem,
+  Backdrop,
+  CircularProgress
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
@@ -83,13 +85,16 @@ const TableSkeleton = ({ rows = 5 }) => {
 
 /* ================= MAIN COMPONENT ================= */
 export default function AgentTable({ agentType, agentCode }) {
-  const { data, total, loading, states, addAgent } = useMember(agentType);
+  const { data, total, loading, states, addAgent, refetch } = useMember(agentType);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [search, setSearch] = React.useState('');
 
   const [openDrawer, setOpenDrawer] = React.useState(false);
+
+  // ✅ Separate loading state only for the Backdrop (triggered by drawer actions)
+  const [backdropLoading, setBackdropLoading] = React.useState(false);
 
   // 🔥 Mapping
   const rows = React.useMemo(() => {
@@ -124,6 +129,13 @@ export default function AgentTable({ agentType, agentCode }) {
         border: '1px solid #e0e0e0'
       }}
     >
+      <Backdrop
+        open={backdropLoading}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.modal + 1, backgroundColor: 'rgba(0,0,0,0.5)' }}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       {/* 🔥 Top Bar */}
       <Box
         sx={{
@@ -240,7 +252,15 @@ export default function AgentTable({ agentType, agentCode }) {
         sx={{ borderTop: '1px solid #eee' }}
       />
 
-      <AddAgentDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} agentCode={agentCode} states={states} agentType={agentType} />
+      <AddAgentDrawer
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        agentCode={agentCode}
+        states={states}
+        agentType={agentType}
+        addAgent={addAgent} // ✅ passed from this hook instance
+        setLoading={setBackdropLoading}
+      />
     </Paper>
   );
 }

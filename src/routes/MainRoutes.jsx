@@ -142,13 +142,10 @@ const MainRoutes = {
     { path: 'invoice/:txnid', element: <InvoicePage /> },
     { path: 'invoice/:txnid/:orderid', element: <InvoicePage /> },
 
-
-
-
     { path: 'services/bbps', element: <BBPSPage /> },
     { path: 'services/bbps/c15', element: <FetchBBPSBillPage /> },
 
-    { path: 'services/payout', element: <PayoutPage /> },
+    { path: 'services/payout', element: <PayoutPage /> }
     // { path: 'services/pos-money-request', element: <PosMoneyRequest /> },
   ]
 };

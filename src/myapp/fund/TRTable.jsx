@@ -12,7 +12,9 @@ import {
   IconButton,
   TextField,
   Typography,
-  Skeleton
+  Skeleton,
+  Backdrop,
+  CircularProgress
 } from '@mui/material';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
@@ -51,7 +53,7 @@ const TableSkeleton = ({ rows = 5 }) => {
 export default function TRTable() {
   //   const { data, total, loading, states, addAgent,  } = useMember(agentType);
 
-  const { users: data, loading, error, total } = useFund();
+  const { users: data, loading, error, total, refetch } = useFund();
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -87,6 +89,9 @@ const trHandler=(data)=>{
     setUserData(data)
 }
 
+  const [fundLoading,setFundLoading]=React.useState(loading)
+
+
 
   return (
     <Paper
@@ -97,6 +102,19 @@ const trHandler=(data)=>{
         border: '1px solid #e0e0e0'
       }}
     >
+
+  <Backdrop
+        open={fundLoading}
+        sx={{
+          color: '#fff',
+          zIndex: (theme) => theme.zIndex.modal + 1,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)'
+        }}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
+
       {/* 🔥 Top Bar */}
       <Box
         sx={{
@@ -229,7 +247,7 @@ const trHandler=(data)=>{
         sx={{ borderTop: '1px solid #eee' }}
       />
 
-      <TransferReturnDrawer open={openDrawer} onClose={() => setOpenDrawer(false)}  data={userData}/>
+      <TransferReturnDrawer open={openDrawer} onClose={() => setOpenDrawer(false)}  data={userData}  onSuccess={refetch} setLoading={setFundLoading}/>
     </Paper>
   );
 }

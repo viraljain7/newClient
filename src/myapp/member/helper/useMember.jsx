@@ -33,15 +33,13 @@ export const useMember = (type) => {
   };
 
   // 🔹 Create Agent
-  const addAgent = async (form,type) => {
+  const addAgent = async (form) => {
     try {
       setCreating(true);
 
       const res = await createAgent(form);
 
-      if (res?.statuscode === "TXN") {
-        await getMembers(type); // refresh list
-      }
+    
 
       return res;
     } catch (e) {

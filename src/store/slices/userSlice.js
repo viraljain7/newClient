@@ -17,9 +17,12 @@ const userSlice = createSlice({
     },
     setUserActiveService: (state, action) => {
       state.service = action.payload;
-    }
+    },
+      clearUserActiveService: (state) => {
+      state.service = null;
+    },
   }
 });
 
-export const { setUserProfile, clearUserProfile, setUserActiveService } = userSlice.actions;
+export const { setUserProfile, clearUserProfile, setUserActiveService,clearUserActiveService } = userSlice.actions;
 export default userSlice.reducer;

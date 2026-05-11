@@ -33,7 +33,8 @@ const useFund = () => {
     loading,
     error,
     getAllUsers,
-    total
+    total,
+    refetch:getAllUsers
   };
 };
 

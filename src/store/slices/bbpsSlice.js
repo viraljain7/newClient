@@ -12,9 +12,11 @@ const bbpsSlice = createSlice({
     setBBPS: (state, action) => {
       state.bbps = action.payload;
     },
-    
+  clearBBPS: (state) => {
+      state.bbps = null;
+    },
   }
 });
 
-export const { setBBPS } = bbpsSlice.actions;
+export const { setBBPS,clearBBPS } = bbpsSlice.actions;
 export default bbpsSlice.reducer;
