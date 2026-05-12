@@ -19,7 +19,7 @@ export default function SettingTab() {
           <ListItemIcon>
             <PhoneOutlined />
           </ListItemIcon>
-          <ListItemText primary="Support: (+91) 9001290012" />
+          <ListItemText primary="Support: (+91) " />
         </ListItemButton>
       </Link>
     

@@ -24,9 +24,6 @@ import Transitions from 'components/@extended/Transitions';
 // assets
 import BellOutlined from '@ant-design/icons/BellOutlined';
 import CheckCircleOutlined from '@ant-design/icons/CheckCircleOutlined';
-import GiftOutlined from '@ant-design/icons/GiftOutlined';
-import MessageOutlined from '@ant-design/icons/MessageOutlined';
-import SettingOutlined from '@ant-design/icons/SettingOutlined';
 
 // sx styles
 const avatarSX = {
@@ -51,7 +48,7 @@ export default function Notification() {
   const downMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   const anchorRef = useRef(null);
-  const [read, setRead] = useState(2);
+  const [read, setRead] = useState(1);
   const [open, setOpen] = useState(false);
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -125,115 +122,36 @@ export default function Notification() {
                         '& .MuiListItemSecondaryAction-root': { ...actionSX, position: 'relative' }
                       }
                     }}
-                  >
-                    <ListItem
-                      component={ListItemButton}
-                      divider
-                      selected={read > 0}
-                      secondaryAction={
-                        <Typography variant="caption" noWrap>
-                          3:00 AM
-                        </Typography>
-                      }
-                    >
-                      <ListItemAvatar>
-                        <Avatar sx={{ color: 'success.main', bgcolor: 'success.lighter' }}>
-                          <GiftOutlined />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography variant="h6">
-                            It&apos;s{' '}
-                            <Typography component="span" variant="subtitle1">
-                              Cristina danny&apos;s
-                            </Typography>{' '}
-                            birthday today.
-                          </Typography>
-                        }
-                        secondary="2 min ago"
-                      />
-                    </ListItem>
-                    <ListItem
-                      component={ListItemButton}
-                      divider
-                      secondaryAction={
-                        <Typography variant="caption" noWrap>
-                          6:00 AM
-                        </Typography>
-                      }
-                    >
-                      <ListItemAvatar>
-                        <Avatar sx={{ color: 'primary.main', bgcolor: 'primary.lighter' }}>
-                          <MessageOutlined />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography variant="h6">
-                            <Typography component="span" variant="subtitle1">
-                              Aida Burg
-                            </Typography>{' '}
-                            commented your post.
-                          </Typography>
-                        }
-                        secondary="5 August"
-                      />
-                    </ListItem>
-                    <ListItem
-                      component={ListItemButton}
-                      divider
-                      selected={read > 0}
-                      secondaryAction={
-                        <Typography variant="caption" noWrap>
-                          2:45 PM
-                        </Typography>
-                      }
-                    >
-                      <ListItemAvatar>
-                        <Avatar sx={{ color: 'error.main', bgcolor: 'error.lighter' }}>
-                          <SettingOutlined />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography variant="h6">
-                            Your Profile is Complete &nbsp;
-                            <Typography component="span" variant="subtitle1">
-                              60%
-                            </Typography>{' '}
-                          </Typography>
-                        }
-                        secondary="7 hours ago"
-                      />
-                    </ListItem>
-                    <ListItem
-                      component={ListItemButton}
-                      divider
-                      secondaryAction={
-                        <Typography variant="caption" noWrap>
-                          9:10 PM
-                        </Typography>
-                      }
-                    >
-                      <ListItemAvatar>
-                        <Avatar sx={{ color: 'primary.main', bgcolor: 'primary.lighter' }}>C</Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography variant="h6">
-                            <Typography component="span" variant="subtitle1">
-                              Cristina Danny
-                            </Typography>{' '}
-                            invited to join{' '}
-                            <Typography component="span" variant="subtitle1">
-                              Meeting.
-                            </Typography>
-                          </Typography>
-                        }
-                        secondary="Daily scrum meeting time"
-                      />
-                    </ListItem>
+                  ><ListItem
+  component={ListItemButton}
+  divider
+  selected={read > 0}
+  secondaryAction={
+    <Typography variant="caption" noWrap>
+      Just Now
+    </Typography>
+  }
+>
+  <ListItemAvatar>
+    <Avatar
+      sx={{
+        color: 'success.main',
+        bgcolor: 'success.lighter'
+      }}
+    >
+      <CheckCircleOutlined />
+    </Avatar>
+  </ListItemAvatar>
+
+  <ListItemText
+    primary={
+      <Typography variant="h6">
+        Your onboarding has been completed successfully.
+      </Typography>
+    }
+    secondary="Welcome to the platform"
+  />
+</ListItem>
                     <ListItemButton sx={{ textAlign: 'center', py: `${12}px !important` }}>
                       <ListItemText
                         primary={

@@ -19,58 +19,58 @@ const transactionReport = {
       id: 'all-transaction-report',
       title: 'All Transaction Report',
       type: 'item',
-      url: '/transaction-report/all',
+      url: '/transaction-report/all-report',
       icon: FileTextOutlined
     },
     {
-      id: 't360-pay-report',
-      title: 'T360 Pay Report',
+      id: 'payout-report',
+      title: 'Payout Report',
       type: 'item',
-      url: '/transaction-report/t360-pay',
+      url: '/transaction-report/payout-report',
       icon: WalletOutlined
     },
+    // {
+    //   id: 'recharge-report',
+    //   title: 'Recharge Report',
+    //   type: 'item',
+    //   url: '/transaction-report/recharge',
+    //   icon: MobileOutlined
+    // },
+    // {
+    //   id: 'credit-card-report',
+    //   title: 'Credit Card Report',
+    //   type: 'item',
+    //   url: '/transaction-report/credit-card',
+    //   icon: CreditCardOutlined
+    // },
     {
-      id: 'recharge-report',
-      title: 'Recharge Report',
+      id: 'creditcard-bill-report',
+      title: 'Creditcard Bill Payment Report',
       type: 'item',
-      url: '/transaction-report/recharge',
-      icon: MobileOutlined
-    },
-    {
-      id: 'credit-card-report',
-      title: 'Credit Card Report',
-      type: 'item',
-      url: '/transaction-report/credit-card',
-      icon: CreditCardOutlined
-    },
-    {
-      id: 'bbps-report',
-      title: 'BBPS Report',
-      type: 'item',
-      url: '/transaction-report/bbps',
+      url: '/transaction-report/creditcard-bill-report',
       icon: FileTextOutlined
     },
     {
-      id: 'add-money-report',
-      title: 'Add Money Report',
+      id: 'payment-gateway-report',
+      title: 'Payment Gateway Report',
       type: 'item',
-      url: '/transaction-report/add-money',
+      url: '/transaction-report/payment-gateway-report',
       icon: DollarOutlined
     },
-    {
-      id: 'upi-payout-report',
-      title: 'UPI Payout Report',
-      type: 'item',
-      url: '/transaction-report/upi-payout',
-      icon: WalletOutlined
-    },
-    {
-      id: 'qr-collection-report',
-      title: 'QR Collection Report',
-      type: 'item',
-      url: '/transaction-report/qr-collection',
-      icon: QrcodeOutlined
-    },
+    // {
+    //   id: 'upi-payout-report',
+    //   title: 'UPI Payout Report',
+    //   type: 'item',
+    //   url: '/transaction-report/upi-payout',
+    //   icon: WalletOutlined
+    // },
+    // {
+    //   id: 'qr-collection-report',
+    //   title: 'QR Collection Report',
+    //   type: 'item',
+    //   url: '/transaction-report/qr-collection',
+    //   icon: QrcodeOutlined
+    // },
     {
       id: 'commission-report',
       title: 'Commission Report',

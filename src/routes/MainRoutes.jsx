@@ -14,6 +14,7 @@ import InvoicePage from '../pages/InvoicePage';
 import BBPSPage from '../pages/services/BBPSPage';
 import FetchBBPSBillPage from '../pages/services/FetchBBPSBillPage';
 import PayoutPage from '../pages/services/PayoutPage';
+import RupayUpiLoadWalletPage from '../pages/services/RupayUpiLoadWalletPage';
 // import SchemeManager from '../pages/master/SchemeManager';
 
 // dashboard
@@ -108,12 +109,12 @@ const MainRoutes = {
     { path: 'fund/all-fund-report', element: <AllFundReport /> },
 
     // transaction report
-    { path: 'transaction-report/all', element: <AllTransactionReport /> },
-    { path: 'transaction-report/t360-pay', element: <T360PayReport /> },
+    { path: 'transaction-report/all-report', element: <AllTransactionReport /> },
+    { path: 'transaction-report/payout-report', element: <T360PayReport /> },
     { path: 'transaction-report/recharge', element: <RechargeReport /> },
     { path: 'transaction-report/credit-card', element: <CreditCardReport /> },
-    { path: 'transaction-report/bbps', element: <BBPSReport /> },
-    { path: 'transaction-report/add-money', element: <AddMoneyReport /> },
+    { path: 'transaction-report/creditcard-bill-report', element: <BBPSReport /> },
+    { path: 'transaction-report/payment-gateway-report', element: <AddMoneyReport /> },
     { path: 'transaction-report/upi-payout', element: <UPIPayoutReport /> },
     { path: 'transaction-report/qr-collection', element: <QRCollectionReport /> },
     { path: 'transaction-report/commission', element: <CommissionReport /> },
@@ -145,7 +146,9 @@ const MainRoutes = {
     { path: 'services/bbps', element: <BBPSPage /> },
     { path: 'services/bbps/c15', element: <FetchBBPSBillPage /> },
 
-    { path: 'services/payout', element: <PayoutPage /> }
+    { path: 'services/payout', element: <PayoutPage /> },
+    { path: 'services/rupay-upi', element: <RupayUpiLoadWalletPage /> }
+
     // { path: 'services/pos-money-request', element: <PosMoneyRequest /> },
   ]
 };

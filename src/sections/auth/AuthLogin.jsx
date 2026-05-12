@@ -132,7 +132,6 @@ const navigate = useNavigate();
       initialValues={{
         mobile: '',
         password: '',
-        submit: null
       }}
       validationSchema={Yup.object({
         mobile: Yup.string()

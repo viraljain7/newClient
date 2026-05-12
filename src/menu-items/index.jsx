@@ -6,13 +6,12 @@ import member from './member';
 import funds from './funds';
 import txnReport from './txnReport';
 import accStmt from './accStmt';
-import rolesNpermission from './rolesNpermission';
 import services from './services';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [dashboard,master,member, funds,services,txnReport,accStmt,rolesNpermission]
+  items: [dashboard,master,member, funds,services,txnReport,accStmt]
 };
 
 export default menuItems;

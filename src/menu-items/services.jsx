@@ -5,6 +5,7 @@ import {
   SendOutlined,
   ShopOutlined
 } from '@ant-design/icons';
+import QrCode2Icon from '@mui/icons-material/QrCode2';
 
 const Services = {
   id: 'services',
@@ -14,14 +15,14 @@ const Services = {
   children: [
     {
       id: 'add-money',
-      title: 'Add Money',
+      title: 'Payment Gateway',
       type: 'item',
       url: '/services/add-money',        // ← fixed
       icon: WalletOutlined
     },
     {
       id: 'bbps',
-      title: 'BBPS',
+      title: 'Credit Card Bill Payment',
       type: 'item',
       url: '/services/bbps',             // ← fixed
       icon: ThunderboltOutlined
@@ -32,6 +33,14 @@ const Services = {
       type: 'item',
       url: '/services/payout',           // ← fixed
       icon: SendOutlined
+    },
+      {
+      id: 'rupay-upi',
+      title: 'RupayUpi',
+      type: 'item',
+      url: '/services/rupay-upi',           // ← fixed
+      icon: QrCode2Icon
+
     }
   ]
 };

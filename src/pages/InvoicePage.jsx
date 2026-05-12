@@ -85,9 +85,9 @@ function InvoicePage() {
                 <CardContent>
                   <Typography fontWeight={600}>AGENT DETAILS</Typography>
                   <hr />
-                  <Typography fontWeight={600}>VD Champions</Typography>
-                  <Typography fontWeight={600}>Address: T21, Pathanwadi Rd, Kurar Village, Malad East, Mumbai, Maharashtra</Typography>
-                  <Typography fontWeight={600}>Mobile: 9001290012</Typography>
+                  <Typography fontWeight={600}>AquaPay</Typography>
+                  {/* <Typography fontWeight={600}>Address: T21, Pathanwadi Rd, Kurar Village, Malad East, Mumbai, Maharashtra</Typography> */}
+                  {/* <Typography fontWeight={600}>Mobile: 9001290012</Typography> */}
                 </CardContent>
               </Card>
             </Grid>
