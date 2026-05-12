@@ -11,27 +11,106 @@ export default function AuthBackground() {
     <Box
       sx={{
         position: 'absolute',
-        filter: 'blur(18px)',
+        inset: 0,
         zIndex: -1,
-        bottom: 0,
-        transform: 'inherit'
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0.55,
+        filter: 'blur(5px)'
       }}
     >
-      <svg width="100%" height="calc(100vh - 175px)" viewBox="0 0 405 809" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        width="1200"
+        height="400"
+        viewBox="0 0 1600 500"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="blueGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor={theme.vars.palette.primary.dark} />
+            <stop offset="100%" stopColor={theme.vars.palette.primary.light} />
+          </linearGradient>
+        </defs>
+
+        {/* AquaPay Logo Icon */}
         <path
-          d="M-358.39 358.707L-293.914 294.23L-293.846 294.163H-172.545L-220.81 342.428L-233.272 354.889L-282.697 404.314L-276.575 410.453L0.316589 687.328L283.33 404.314L233.888 354.889L230.407 351.391L173.178 294.163H294.48L294.547 294.23L345.082 344.765L404.631 404.314L0.316589 808.629L-403.998 404.314L-358.39 358.707ZM0.316589 0L233.938 233.622H112.637L0.316589 121.301L-112.004 233.622H-233.305L0.316589 0Z"
-          fill={theme.vars.palette.primary.light}
+          d="
+            M90 320
+            C70 200, 130 120, 190 100
+            C250 80, 310 120, 340 180
+            L290 220
+            C260 170, 220 145, 185 160
+            C145 178, 130 230, 145 285
+            C160 340, 210 370, 280 350
+            C315 340, 345 325, 370 300
+            C350 355, 305 400, 235 420
+            C145 445, 80 400, 90 320Z
+          "
+          fill="url(#blueGradient)"
         />
+
         <path
-          d="M-516.39 358.707L-451.914 294.23L-451.846 294.163H-330.545L-378.81 342.428L-391.272 354.889L-440.697 404.314L-434.575 410.453L-157.683 687.328L125.33 404.314L75.8879 354.889L72.4068 351.391L15.1785 294.163H136.48L136.547 294.23L187.082 344.765L246.631 404.314L-157.683 808.629L-561.998 404.314L-516.39 358.707ZM-157.683 0L75.9383 233.622H-45.3627L-157.683 121.301L-270.004 233.622H-391.305L-157.683 0Z"
-          fill={theme.vars.palette.success.light}
-          opacity="0.6"
+          d="
+            M140 260
+            C220 220, 300 230, 370 285
+            C315 265, 255 260, 185 285
+            C165 292, 145 278, 140 260Z
+          "
+          fill={theme.vars.palette.primary.main}
         />
-        <path
-          d="M-647.386 358.707L-582.91 294.23L-582.842 294.163H-461.541L-509.806 342.428L-522.268 354.889L-571.693 404.314L-565.571 410.453L-288.68 687.328L-5.66624 404.314L-55.1082 354.889L-58.5893 351.391L-115.818 294.163H5.48342L5.5507 294.23L56.0858 344.765L115.635 404.314L-288.68 808.629L-692.994 404.314L-647.386 358.707ZM-288.68 0L-55.0578 233.622H-176.359L-288.68 121.301L-401 233.622H-522.301L-288.68 0Z"
-          fill={theme.vars.palette.error.lighter}
-          opacity="1"
-        />
+
+        {/* AQUAPAY Text */}
+        <text
+          x="450"
+          y="240"
+          fontFamily="Arial, Helvetica, sans-serif"
+          fontSize="150"
+          letterSpacing="12"
+          fill="url(#blueGradient)"
+          fontWeight="700"
+        >
+          AQUAPAY
+        </text>
+
+        {/* Tagline */}
+        <text
+          x="570"
+          y="325"
+          fontFamily="Arial, Helvetica, sans-serif"
+          fontSize="36"
+          letterSpacing="8"
+          fill={theme.vars.palette.text.primary}
+          fontWeight="600"
+        >
+          SMART PAYMENTS. SEAMLESS FUTURE.
+        </text>
+
+        {/* Bottom Features */}
+        <g
+          fontFamily="Arial, Helvetica, sans-serif"
+          fontSize="28"
+          fill={theme.vars.palette.text.secondary}
+          fontWeight="600"
+        >
+          <text x="380" y="410">
+            ▣ ACCEPT PAYMENTS
+          </text>
+
+          <text x="700" y="410">
+            ↕ SEND &amp; RECEIVE
+          </text>
+
+          <text x="1030" y="410">
+            ▤ PAY BILLS
+          </text>
+
+          <text x="1260" y="410">
+            ◫ ALL PAYMENT SOLUTIONS
+          </text>
+        </g>
       </svg>
     </Box>
   );
