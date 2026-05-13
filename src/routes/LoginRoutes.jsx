@@ -2,10 +2,10 @@ import { lazy } from 'react';
 
 // project imports
 import Loadable from 'components/Loadable';
+import { AuthRedirect } from './ProtectedRoute';
 
 // jwt auth
 const LoginPage = Loadable(lazy(() => import('pages/auth/Login')));
-const RegisterPage = Loadable(lazy(() => import('pages/auth/Register')));
 
 // ==============================|| AUTH ROUTING ||============================== //
 
@@ -17,11 +17,11 @@ const LoginRoutes = {
       children: [
         {
           path: '/login',
-          element: <LoginPage />
-        },
-        {
-          path: '/register',
-          element: <RegisterPage />
+          element: (
+            <AuthRedirect>
+              <LoginPage />
+            </AuthRedirect>
+          )
         }
       ]
     }

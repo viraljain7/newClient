@@ -15,7 +15,7 @@ import BBPSPage from '../pages/services/BBPSPage';
 import FetchBBPSBillPage from '../pages/services/FetchBBPSBillPage';
 import PayoutPage from '../pages/services/PayoutPage';
 import RupayUpiLoadWalletPage from '../pages/services/RupayUpiLoadWalletPage';
-// import SchemeManager from '../pages/master/SchemeManager';
+import { ProtectedRoute } from './ProtectedRoute';
 
 // dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -41,9 +41,9 @@ const Retailer = Loadable(lazy(() => import('pages/member/Retailer')));
 
 // fund
 const TransferReturn = Loadable(lazy(() => import('pages/fund/TransferReturn')));
+const TransferReturnReport = Loadable(lazy(() => import('pages/fund/TransferReturnReport')));
 const FundRequest = Loadable(lazy(() => import('pages/fund/Request')));
 const PosPendingRequest = Loadable(lazy(() => import('pages/fund/PosPendingRequest')));
-const TransferReturnReport = Loadable(lazy(() => import('pages/fund/TransferReturnReport')));
 const AllFundReport = Loadable(lazy(() => import('pages/fund/AllFundReport')));
 
 // transaction report
@@ -75,81 +75,412 @@ const MainRoutes = {
   children: [
     {
       path: '/',
-      element: <DashboardDefault />
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <DashboardDefault />
+        </ProtectedRoute>
+      )
     },
     {
       path: 'dashboard/default',
-      element: <DashboardDefault />
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <DashboardDefault />
+        </ProtectedRoute>
+      )
     },
 
     // master
-    { path: 'master/scheme-manager', element: <SchemeManager /> },
-    { path: 'master/api-manager', element: <ApiManager /> },
-    { path: 'master/sms-master', element: <SmsMaster /> },
-    { path: 'master/bank-account', element: <BankAccount /> },
-    { path: 'master/provider-master', element: <ProviderMaster /> },
-    { path: 'master/portal-master', element: <PortalMaster /> },
-    { path: 'master/service-manager', element: <ServiceManager /> },
-    { path: 'master/slider-master', element: <SliderMaster /> },
+    {
+      path: 'master/scheme-manager',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <SchemeManager />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'master/api-manager',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <ApiManager />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'master/sms-master',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <SmsMaster />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'master/bank-account',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <BankAccount />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'master/provider-master',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <ProviderMaster />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'master/portal-master',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <PortalMaster />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'master/service-manager',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <ServiceManager />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'master/slider-master',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <SliderMaster />
+        </ProtectedRoute>
+      )
+    },
 
     // member
-    { path: 'member/sub-admin', element: <SubAdmin /> },
-    { path: 'member/nsm-zsh', element: <NsmZsh /> },
-    { path: 'member/sh', element: <Sh /> },
-    { path: 'member/cnf-asm', element: <CnfAsm /> },
-    { path: 'member/master-distributor', element: <MasterDistributor /> },
-    { path: 'member/distributor', element: <Distributor /> },
-    { path: 'member/retailer', element: <Retailer /> },
+    {
+      path: 'member/sub-admin',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <SubAdmin />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'member/nsm-zsh',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
+          <NsmZsh />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'member/sh',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM']}>
+          <Sh />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'member/cnf-asm',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'SH']}>
+          <CnfAsm />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'member/master-distributor',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH']}>
+          <MasterDistributor />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'member/distributor',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor']}>
+          <Distributor />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'member/retailer',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor']}>
+          <Retailer />
+        </ProtectedRoute>
+      )
+    },
 
     // fund
-    { path: 'fund/transfer-return', element: <TransferReturn /> },
-    { path: 'fund/request', element: <FundRequest /> },
-    { path: 'fund/pos-pending-request', element: <PosPendingRequest /> },
-    { path: 'fund/transfer-return-report', element: <TransferReturnReport /> },
-    { path: 'fund/all-fund-report', element: <AllFundReport /> },
+    {
+      path: 'fund/transfer-return',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <TransferReturn />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'fund/transfer-return-report',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <TransferReturnReport />
+        </ProtectedRoute>
+      )
+    },
+
+    // { path: 'fund/request', element: <FundRequest /> },
+    // { path: 'fund/pos-pending-request', element: <PosPendingRequest /> },
+    // { path: 'fund/all-fund-report', element: <AllFundReport /> },
 
     // transaction report
-    { path: 'transaction-report/all-report', element: <AllTransactionReport /> },
-    { path: 'transaction-report/payout-report', element: <T360PayReport /> },
-    { path: 'transaction-report/recharge', element: <RechargeReport /> },
-    { path: 'transaction-report/credit-card', element: <CreditCardReport /> },
-    { path: 'transaction-report/creditcard-bill-report', element: <BBPSReport /> },
-    { path: 'transaction-report/payment-gateway-report', element: <AddMoneyReport /> },
-    { path: 'transaction-report/upi-payout', element: <UPIPayoutReport /> },
-    { path: 'transaction-report/qr-collection', element: <QRCollectionReport /> },
-    { path: 'transaction-report/commission', element: <CommissionReport /> },
-    { path: 'transaction-report/pos', element: <POSReport /> },
-    { path: 'transaction-report/summary', element: <SummaryReport /> },
-    { path: 'transaction-report/userwise-business', element: <UserwiseBusinessReport /> },
-    { path: 'transaction-report/commission-distribution', element: <CommissionDistributionReport /> },
+    {
+      path: 'transaction-report/all-report',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <AllTransactionReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/payout-report',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <T360PayReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/recharge',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <RechargeReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/credit-card',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <CreditCardReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/creditcard-bill-report',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <BBPSReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/payment-gateway-report',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <AddMoneyReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/upi-payout',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <UPIPayoutReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/qr-collection',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <QRCollectionReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/commission',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <CommissionReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/pos',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <POSReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/summary',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <SummaryReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/userwise-business',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <UserwiseBusinessReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/commission-distribution',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
+          <CommissionDistributionReport />
+        </ProtectedRoute>
+      )
+    },
 
     // account statement
-    { path: 'account-statement/main-ledger', element: <MainLedger /> },
-    { path: 'account-statement/vendor-logs', element: <VendorLogs /> },
+    {
+      path: 'account-statement/main-ledger',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <MainLedger />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'account-statement/vendor-logs',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
+          <VendorLogs />
+        </ProtectedRoute>
+      )
+    },
 
     // roles & permission
     { path: 'roles-permission/permission', element: <Permission /> },
     { path: 'roles-permission/default-permission', element: <DefaultPermission /> },
 
     // service
-    { path: 'services/add-money', element: <AddMoneyPage /> },
-    { path: 'services/add-money/payment1', element: <PG1Page /> },
-    { path: 'services/add-money/payment2', element: <PG2Page /> },
-    { path: 'services/add-money/payment3', element: <PG3Page /> },
-    { path: 'services/add-money/payment4', element: <PG4Page /> },
-    { path: 'services/add-money/payment5', element: <PG5Page /> },
-    { path: 'services/add-money/payment6', element: <PG6Page /> },
+    {
+      path: 'services/add-money',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <AddMoneyPage />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'services/add-money/payment1',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <PG1Page />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'services/add-money/payment2',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <PG2Page />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'services/add-money/payment3',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <PG3Page />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'services/add-money/payment4',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <PG4Page />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'services/add-money/payment5',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <PG5Page />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'services/add-money/payment6',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <PG6Page />
+        </ProtectedRoute>
+      )
+    },
 
-    { path: 'invoice/:txnid', element: <InvoicePage /> },
-    { path: 'invoice/:txnid/:orderid', element: <InvoicePage /> },
+    {
+      path: 'invoice/:txnid',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <InvoicePage />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'invoice/:txnid/:orderid',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <InvoicePage />
+        </ProtectedRoute>
+      )
+    },
 
-    { path: 'services/bbps', element: <BBPSPage /> },
-    { path: 'services/bbps/c15', element: <FetchBBPSBillPage /> },
+    {
+      path: 'services/bbps',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <BBPSPage />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'services/bbps/c15',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <FetchBBPSBillPage />
+        </ProtectedRoute>
+      )
+    },
 
-    { path: 'services/payout', element: <PayoutPage /> },
-    { path: 'services/rupay-upi', element: <RupayUpiLoadWalletPage /> }
+    {
+      path: 'services/payout',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <PayoutPage />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'services/rupay-upi',
+      element: (
+        <ProtectedRoute roles={['Retailer']}>
+          <RupayUpiLoadWalletPage />
+        </ProtectedRoute>
+      )
+    },
 
-    // { path: 'services/pos-money-request', element: <PosMoneyRequest /> },
+    {
+      path: '/*',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Retailer']}>
+          <DashboardDefault />
+        </ProtectedRoute>
+      )
+    }
   ]
 };
 
