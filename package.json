@@ -8,7 +8,7 @@
     "url": "https://codedthemes.com/"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
@@ -30,6 +30,8 @@
     "@mui/system": "7.3.8",
     "@mui/x-charts": "8.27.0",
     "@mui/x-data-grid": "^9.0.4",
+    "@react-pdf-kit/viewer": "^2.5.0",
+    "@react-pdf/renderer": "^4.5.1",
     "@reduxjs/toolkit": "^2.11.2",
     "@vitejs/plugin-react": "5.1.4",
     "axios": "^1.15.2",

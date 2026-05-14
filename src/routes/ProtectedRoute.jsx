@@ -3,6 +3,8 @@ import { Navigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import api from '../shared/BaseApi';
+import { setUserProfile } from '../store/slices/userSlice';
+import { useDispatch } from 'react-redux';
 
 const ProtectedRoute = ({ children, roles = [] }) => {
   const token = localStorage.getItem('app-token');
@@ -14,6 +16,7 @@ const ProtectedRoute = ({ children, roles = [] }) => {
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -28,6 +31,8 @@ const ProtectedRoute = ({ children, roles = [] }) => {
         });
 
         setUser(res?.data?.data);
+        dispatch(setUserProfile(res?.data?.data)); 
+
       } catch (error) {
         console.error(error);
       } finally {

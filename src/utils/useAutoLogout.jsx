@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const INACTIVITY_LIMIT = 10 * 60 * 1000; // 10 min
+const INACTIVITY_LIMIT = 30 * 60 * 1000; // 10 min
 
 export default function useAutoLogout(logoutFn) {
   useEffect(() => {

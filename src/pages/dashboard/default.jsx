@@ -45,6 +45,7 @@ import { useDispatch } from "react-redux";
 
 import api from '../../shared/BaseApi';
 import { setUserProfile,setUserActiveService } from '../../store/slices/userSlice';
+import MaxWidthDialog from '../../myapp/kyc';
 
   // import api from "./baseApi";
 
@@ -131,7 +132,7 @@ const fetchActiveService = async () => {
 
   return (
     <Grid container rowSpacing={2} columnSpacing={2}>
-
+<MaxWidthDialog/>
       {/* HEADER */}
       <Grid size={12}>
         <Typography variant="h5" fontWeight={700}>
