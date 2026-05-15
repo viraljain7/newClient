@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useMember } from './useMember';
 // import { createAgent } from './memberApi';
 
-function AddAgentDrawer({ open, onClose, agentCode, agentType, states, setLoading }) {
+function AddAgentDrawer({ open, onClose, agentCode, agentType, states, setLoading, onSuccess }) {
   const [form, setForm] = useState({
     name: '',
     company: '',
@@ -16,7 +16,7 @@ function AddAgentDrawer({ open, onClose, agentCode, agentType, states, setLoadin
     role_id: ''
   });
 
-  const { refetch, addAgent } = useMember(agentType);
+  const { addAgent } = useMember(agentType);
 
   useEffect(() => {
     if (agentCode) {
@@ -40,9 +40,10 @@ function AddAgentDrawer({ open, onClose, agentCode, agentType, states, setLoadin
           email: '',
           mobile: '',
           state: '',
-          city: ''
+          city: '',
+          role_id: agentCode
         });
-        refetch();
+        onSuccess && onSuccess();
         onClose();
       } else {
         toast.error(res?.message);

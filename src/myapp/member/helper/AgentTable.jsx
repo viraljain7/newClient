@@ -155,7 +155,6 @@ export default function AgentTable({ agentType, agentCode }) {
           }}
           sx={{ width: 'auto' }}
         />
-
         <BlueButton sx={{ width: 'auto' }} label="+  Add New Agent" onClick={() => setOpenDrawer(true)} />
       </Box>
 
@@ -260,6 +259,10 @@ export default function AgentTable({ agentType, agentCode }) {
         agentType={agentType}
         addAgent={addAgent} // ✅ passed from this hook instance
         setLoading={setBackdropLoading}
+        onSuccess={() => {
+          refetch(); // ✅ Refetch after successful addition
+          setBackdropLoading(false); // ✅ Stop backdrop loading
+        }}
       />
     </Paper>
   );

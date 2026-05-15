@@ -9,18 +9,20 @@ export const useMember = (type) => {
   const [creating, setCreating] = React.useState(false);
 
   // 🔹 Fetch Members
-  const getMembers = async (type) => {
-    try {
-      setLoading(true);
-      const res = await fetchMember(type);
-      setData(res?.data || []);
-      setTotal(res?.count || 0);
-    } catch (e) {
-      console.error("Member Fetch Error:", e);
-    } finally {
-      setLoading(false);
-    }
-  };
+const getMembers = React.useCallback(async () => {
+  try {
+    setLoading(true);
+
+    const res = await fetchMember(type);
+
+    setData(res?.data || []);
+    setTotal(res?.count || 0);
+  } catch (e) {
+    console.error("Member Fetch Error:", e);
+  } finally {
+    setLoading(false);
+  }
+}, [type]);
 
   // 🔹 Fetch States
   const getStates = async () => {
@@ -49,11 +51,13 @@ export const useMember = (type) => {
       setCreating(false);
     }
   };
+React.useEffect(() => {
+  if (type) {
+    getMembers();
+  }
 
-  React.useEffect(() => {
-    if (type) getMembers(type);
-    getStates();
-  }, [type]);
+  getStates();
+}, [getMembers]);
 
   return {
     data,
@@ -61,7 +65,7 @@ export const useMember = (type) => {
     states,
     loading,
     creating,
-    refetch: getMembers,
+    refetch:  getMembers,
     addAgent
   };
 };
