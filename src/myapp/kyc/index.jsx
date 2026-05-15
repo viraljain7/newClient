@@ -23,6 +23,7 @@ import BankDetails from './BankDetails';
 import VideoKyc from './VideoKyc';
 import Agreement from './Agreement';
 import Completed from './Completed';
+import Rejected from './Rejected';
 import { useSelector } from 'react-redux';
 
 // ==============================|| STEPS ||============================== //
@@ -62,9 +63,9 @@ const steps = [
 
 export default function VerticalKycDialogStepper() {
   const [open, setOpen] = React.useState(true);
-  const [activeStep, setActiveStep] = React.useState(4);
-
+  
   const user = useSelector((state) => state?.user?.profile);
+  const [activeStep, setActiveStep] = React.useState(user.progress || 0);
 
   // Disable backdrop + esc close
   const handleClose = (_, reason) => {

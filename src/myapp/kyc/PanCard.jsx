@@ -1,42 +1,43 @@
 import React, { useState } from 'react';
 
 import { Box, Typography, TextField, Button, Grid } from '@mui/material';
-import { step3PanVerify, updateProfile } from './helper/kycApi';
+// import { step3PanVerify, updateProfile } from './helper/kycApi';
 import toast from 'react-hot-toast';
+import { useStep3 } from './helper/useStep3';
+import { updateProfile } from './helper/kycApi';
 
-function PanCard({ handleNext,user }) {
+function PanCard({ handleNext, user }) {
   const [panNumber, setPanNumber] = useState('');
-
+  const { verifyPan } = useStep3();
   // Verify PAN
   const handleVerifyPan = async () => {
-    console.log({
-      panNumber
-    });
-    const response = await step3PanVerify({
+  
+    const response = await verifyPan({
       panNumber: panNumber
     });
-console.log(response)
-    if (response?.statuscode !== 'TXN') {
+
+    if (response?.success) {
+      toast.success(response?.message || 'PAN card verified successfully');
+    } else {
       toast.error(response?.message || 'Failed to verify PAN card');
       return;
-    } else {
-      toast.success(response?.message || 'PAN card verified successfully');
     }
 
     // API CALL HERE
 
+    let payload = {
+      progress: 3,
+      user_id: user?.id,
+      pancard: panNumber
+    };
 
-        let payload = {
-          progress: 3,
-          user_id: user?.id
-        };
-        const res = updateProfile(payload);
-        if (res?.statuscode === 'TXN') {
-          toast.success(res?.message || 'Profile updated successfully');
-        } else {
-          toast.error(res?.message || 'Failed to update profile');
-          return;
-        }
+    const res = await updateProfile(payload);
+    if (res?.statuscode === 'TXN') {
+      toast.success(res?.message || 'Profile updated successfully');
+    } else {
+      toast.error(res?.message || 'Failed to update profile');
+      return;
+    }
 
     handleNext();
   };

@@ -1,0 +1,109 @@
+import { Drawer, Box, Card, CardContent, Typography, IconButton, TextField } from '@mui/material';
+
+import CloseIcon from '@mui/icons-material/Close';
+
+import { useEffect, useMemo, useState } from 'react';
+
+import useSchemeManager from './useSchmeManager';
+
+import { OutlineButton } from '../../../components/CommonComponent';
+import { productName } from '../../../utils/productName';
+
+function SchemeProducts({ open, onClose }) {
+  const { products = [], getSchemeProducts } = useSchemeManager();
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    if (open) {
+      getSchemeProducts();
+    }
+  }, [open]);
+
+  const filteredProducts = useMemo(() => {
+    return products.filter((item) => (item?.name || item)?.toLowerCase()?.includes(search.toLowerCase()));
+  }, [products, search]);
+
+  return (
+    <Drawer anchor="right" open={open} onClose={onClose}>
+      <Box
+        sx={{
+          width: {
+            xs: '100vw',
+            sm: 500,
+            md: 700,
+            lg: 800
+          },
+          height: '100%'
+        }}
+      >
+        <Card
+          sx={{
+            height: '100%',
+            borderRadius: 0
+          }}
+        >
+          <CardContent>
+            {/* HEADER */}
+
+            <Box position="relative" mb={3}>
+              <Typography fontWeight={700} fontSize={18}>
+                Products
+              </Typography>
+
+              <TextField
+                placeholder="Search Products"
+                size="small"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                sx={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: '100%', maxWidth: 300 }}
+              />
+
+              <IconButton
+                onClick={onClose}
+                sx={{
+                  position: 'absolute',
+                  right: 0,
+                  top: '50%',
+                  transform: 'translateY(-50%)'
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
+
+            {/* PRODUCTS */}
+
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, 1fr)',
+                  md: 'repeat(3, 1fr)',
+                  lg: 'repeat(4, 1fr)'
+                },
+                gap: 2,
+                width: '100%'
+              }}
+            >
+              {filteredProducts.map((item) => (
+                <OutlineButton
+                  key={item}
+                  size="large"
+                  label={item}
+                  sx={{
+                    width: '100%',
+                    height: 45,
+                    fontWeight: 600
+                  }}
+                  />
+              ))}
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    </Drawer>
+  );
+}
+
+export default SchemeProducts;

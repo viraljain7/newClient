@@ -11,6 +11,10 @@ import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import FaceIcon from '@mui/icons-material/Face';
 import MicIcon from '@mui/icons-material/Mic';
 import BadgeIcon from '@mui/icons-material/Badge';
+import { updateDocs, updateProfile } from './helper/kycApi';
+import toast from 'react-hot-toast';
+import { startLoading, stopLoading } from '../../store/slices/loaderSlice';
+import { useDispatch } from 'react-redux';
 
 // ─── STEP CONSTANTS ───────────────────────────────────────────
 const STEP_CONSENT = 'consent';
@@ -18,7 +22,8 @@ const STEP_RECORD = 'record';
 const STEP_UPLOAD = 'upload';
 const STEP_DONE = 'done';
 
-function VideoKyc({ handleNext }) {
+function VideoKyc({ handleNext, user }) {
+  const dispatch = useDispatch();
   // ── refs ──
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -193,6 +198,77 @@ function VideoKyc({ handleNext }) {
   const stepIndex = { [STEP_CONSENT]: 0, [STEP_RECORD]: 1, [STEP_UPLOAD]: 2, [STEP_DONE]: 3 };
   const progress = (stepIndex[step] / 3) * 100;
 
+  const base64ToFile = async (url, filename) => {
+    const res = await fetch(url);
+    const blob = await res.blob();
+
+    return new File([blob], filename, {
+      type: blob.type
+    });
+  };
+
+  const handleVideoProofUpload = async () => {
+    dispatch(startLoading());
+    stopRecording();
+    try {
+    
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // selfie
+      const selfieFile = await base64ToFile(capturedImage, 'merchant_selfie.png');
+
+      // shop image
+      const shopImageFile = await base64ToFile(shopImage, 'shop_image.png');
+
+      // video
+      const videoFile = await base64ToFile(recordedVideo, 'merchant_video.webm');
+
+      let payload = {
+        user_id: user?.id,
+        type: 'uploaddocs',
+
+        shop_image: shopImageFile,
+        merchant_video: videoFile,
+        merchant_selfie: selfieFile
+      };
+      const resp = await updateDocs(payload);
+
+      if (resp?.statuscode === 'TXN') {
+        toast.success(resp?.message || 'Profile updated successfully');
+
+        // move next step
+      } else {
+        toast.error(resp?.message || 'Failed to update profile');
+
+        return;
+      }
+
+      let payloadReq = {
+        user_id: user?.id,
+
+        progress: 5
+      };
+      const profRes = await updateProfile(payloadReq);
+
+      if (profRes?.statuscode === 'TXN') {
+        toast.success(profRes?.message || 'Profile updated successfully');
+
+        // move next step
+      } else {
+        toast.error(profRes?.message || 'Failed to update profile');
+
+        return;
+      }
+
+      handleNext();
+    } catch (error) {
+      console.log(error);
+      toast.error('Failed to upload video proof. Please try again.');
+    } finally {
+      dispatch(stopLoading());
+    }
+  };
   // ─────────────────────────────────────────
   // RENDER
   // ─────────────────────────────────────────
@@ -518,9 +594,7 @@ function VideoKyc({ handleNext }) {
               size="large"
               endIcon={<ArrowForwardIcon />}
               disabled={!shopImage}
-              onClick={() => {
-                handleNext();
-              }}
+              onClick={handleVideoProofUpload}
               sx={{ flex: 2 }}
             >
               Submit & Continue

@@ -33,7 +33,6 @@ export const useStep1 = () => {
 
         const response = await step1ContactDetails(form);
 
-        console.log(response);
 
         setContactDetailsState({
           loading: false,
@@ -74,7 +73,6 @@ export const useStep1 = () => {
       });
 
       const response = await step1Otp();
-      console.log(response);
 
       setOtpState({
         loading: false,
@@ -114,7 +112,6 @@ export const useStep1 = () => {
         });
 
         const response = await step1VerifyOtp(form);
-        console.log(response);
 
         setVerifyOtpState({
           loading: false,

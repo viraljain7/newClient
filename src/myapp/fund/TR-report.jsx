@@ -25,7 +25,6 @@ const TRreport = () => {
     refetch
   } = useFund();
 
-  console.log(refetch)
 
   const handleExport = () => {
     // implement later if needed

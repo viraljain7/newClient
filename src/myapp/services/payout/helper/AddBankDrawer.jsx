@@ -105,7 +105,6 @@ function AddBankDrawer({ open, onClose, payoutUser, setLoading, setPayoutUser })
                 value={bankList.find((b) => b.name === form.bank) || null}
                 onChange={(e, val) => {
                   setForm({ ...form, bank: val.name, ifsc: val.ifsc });
-                  console.log({ ...form, bank: val.name, ifsc: val.ifsc });
                 }}
                 renderInput={(params) => <TextField {...params} label="Select Bank" />}
               />

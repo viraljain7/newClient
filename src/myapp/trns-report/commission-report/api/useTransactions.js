@@ -46,7 +46,6 @@ export function useTransactions({
 
       const body = res.data;
 
-      // console.log("ss",body.data)
 
       // set table data
       setRows(body?.data || []);

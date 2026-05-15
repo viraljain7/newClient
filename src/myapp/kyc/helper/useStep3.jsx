@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { step3PanVerify } from './kycApi';
-import { startLoading, stopLoading } from '../../../store/slices/loaderSlice';
+import { startLoading,stopLoading } from '../../../store/slices/loaderSlice';
 
 // ==============================
 // INITIAL STATE
@@ -26,8 +26,10 @@ export const useStep3 = () => {
   // ==============================
   const verifyPan = useCallback(
     async (form) => {
+      dispatch(startLoading());
+
+
       try {
-        dispatch(startLoading());
 
         setPanVerifyState({
           loading: true,
@@ -36,7 +38,6 @@ export const useStep3 = () => {
         });
 
         const response = await step3PanVerify(form);
-        console.log(response);
 
         setPanVerifyState({
           loading: false,

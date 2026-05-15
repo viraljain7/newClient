@@ -31,7 +31,6 @@ const CommissionReport = () => {
   });
 
 
-  console.log({"s":rows})
 
 
   const handleExport = () => {

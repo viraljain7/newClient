@@ -3,7 +3,9 @@ import TransactionReport from '../../myapp/trns-report/payout'
 
 function PortalMaster() {
   return (
-    <TransactionReport/>
+    <>
+    PortalMaster
+    </>
   )
 }
 

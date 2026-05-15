@@ -16,6 +16,7 @@ import FetchBBPSBillPage from '../pages/services/FetchBBPSBillPage';
 import PayoutPage from '../pages/services/PayoutPage';
 import RupayUpiLoadWalletPage from '../pages/services/RupayUpiLoadWalletPage';
 import { ProtectedRoute } from './ProtectedRoute';
+import SetSchemePage from '../pages/master/SetSchemePage';
 
 // dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -94,15 +95,25 @@ const MainRoutes = {
     {
       path: 'master/scheme-manager',
       element: (
-        <ProtectedRoute roles={['Admin']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <SchemeManager />
+        </ProtectedRoute>
+      )
+    },
+
+
+    {
+      path: 'master/scheme-manager/:scheme_id',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
+          <SetSchemePage />
         </ProtectedRoute>
       )
     },
     {
       path: 'master/api-manager',
       element: (
-        <ProtectedRoute roles={['Admin']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <ApiManager />
         </ProtectedRoute>
       )
@@ -110,7 +121,7 @@ const MainRoutes = {
     {
       path: 'master/sms-master',
       element: (
-        <ProtectedRoute roles={['Admin']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <SmsMaster />
         </ProtectedRoute>
       )
@@ -118,7 +129,7 @@ const MainRoutes = {
     {
       path: 'master/bank-account',
       element: (
-        <ProtectedRoute roles={['Admin']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <BankAccount />
         </ProtectedRoute>
       )
@@ -126,7 +137,7 @@ const MainRoutes = {
     {
       path: 'master/provider-master',
       element: (
-        <ProtectedRoute roles={['Admin']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <ProviderMaster />
         </ProtectedRoute>
       )
@@ -134,7 +145,7 @@ const MainRoutes = {
     {
       path: 'master/portal-master',
       element: (
-        <ProtectedRoute roles={['Admin']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <PortalMaster />
         </ProtectedRoute>
       )
@@ -142,7 +153,7 @@ const MainRoutes = {
     {
       path: 'master/service-manager',
       element: (
-        <ProtectedRoute roles={['Admin']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <ServiceManager />
         </ProtectedRoute>
       )
@@ -150,7 +161,7 @@ const MainRoutes = {
     {
       path: 'master/slider-master',
       element: (
-        <ProtectedRoute roles={['Admin']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <SliderMaster />
         </ProtectedRoute>
       )

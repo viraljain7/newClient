@@ -95,7 +95,6 @@ export default function Profile() {
 
         navigate('/login');
       }
-      console.log(res);
     } catch (err) {
       // even if API fails, still logout locally
       toast.error('Session expired');

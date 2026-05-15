@@ -15,7 +15,6 @@ export const mobileNumberKyc = async (mobile, aadhaar_name, dob, city, aadhaar_n
  
 
  const [yy,dd,mm]=dob.split("-")
-//  console.log("mm/dd/yy")
     const formData = new FormData();
 
   formData.append('type', 'addpayout');

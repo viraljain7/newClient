@@ -62,7 +62,6 @@ function TransferReturnDrawer({ open, onClose, data, onSuccess ,setLoading }) {
         txn_id: newTxnId
       };
 
-      console.log(payload);
       const res = await sendTransferReturn(payload);
 
       if (res.statuscode === 'TXN') {

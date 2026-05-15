@@ -39,16 +39,13 @@ import avatar1 from 'assets/images/users/avatar-1.png';
 import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
-import { useDispatch } from "react-redux";
-
-
+import { useDispatch } from 'react-redux';
 
 import api from '../../shared/BaseApi';
-import { setUserProfile,setUserActiveService } from '../../store/slices/userSlice';
+import { setUserProfile, setUserActiveService } from '../../store/slices/userSlice';
 import MaxWidthDialog from '../../myapp/kyc';
 
-  // import api from "./baseApi";
-
+// import api from "./baseApi";
 
 // styles
 const avatarSX = { width: 32, height: 32 };
@@ -62,77 +59,66 @@ const cardSX = {
 export default function DashboardDefault() {
   const [orderMenuAnchor, setOrderMenuAnchor] = useState(null);
   const [analyticsMenuAnchor, setAnalyticsMenuAnchor] = useState(null);
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
+  const getUserProfile = async () => {
+    const formData = new FormData();
+    formData.append('type', 'profile');
 
-const getUserProfile = async () => {
-  const formData = new FormData();
-  formData.append("type", "profile");
+    const res = await api.post('/member/transaction', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
 
-  const res = await api.post("/member/transaction", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-
-  return res.data;
-};
-
-useEffect(() => {
-  const init = async () => {
-    await fetchProfile();
-    await fetchActiveService();
+    return res.data;
   };
 
-  init();
-}, []);
+  useEffect(() => {
+    const init = async () => {
+      await fetchProfile();
+      await fetchActiveService();
+    };
 
-const getActiveService = async () => {
-  const formData = new FormData();
-  formData.append("type", "list");
+    init();
+  }, []);
 
-  const res = await api.post("/master/portal",formData);
+  const getActiveService = async () => {
+    const formData = new FormData();
+    formData.append('type', 'list');
 
+    const res = await api.post('/master/portal', formData);
 
-  return res.data;
-};
+    return res.data;
+  };
 
+  const fetchProfile = async () => {
+    try {
+      const res = await getUserProfile();
 
-
-
-const fetchProfile = async () => {
-  try {
-    const res = await getUserProfile();
-
-    if (res.statuscode === "TXN") {
+      if (res.statuscode === 'TXN') {
         dispatch(setUserProfile(res.data)); // ✅ correct
-        // console.log("profile:::",res.data)
-        
+      }
+    } catch (err) {
+      console.error(err);
     }
-  } catch (err) {
-    console.error(err);
-  }
-};
+  };
 
-const fetchActiveService = async () => {
-  try {
-    const res = await getActiveService();
+  const fetchActiveService = async () => {
+    try {
+      const res = await getActiveService();
 
-    if (res.statuscode === "TXN") {
+      if (res.statuscode === 'TXN') {
         dispatch(setUserActiveService(res.data)); // ✅ correct
-        // console.log("service:::",res.data)
-
+      }
+    } catch (err) {
+      console.error(err);
     }
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-
+  };
 
   return (
     <Grid container rowSpacing={2} columnSpacing={2}>
-<MaxWidthDialog/>
+      <MaxWidthDialog/>
       {/* HEADER */}
       <Grid size={12}>
         <Typography variant="h5" fontWeight={700}>
@@ -194,11 +180,7 @@ const fetchActiveService = async () => {
             <EllipsisOutlined style={{ fontSize: 18 }} />
           </IconButton>
 
-          <Menu
-            anchorEl={orderMenuAnchor}
-            open={Boolean(orderMenuAnchor)}
-            onClose={() => setOrderMenuAnchor(null)}
-          >
+          <Menu anchorEl={orderMenuAnchor} open={Boolean(orderMenuAnchor)} onClose={() => setOrderMenuAnchor(null)}>
             <MenuItem>Export CSV</MenuItem>
             <MenuItem>Export Excel</MenuItem>
           </Menu>

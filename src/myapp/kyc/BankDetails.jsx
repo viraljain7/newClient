@@ -46,9 +46,11 @@ function BankDetails({ handleNext, user }) {
 
     let payload = {
       progress: 4,
-      user_id: user?.id
+      user_id: user?.id,
+      accountnumber: formData.accountNumber,
+      ifsccode: formData.ifscCode,
     };
-    const resp = updateProfile(payload);
+    const resp = await updateProfile(payload);
     if (resp?.statuscode === 'TXN') {
       toast.success(resp?.message || 'Profile updated successfully');
     } else {
@@ -58,7 +60,6 @@ function BankDetails({ handleNext, user }) {
 
     handleNext();
 
-    handleNext();
   };
 
   return (

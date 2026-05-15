@@ -77,7 +77,6 @@ export default ProtectedRoute;
 
 const AuthRedirect = ({ children }) => {
   const token = localStorage.getItem('app-token');
-  console.log(token);
 
   if (token) return <Navigate to="/dashboard/default" replace />;
   return <>{children}</>;

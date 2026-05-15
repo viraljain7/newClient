@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useMember } from './useMember';
 // import { createAgent } from './memberApi';
 
-function AddAgentDrawer({ open, onClose, agentCode, agentType, states, setLoading   }) {
+function AddAgentDrawer({ open, onClose, agentCode, agentType, states, setLoading }) {
   const [form, setForm] = useState({
     name: '',
     company: '',
@@ -16,21 +16,19 @@ function AddAgentDrawer({ open, onClose, agentCode, agentType, states, setLoadin
     role_id: ''
   });
 
-    const {  refetch ,addAgent } = useMember(agentType);
-  
+  const { refetch, addAgent } = useMember(agentType);
 
-useEffect(() => {
-
-  if (agentCode) {
-    setForm((prev) => ({
-      ...prev,
-      role_id: agentCode
-    }));
-  }
-}, [agentCode]);
+  useEffect(() => {
+    if (agentCode) {
+      setForm((prev) => ({
+        ...prev,
+        role_id: agentCode
+      }));
+    }
+  }, [agentCode]);
 
   const handleSubmit = async () => {
-    setLoading(true)
+    setLoading(true);
 
     try {
       const res = await addAgent(form);
@@ -44,18 +42,17 @@ useEffect(() => {
           state: '',
           city: ''
         });
-        refetch()
+        refetch();
         onClose();
       } else {
         toast.error(res?.message);
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
 
       toast.error('Something went wrong');
-    }finally{
-      setLoading(false)
-
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,7 +94,7 @@ useEffect(() => {
               {/* Mobile */}
               <TextField
                 label="Mobile"
-                  inputProps={{ maxLength: 10 }}
+                inputProps={{ maxLength: 10 }}
                 value={form.mobile}
                 onChange={(e) => {
                   const val = e.target.value;
@@ -105,24 +102,19 @@ useEffect(() => {
                   setForm({ ...form, mobile: val });
                 }}
               />
-          <Autocomplete
-  options={states}
-  getOptionLabel={(option) => option?.name || ""}
-
-  value={states.find((s) => s.name === form.state) || null}
-
-  onChange={(e, val) =>
-    setForm({
-      ...form,
-      state: val?.name || null       })
-  }
-
-  isOptionEqualToValue={(option, value) => option.name === value.name}
-
-  renderInput={(params) => (
-    <TextField {...params} label="Select State" />
-  )}
-/>
+              <Autocomplete
+                options={states}
+                getOptionLabel={(option) => option?.name || ''}
+                value={states.find((s) => s.name === form.state) || null}
+                onChange={(e, val) =>
+                  setForm({
+                    ...form,
+                    state: val?.name || null
+                  })
+                }
+                isOptionEqualToValue={(option, value) => option.name === value.name}
+                renderInput={(params) => <TextField {...params} label="Select State" />}
+              />
 
               {/* City */}
               <TextField label="City" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />

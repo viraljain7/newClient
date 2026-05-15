@@ -19,25 +19,23 @@ function AadharCard({ handleNext, user }) {
 
   // Submit
   const handleSubmit = async () => {
-    console.log({
-      aadharLinkedMobile: mobileNumber
-    });
-
     const verifyResponse = await verifyAadhaarMobile({
       mobile: mobileNumber
     });
-    console.log(verifyResponse);
 
     if (verifyResponse.statuscode !== 'TXN') {
       toast.error(verifyResponse?.message || 'Failed to verify mobile number');
       return;
     }
-
+    toast.success(verifyResponse?.message);
     const initiateResponse = await initiateDigiLocker();
+
     if (initiateResponse.statuscode !== 'TXN') {
       toast.error(initiateResponse?.message || 'Failed to initiate DigiLocker');
       return;
     }
+    toast.success(initiateResponse?.message);
+
     window.location.replace(initiateResponse.redirect_url);
 
     // API CALL HERE
@@ -46,7 +44,7 @@ function AadharCard({ handleNext, user }) {
       progress: 2,
       user_id: user?.id
     };
-    const res = updateProfile(payload);
+    const res = await updateProfile(payload);
     if (res?.statuscode === 'TXN') {
       toast.success(res?.message || 'Profile updated successfully');
     } else {

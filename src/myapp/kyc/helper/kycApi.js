@@ -16,13 +16,47 @@ export const updateProfile = async (form) => {
   return res.data;
 };
 
+export const updateDocs = async (form) => {
+  const formData = new FormData();
+
+  Object.entries({
+    ...form,
+    type: form?.type || 'updateprofile'
+  }).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      formData.append(key, value);
+    }
+  });
+
+  
+
+  const res = await api.post(
+    '/member/transaction',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+
+      // VERY IMPORTANT
+      transformRequest: [(data) => data]
+    }
+  );
+
+  return res.data;
+};
+
+
+
+
+
 export const step1ContactDetails = async (form) => {
   const formData = new FormData();
 
   formData.append('type', 'updateprofile');
   formData.append('user_id', Number(form.user_id));
   formData.append('businesstype', form.business_type);
-  formData.append('address', form.type); // transfer / return
+  formData.append('address', form.address); // transfer / return
   formData.append('city', form.city);
   formData.append('pincode', form.pincode);
   formData.append('progress', '1');
@@ -70,7 +104,6 @@ export const step3PanVerify = async (form) => {
     pan: form.panNumber,
     orderid: `ORD${Date.now()}`
   });
-  console.log(res)
 
   return res.data;
 };

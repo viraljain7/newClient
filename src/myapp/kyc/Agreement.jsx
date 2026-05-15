@@ -3,12 +3,11 @@ import { useState, useMemo } from 'react';
 import { Document, Page, Text, View, StyleSheet, PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 
 import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
+import { updateProfile } from './helper/kycApi';
 
-const Agreement = ({ handleNext }) => {
+const Agreement = ({ handleNext, user }) => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const user = useSelector((state) => state?.user?.profile);
 
   // ==============================
   // Agreement Config
@@ -55,7 +54,7 @@ const Agreement = ({ handleNext }) => {
         month: 'long',
         year: 'numeric'
       }),
-      place: user?.address || 'Not specified',
+      place: user?.city || 'Not specified',
       fullName: user?.name || 'Not specified',
       mobileNumber: user?.mobile || 'Not specified'
     }),
@@ -191,9 +190,25 @@ const Agreement = ({ handleNext }) => {
   // Proceed Handler
   // ==============================
 
-  const acceptAgreementHandler = () => {
+  const acceptAgreementHandler = async () => {
     if (!acceptedTerms) {
       toast.error('Please accept the terms and conditions.');
+      return;
+    }
+    let payloadReq = {
+      user_id: user?.id,
+
+      progress: 6
+    };
+    const profRes = await updateProfile(payloadReq);
+
+    if (profRes?.statuscode === 'TXN') {
+      toast.success(profRes?.message || 'Profile updated successfully');
+
+      // move next step
+    } else {
+      toast.error(profRes?.message || 'Failed to update profile');
+
       return;
     }
 
@@ -259,7 +274,7 @@ const Agreement = ({ handleNext }) => {
             >
               {({ loading }) => (loading ? 'Preparing document...' : 'Download Agreement')}
             </PDFDownloadLink>
-<hr/>
+            <hr />
             <Button variant="contained" disabled={!acceptedTerms} onClick={acceptAgreementHandler}>
               Proceed & Continue
             </Button>
