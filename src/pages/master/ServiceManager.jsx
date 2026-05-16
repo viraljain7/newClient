@@ -1,9 +1,10 @@
 import React from 'react'
+import ServiceManager from '../../myapp/master/ServiceManager'
 
-function ServiceManager() {
+function ServiceManagerPage() {
   return (
-    <div>ServiceManager</div>
+    <ServiceManager/>
   )
 }
 
-export default ServiceManager
+export default ServiceManagerPage

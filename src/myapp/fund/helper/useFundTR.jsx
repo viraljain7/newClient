@@ -39,6 +39,7 @@ const useFundTR = ({
 
       setAllData(data);
     } catch (err) {
+      
       setError(err?.message || "Failed to fetch report");
     } finally {
       setLoading(false);
