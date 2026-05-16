@@ -24,6 +24,8 @@ import useSchemeManager from './useSchmeManager';
 import AddScheme from './AddScheme';
 import { Stack } from '@mui/system';
 import SchemeProducts from './SchemeProducts';
+import { setSchemeId, setSchemeName } from '../../../store/slices/schemeSlice';
+import { useDispatch } from 'react-redux';
 
 /* ================= SKELETON ================= */
 
@@ -57,6 +59,7 @@ export default function SchemeTable() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [openProductsDrawer, setOpenProductsDrawer] = React.useState(false);
 
+  const dispatch = useDispatch();
 
   /* ================= FETCH ================= */
 
@@ -175,7 +178,11 @@ export default function SchemeTable() {
                         border: '1px solid #ddd',
                         borderRadius: 2
                       }}
-                      onClick={() => setOpenProductsDrawer(true)}
+                      onClick={() => {
+                        setOpenProductsDrawer(true);
+                        dispatch(setSchemeId(row.id));
+                        dispatch(setSchemeName(row.name));
+                      }}
                     >
                       <SettingsIcon fontSize="small" />
                     </IconButton>
@@ -212,9 +219,8 @@ export default function SchemeTable() {
           borderTop: '1px solid #eee'
         }}
       />
-      <AddScheme open={openDrawer} onClose={() => setOpenDrawer(false)} onSuccess={getSchemeList}/>
-    <SchemeProducts open={openProductsDrawer} onClose={() => setOpenProductsDrawer(false)} />
-
+      <AddScheme open={openDrawer} onClose={() => setOpenDrawer(false)} onSuccess={getSchemeList} />
+      <SchemeProducts open={openProductsDrawer} onClose={() => setOpenProductsDrawer(false)} />
     </Paper>
   );
 }

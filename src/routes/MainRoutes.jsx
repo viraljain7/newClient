@@ -17,6 +17,7 @@ import PayoutPage from '../pages/services/PayoutPage';
 import RupayUpiLoadWalletPage from '../pages/services/RupayUpiLoadWalletPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import SetSchemePage from '../pages/master/SetSchemePage';
+import UserProfilePage from '../pages/Profile/UserProfilePage';
 
 // dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -224,6 +225,15 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
+      {
+      path: 'userprofile/:user_id',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
+          <UserProfilePage />
+        </ProtectedRoute>
+      )
+    },
+
 
     // fund
     {

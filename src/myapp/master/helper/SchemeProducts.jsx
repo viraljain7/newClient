@@ -7,11 +7,17 @@ import { useEffect, useMemo, useState } from 'react';
 import useSchemeManager from './useSchmeManager';
 
 import { OutlineButton } from '../../../components/CommonComponent';
-import { productName } from '../../../utils/productName';
+import { setProductName } from '../../../store/slices/schemeSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router';
 
 function SchemeProducts({ open, onClose }) {
   const { products = [], getSchemeProducts } = useSchemeManager();
   const [search, setSearch] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { scheme_id } = useSelector((state) => state.scheme);
 
   useEffect(() => {
     if (open) {
@@ -96,7 +102,11 @@ function SchemeProducts({ open, onClose }) {
                     height: 45,
                     fontWeight: 600
                   }}
-                  />
+                  onClick={() => {
+                    dispatch(setProductName(item));
+                    navigate(`${scheme_id}`);
+                  }}
+                />
               ))}
             </Box>
           </CardContent>

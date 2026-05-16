@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -43,7 +43,7 @@ import toast from 'react-hot-toast';
 function OTPDialog({ open, onClose, loginPayload }) {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const inputsRef = useRef([]);
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleChange = (value, index) => {
     if (!/^[0-9]?$/.test(value)) return;
@@ -71,7 +71,7 @@ const navigate = useNavigate();
         localStorage.setItem('app-token', res.token);
         onClose();
 
-navigate("/");
+        navigate('/');
       }
     } catch (err) {
       console.error(err);
@@ -82,12 +82,19 @@ navigate("/");
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
       <DialogTitle>Verify OTP</DialogTitle>
 
-      <DialogContent>
+      <DialogContent
+        sx={{
+          px: {
+            xs: 0,
+            sm: 2
+          }
+        }}
+      >
         <Typography variant="body2" textAlign="center" mb={2}>
           Enter OTP sent to <b>{loginPayload?.mobile}</b>
         </Typography>
 
-        <Stack direction="row" spacing={1} justifyContent="center">
+        <Stack direction="row" spacing={0.5} justifyContent="center">
           {otp.map((digit, index) => (
             <TextField
               key={index}
@@ -100,7 +107,7 @@ navigate("/");
                 style: {
                   textAlign: 'center',
                   fontSize: '20px',
-                  width: '42px'
+                  width: '45px'
                 }
               }}
             />
@@ -125,13 +132,13 @@ const AuthLogin = () => {
   const [otpOpen, setOtpOpen] = useState(false);
   const [loginPayload, setLoginPayload] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Formik
       initialValues={{
         mobile: '',
-        password: '',
+        password: ''
       }}
       validationSchema={Yup.object({
         mobile: Yup.string()
@@ -158,8 +165,7 @@ const navigate = useNavigate();
             toast.success(res.message);
 
             localStorage.setItem('app-token', res.token);
-            navigate("/");
-
+            navigate('/');
           }
 
           if (res.statuscode === 401) {

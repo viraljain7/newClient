@@ -65,7 +65,7 @@ export default function VerticalKycDialogStepper() {
   const [open, setOpen] = React.useState(true);
   
   const user = useSelector((state) => state?.user?.profile);
-  const [activeStep, setActiveStep] = React.useState(user.progress || 0);
+  const [activeStep, setActiveStep] = React.useState( user?.progress||0);
 
   // Disable backdrop + esc close
   const handleClose = (_, reason) => {

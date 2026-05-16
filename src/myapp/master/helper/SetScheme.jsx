@@ -19,6 +19,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 const SetScheme = () => {
   const { scheme_id } = useParams();
@@ -27,8 +28,7 @@ const SetScheme = () => {
 
   const API = `${import.meta.env.VITE_APP_API_KEY}/master/scheme`;
 
-  const productType = 'mtb';
-  const schemeName = 'special';
+  const { product_name: productType, scheme_name: schemeName } = useSelector((state) => state.scheme);
 
   const [operators, setOperators] = useState([]);
   const [users, setUsers] = useState([]);
@@ -113,7 +113,7 @@ const SetScheme = () => {
       const formData = new FormData();
 
       formData.append('type', 'providers');
-      formData.append('producttype', productType);
+      formData.append('producttype',productType);
 
       const response = await fetch(API, {
         method: 'POST',
@@ -337,8 +337,8 @@ const SetScheme = () => {
       }}
     >
       <CardContent>
-        <Typography variant="h6" fontWeight={700}>
-          SCHEME {schemeName?.toUpperCase()} {productType?.toUpperCase()}
+        <Typography variant="h6" fontWeight={700} sx={{p:1, mb:3}}>
+           {schemeName?.toUpperCase()} / {productType?.toUpperCase()}
         </Typography>
 
         <TableContainer

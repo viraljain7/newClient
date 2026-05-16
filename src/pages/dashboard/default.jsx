@@ -118,7 +118,7 @@ export default function DashboardDefault() {
 
   return (
     <Grid container rowSpacing={2} columnSpacing={2}>
-      <MaxWidthDialog/>
+      {/* <MaxWidthDialog/> */}
       {/* HEADER */}
       <Grid size={12}>
         <Typography variant="h5" fontWeight={700}>
