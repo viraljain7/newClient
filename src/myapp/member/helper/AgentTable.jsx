@@ -24,6 +24,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { useMember } from './useMember';
 import { BlueButton } from '../../../components/CommonComponent';
 import AddAgentDrawer from './AddAgentDrawer';
+import { useNavigate } from 'react-router';
 
 /* ================= WALLET DROPDOWN ================= */
 const WalletDetails = ({ wallet }) => {
@@ -119,6 +120,8 @@ export default function AgentTable({ agentType, agentCode }) {
   const filteredRows = rows.filter((r) => r.name.toLowerCase().includes(search.toLowerCase()) || r.mobile.includes(search));
 
   const visibleRows = filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+  const navigate = useNavigate();
 
   return (
     <Paper
@@ -225,6 +228,7 @@ export default function AgentTable({ agentType, agentCode }) {
                         border: '1px solid #ddd',
                         borderRadius: 2
                       }}
+                      onClick={() => navigate(`/userprofile/${row.id}`)}
                     >
                       <SettingsIcon fontSize="small" />
                     </IconButton>

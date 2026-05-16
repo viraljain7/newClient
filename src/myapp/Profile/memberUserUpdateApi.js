@@ -32,7 +32,7 @@ export const fetchUserScheme = async (payload) => {
 
   formData.append('type', 'list');
 
-  const res = await api.post('/member/transaction', formData);
+  const res = await api.post('/master/scheme', formData);
 
   return res.data;
 };
@@ -65,7 +65,7 @@ export const updateUserPassword = async (payload) => {
 export const updateUserKycStatus = async (payload) => {
   const formData = new FormData();
 
-  formData.append('type', 'changekyc');
+  formData.append('type', 'kyc');
   formData.append('status', payload.status);
   formData.append('user_id', payload.user_id);
 
@@ -102,7 +102,7 @@ export const updateUserParent = async (payload) => {
   formData.append('user_id', payload.user_id);
   formData.append('parent_id', payload.parent_id);
 
-  const res = await api.post(`/parent-mapping/change-list`, formData);
+  const res = await api.post(`/parent-mapping/change-parent`, formData);
 
   return res.data;
 };

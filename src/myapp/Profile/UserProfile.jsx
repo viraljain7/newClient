@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Avatar, Box,  Card, Chip, Divider,  Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Card, Chip, Divider, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
 
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
@@ -20,6 +20,8 @@ import WalletLock from './helper/WalletLock';
 import ParentMapping from './helper/ParentMapping';
 import DeviceMapping from './helper/DeviceMapping';
 import { useParams } from 'react-router';
+import useUserProfile from './useUserProfile';
+import { getKycStyle } from './helper/Color';
 
 export function TabPanel({ children, value, index }) {
   return value === index ? children : null;
@@ -63,8 +65,39 @@ export function CustomInput(props) {
 }
 
 export default function UserProfile() {
+  const { user_id } = useParams();
 
-    const {user_id}=useParams()
+  const {
+    loading,
+    error,
+
+    userDetails,
+    getUserDetails,
+    refetchUserDetails,
+
+    handleUpdateProfile,
+
+    getUserSchemes,
+    handleUpdateScheme,
+
+    handleUpdatePassword,
+
+    handleUpdateKycStatus,
+
+    handleUpdateWallet,
+
+    getUserParents,
+    handleUpdateParent,
+
+    handleUpdateMid
+  } = useUserProfile();
+  const currentStyle = getKycStyle(userDetails?.kyc);
+
+  useEffect(() => {
+    if (user_id) {
+      getUserDetails({ user_id });
+    }
+  }, [user_id]);
 
   const [tab, setTab] = useState(0);
 
@@ -96,22 +129,23 @@ export default function UserProfile() {
 
             <Box>
               <Typography fontSize={22} fontWeight={700}>
-                Vishal Desai
+                {userDetails?.name || ''} ({userDetails?.id || ''})
               </Typography>
 
-              <Typography fontSize={14} color="text.secondary">
-                vishal.a.desai2010@gmail.com
+              <Typography fontSize={16} fontWeight={600}>
+                {userDetails?.mobile || ''} - {userDetails?.shopname.toUpperCase() || ''}
               </Typography>
+              <Typography fontSize={16} fontWeight={600}></Typography>
 
               <Stack direction="row" spacing={1} mt={1}>
                 <Chip
                   size="small"
-                  label="KYC Verified"
+                  label={`KYC ${userDetails?.kyc || 'Not Verified'}`}
                   icon={<CheckCircleRoundedIcon />}
                   sx={{
-                    bgcolor: '#DCFCE7',
-                    color: '#166534',
-                    fontWeight: 600
+                    ...currentStyle,
+                    fontWeight: 600,
+                    textTransform: 'capitalize'
                   }}
                 />
               </Stack>
@@ -171,28 +205,25 @@ export default function UserProfile() {
       {/* CONTENT */}
       <Box sx={{ p: 3 }}>
         {/* PROFILE TAB */}
-          <UserInfo tab={tab} />
+        <UserInfo tab={tab} userDetails={userDetails} onUpdateProfile={handleUpdateProfile} refetchUserDetails={refetchUserDetails} />
 
         {/* SCHEMES TAB */}
-          <Scheme tab={tab} />
+        <Scheme tab={tab} userDetails={userDetails} getUserSchemes={getUserSchemes} handleUpdateScheme={handleUpdateScheme} />
 
         {/* SECURITY TAB */}
-          <Password tab={tab} />
+        <Password tab={tab} userDetails={userDetails} handleUpdatePassword={handleUpdatePassword} />
 
         {/* KYC TAB */}
-          <Kyc tab={tab} />
+        <Kyc tab={tab} userDetails={userDetails} handleUpdateKycStatus={handleUpdateKycStatus} refetchUserDetails={refetchUserDetails} />
 
         {/* WALLET LOCK TAB */}
-          <WalletLock tab={tab} />
+        <WalletLock tab={tab} userDetails={userDetails} handleUpdateWallet={handleUpdateWallet} />
 
         {/* PARENT MAPPING TAB */}
-          <ParentMapping tab={tab} />
+        <ParentMapping tab={tab} userDetails={userDetails} getUserParents={getUserParents} handleUpdateParent={handleUpdateParent} />
 
         {/* DEVICE MAPPING TAB */}
-          <DeviceMapping tab={tab} />
-
-    
-    
+        <DeviceMapping tab={tab} userDetails={userDetails} handleUpdateMid={handleUpdateMid} />
       </Box>
     </Card>
   );
