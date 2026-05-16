@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { use, useEffect, useState } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import api from '../shared/BaseApi';
-import { setUserProfile } from '../store/slices/userSlice';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import useInitializeAuth from '../shared/useActiveServices';
 
-const ProtectedRoute = ({ children, roles = [] }) => {
+const ProtectedRoute = ({ children, roles = [], serviceCode }) => {
   const token = localStorage.getItem('app-token');
-
+  const location = useLocation();
   // not logged in
   if (!token) {
     return <Navigate to="/login" replace />;
@@ -16,23 +15,18 @@ const ProtectedRoute = ({ children, roles = [] }) => {
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
+
+  const userServices = useSelector((state) => state?.user?.service);
+  const { fetchProfile, fetchActiveService } = useInitializeAuth();
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const init = async () => {
       try {
-        const formData = new FormData();
-        formData.append('type', 'profile');
+        if (token) {
+          const res = await fetchProfile();
 
-        const res = await api.post('/member/transaction', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-
-        setUser(res?.data?.data);
-        dispatch(setUserProfile(res?.data?.data)); 
-
+          setUser(res?.data);
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -40,15 +34,18 @@ const ProtectedRoute = ({ children, roles = [] }) => {
       }
     };
 
-    if (token) {
-      fetchProfile();
-    } else {
-      setLoading(false);
-    }
+    init();
   }, [token]);
 
+  useEffect(() => {
+    const init = async () => {
+      await fetchActiveService();
 
+      console.log('SERVICE FETCHED', location.pathname);
+    };
 
+    init();
+  }, [location.pathname]);
   // loading state
   if (loading) {
     return (
@@ -69,6 +66,16 @@ const ProtectedRoute = ({ children, roles = [] }) => {
   if (roles.length && !roles.includes(user?.role?.name)) {
     return <Navigate to="/dashboard/default" replace />;
   }
+
+  if (serviceCode) {
+    const hasService = userServices?.some((service) => service.code === serviceCode && service.value === '1');
+
+    if (!hasService) {
+      return <Navigate to="/dashboard/default" replace />;
+    }
+  }
+
+  //new Addition
 
   return children;
 };

@@ -20,14 +20,16 @@ const transactionReport = {
       title: 'All Transaction Report',
       type: 'item',
       url: '/transaction-report/all-report',
-      icon: FileTextOutlined
+      icon: FileTextOutlined,
+      roles: ['Admin', 'Subadmin', 'Retailer']
     },
     {
       id: 'payout-report',
       title: 'Payout Report',
       type: 'item',
       url: '/transaction-report/payout-report',
-      icon: WalletOutlined
+      icon: WalletOutlined,
+      roles: ['Admin', 'Subadmin', 'Retailer']
     },
     // {
     //   id: 'recharge-report',
@@ -48,14 +50,24 @@ const transactionReport = {
       title: 'Creditcard Bill Payment Report',
       type: 'item',
       url: '/transaction-report/creditcard-bill-report',
-      icon: FileTextOutlined
+      icon: FileTextOutlined,
+      roles: ['Admin', 'Subadmin', 'Retailer']
     },
     {
       id: 'payment-gateway-report',
       title: 'Payment Gateway Report',
       type: 'item',
       url: '/transaction-report/payment-gateway-report',
-      icon: DollarOutlined
+      icon: DollarOutlined,
+      roles: ['Admin', 'Subadmin', 'Retailer']
+    },
+    {
+      id: 'pos-report',
+      title: 'POS Report',
+      type: 'item',
+      url: '/transaction-report/pos',
+      icon: FundProjectionScreenOutlined,
+      roles: ['Admin', 'Subadmin', 'Retailer']
     },
     // {
     //   id: 'upi-payout-report',
@@ -76,20 +88,18 @@ const transactionReport = {
       title: 'Commission Report',
       type: 'item',
       url: '/transaction-report/commission',
+      roles: ['Admin', 'Subadmin', 'Distributor', 'MasterDistributor', 'NSM', 'SH', 'CNF'],
+
       icon: DollarOutlined
     },
-    {
-      id: 'pos-report',
-      title: 'POS Report',
-      type: 'item',
-      url: '/transaction-report/pos',
-      icon: FundProjectionScreenOutlined
-    },
+
     {
       id: 'summary-report',
       title: 'Summary Report',
       type: 'item',
       url: '/transaction-report/summary',
+      roles: ['Admin', 'Subadmin'],
+
       icon: BarChartOutlined
     },
     {
@@ -97,13 +107,17 @@ const transactionReport = {
       title: 'Userwise Bussiness',
       type: 'item',
       url: '/transaction-report/userwise-business',
-      icon: BarChartOutlined
+      icon: BarChartOutlined,
+      roles: ['Admin', 'Subadmin', 'Distributor', 'MasterDistributor', 'NSM', 'SH', 'CNF']
     },
+
     {
       id: 'commission-distribution-report',
       title: 'Commission Distribution ',
       type: 'item',
       url: '/transaction-report/commission-distribution',
+      roles: ['Admin', 'Subadmin'],
+
       icon: DollarOutlined
     }
   ]

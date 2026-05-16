@@ -58,7 +58,7 @@ export default function RupayUpiLoadRequest() {
             >
               <Box
                 component="img"
-                src={import.meta.env.VITE_IMG_URL + 'payments/QRRuPayUPI.png'}
+                src={import.meta.env.VITE_IMG_URL + 'payments/QRRuPayUPI.png?v=' + new Date().getTime()}
                 alt="Payment"
                 sx={{
                   width: '70%',
@@ -125,7 +125,7 @@ export default function RupayUpiLoadRequest() {
                     size="large"
                     sx={{
                       textTransform: 'none',
-                    //   fontSize: '1rem',
+                      //   fontSize: '1rem',
                       fontWeight: 600
                     }}
                   >

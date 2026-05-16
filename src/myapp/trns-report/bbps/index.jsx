@@ -59,7 +59,7 @@ const BBPSReport = () => {
         gap={2}
       >
         <Box>
-          <Typography variant="h5" fontWeight={700}>BBPS Report</Typography>
+          <Typography variant="h5" fontWeight={700}>Credit Card Bill Payment Report</Typography>
           <Typography variant="body2" color="text.secondary">
             {pagination.total?.toLocaleString() ?? 0} total records
           </Typography>

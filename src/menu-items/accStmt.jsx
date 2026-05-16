@@ -21,7 +21,9 @@ const accountStatement = {
       title: 'Vendor Logs',
       type: 'item',
       url: '/account-statement/vendor-logs',
-      icon: FileTextOutlined
+      icon: FileTextOutlined,
+      roles: ['Admin', 'Subadmin'],
+
     }
   ]
 };

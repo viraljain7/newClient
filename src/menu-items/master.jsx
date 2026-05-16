@@ -27,12 +27,15 @@ const master = {
   title: 'Master',
   type: 'collapse',
   icon: icons.AppstoreOutlined,
+  roles: ['Admin', 'Subadmin'],
+
   children: [
     {
       id: 'scheme-manager',
       title: 'Scheme Manager',
       type: 'item',
       url: '/master/scheme-manager',
+      roles: ['Admin', 'Subadmin'],
       icon: icons.SettingOutlined
     },
     {
@@ -40,6 +43,7 @@ const master = {
       title: 'API Manager',
       type: 'item',
       url: '/master/api-manager',
+      roles: ['Admin', 'Subadmin'],
       icon: icons.ApiOutlined
     },
     {
@@ -47,6 +51,7 @@ const master = {
       title: 'SMS Master',
       type: 'item',
       url: '/master/sms-master',
+      roles: ['Admin', 'Subadmin'],
       icon: icons.MessageOutlined
     },
     {
@@ -54,6 +59,7 @@ const master = {
       title: 'Bank Account',
       type: 'item',
       url: '/master/bank-account',
+      roles: ['Admin', 'Subadmin'],
       icon: icons.BankOutlined
     },
     {
@@ -61,6 +67,7 @@ const master = {
       title: 'Provider Master',
       type: 'item',
       url: '/master/provider-master',
+      roles: ['Admin', 'Subadmin'],
       icon: icons.TeamOutlined
     },
     {
@@ -68,6 +75,7 @@ const master = {
       title: 'Portal Master',
       type: 'item',
       url: '/master/portal-master',
+      roles: ['Admin', 'Subadmin'],
       icon: icons.GlobalOutlined
     },
     {
@@ -75,6 +83,7 @@ const master = {
       title: 'Service Manager',
       type: 'item',
       url: '/master/service-manager',
+      roles: ['Admin', 'Subadmin'],
       icon: icons.SettingOutlined
     },
     {
@@ -82,6 +91,7 @@ const master = {
       title: 'Slider Master',
       type: 'item',
       url: '/master/slider-master',
+      roles: ['Admin', 'Subadmin'],
       icon: icons.PictureOutlined
     }
   ]

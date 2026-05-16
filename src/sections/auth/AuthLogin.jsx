@@ -32,6 +32,7 @@ import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 import { loginUser } from './helper/api';
 import toast from 'react-hot-toast';
+import useInitializeAuth from '../../shared/useActiveServices';
 
 // ==============================
 // 🔹 API
@@ -56,6 +57,9 @@ function OTPDialog({ open, onClose, loginPayload }) {
       inputsRef.current[index + 1].focus();
     }
   };
+  const clearOtp = () => {    setOtp(['', '', '', '', '', '']);
+    inputsRef.current[0].focus();
+  }
 
   const handleSubmit = async () => {
     const finalOtp = otp.join('');
@@ -70,9 +74,12 @@ function OTPDialog({ open, onClose, loginPayload }) {
       if (res.statuscode === 200) {
         localStorage.setItem('app-token', res.token);
         onClose();
-
+        toast.success(res.message);
         navigate('/');
+        useInitializeAuth();
+        return;
       }
+      toast.error(res.message);
     } catch (err) {
       console.error(err);
     }
@@ -116,7 +123,7 @@ function OTPDialog({ open, onClose, loginPayload }) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={clearOtp}>clear OTP</Button>
         <Button variant="contained" onClick={handleSubmit}>
           Verify OTP
         </Button>

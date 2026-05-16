@@ -12,12 +12,16 @@ const member = {
   title: 'Member',
   type: 'collapse',
   icon: UserOutlined,
+      roles: ['Admin', 'Subadmin','Distributor',  'MasterDistributor', 'NSM', 'SH', 'CNF'],
+
   children: [
     {
       id: 'sub-admin',
       title: 'Sub Admin',
       type: 'item',
       url: '/member/sub-admin',
+      roles: ['Admin'],
+
       icon: TeamOutlined
     },
     {
@@ -25,6 +29,8 @@ const member = {
       title: 'NSM/ZSH',
       type: 'item',
       url: '/member/nsm-zsh',
+      roles: ['Admin', 'Subadmin'],
+
       icon: UsergroupAddOutlined
     },
     {
@@ -32,6 +38,8 @@ const member = {
       title: 'SH',
       type: 'item',
       url: '/member/sh',
+      roles: ['Admin', 'Subadmin', 'NSM'],
+      
       icon: CrownOutlined
     },
     {
@@ -39,6 +47,8 @@ const member = {
       title: 'CNF/ASM',
       type: 'item',
       url: '/member/cnf-asm',
+      roles: ['Admin', 'Subadmin', 'NSM', 'SH'],
+
       icon: ApartmentOutlined
     },
     {
@@ -46,6 +56,8 @@ const member = {
       title: 'Master Distributor',
       type: 'item',
       url: '/member/master-distributor',
+      roles: ['Admin', 'Subadmin',  'NSM', 'SH', 'CNF'],
+
       icon: TeamOutlined
     },
     {
@@ -53,6 +65,8 @@ const member = {
       title: 'Distributor',
       type: 'item',
       url: '/member/distributor',
+      roles: ['Admin', 'Subadmin',  'MasterDistributor', 'NSM', 'SH', 'CNF'],
+
       icon: ShopOutlined
     },
     {
@@ -60,6 +74,8 @@ const member = {
       title: 'Retailer',
       type: 'item',
       url: '/member/retailer',
+      roles: ['Admin', 'Subadmin','Distributor',  'MasterDistributor', 'NSM', 'SH', 'CNF'],
+
       icon: UserOutlined
     }
   ]

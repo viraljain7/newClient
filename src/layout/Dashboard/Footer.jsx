@@ -11,9 +11,7 @@ export default function Footer() {
     >
       <Typography variant="caption">
         &copy; All rights reserved{' '}
-        <Link href="" target="_blank" underline="hover">
-          By Team
-        </Link>
+      
       </Typography>
   
     </Stack>

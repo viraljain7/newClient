@@ -102,7 +102,6 @@ const MainRoutes = {
       )
     },
 
-
     {
       path: 'master/scheme-manager/:scheme_id',
       element: (
@@ -225,7 +224,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'userprofile/:user_id',
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin']}>
@@ -233,7 +232,6 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-
 
     // fund
     {
@@ -389,7 +387,7 @@ const MainRoutes = {
     {
       path: 'services/add-money',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="addmoney">
           <AddMoneyPage />
         </ProtectedRoute>
       )
@@ -463,7 +461,7 @@ const MainRoutes = {
     {
       path: 'services/bbps',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="bbps">
           <BBPSPage />
         </ProtectedRoute>
       )
@@ -471,7 +469,7 @@ const MainRoutes = {
     {
       path: 'services/bbps/c15',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="bbps">
           <FetchBBPSBillPage />
         </ProtectedRoute>
       )
@@ -480,7 +478,7 @@ const MainRoutes = {
     {
       path: 'services/payout',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="domesticrem">
           <PayoutPage />
         </ProtectedRoute>
       )
@@ -488,7 +486,7 @@ const MainRoutes = {
     {
       path: 'services/rupay-upi',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="rupayupi">
           <RupayUpiLoadWalletPage />
         </ProtectedRoute>
       )

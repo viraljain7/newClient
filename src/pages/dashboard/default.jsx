@@ -39,11 +39,9 @@ import avatar1 from 'assets/images/users/avatar-1.png';
 import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
-import { useDispatch } from 'react-redux';
 
-import api from '../../shared/BaseApi';
-import { setUserProfile, setUserActiveService } from '../../store/slices/userSlice';
 import MaxWidthDialog from '../../myapp/kyc';
+import useInitializeAuth from '../../shared/useActiveServices';
 
 // import api from "./baseApi";
 
@@ -58,67 +56,12 @@ const cardSX = {
 
 export default function DashboardDefault() {
   const [orderMenuAnchor, setOrderMenuAnchor] = useState(null);
-  const [analyticsMenuAnchor, setAnalyticsMenuAnchor] = useState(null);
-  const dispatch = useDispatch();
 
-  const getUserProfile = async () => {
-    const formData = new FormData();
-    formData.append('type', 'profile');
-
-    const res = await api.post('/member/transaction', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-
-    return res.data;
-  };
-
-  useEffect(() => {
-    const init = async () => {
-      await fetchProfile();
-      await fetchActiveService();
-    };
-
-    init();
-  }, []);
-
-  const getActiveService = async () => {
-    const formData = new FormData();
-    formData.append('type', 'list');
-
-    const res = await api.post('/master/portal', formData);
-
-    return res.data;
-  };
-
-  const fetchProfile = async () => {
-    try {
-      const res = await getUserProfile();
-
-      if (res.statuscode === 'TXN') {
-        dispatch(setUserProfile(res.data)); // ✅ correct
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const fetchActiveService = async () => {
-    try {
-      const res = await getActiveService();
-
-      if (res.statuscode === 'TXN') {
-        dispatch(setUserActiveService(res.data)); // ✅ correct
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  useInitializeAuth();
 
   return (
     <Grid container rowSpacing={2} columnSpacing={2}>
-      {/* <MaxWidthDialog/> */}
+      <MaxWidthDialog />
       {/* HEADER */}
       <Grid size={12}>
         <Typography variant="h5" fontWeight={700}>

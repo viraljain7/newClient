@@ -12,12 +12,17 @@ const Services = {
   title: 'Services',
   type: 'collapse',
   icon: DeploymentUnitOutlined,
+      roles: ['Retailer'],
+
   children: [
     {
       id: 'add-money',
       title: 'Payment Gateway',
       type: 'item',
-      url: '/services/add-money',        // ← fixed
+      url: '/services/add-money', 
+      roles: ['Retailer'],
+               serviceCode: 'addmoney',
+
       icon: WalletOutlined
     },
     {
@@ -25,6 +30,9 @@ const Services = {
       title: 'Credit Card Bill Payment',
       type: 'item',
       url: '/services/bbps',             // ← fixed
+      roles: ['Retailer'],
+               serviceCode: 'bbps',
+
       icon: ThunderboltOutlined
     },
     {
@@ -32,6 +40,9 @@ const Services = {
       title: 'Payout',
       type: 'item',
       url: '/services/payout',           // ← fixed
+      roles: ['Retailer'],
+               serviceCode: 'domesticrem',
+
       icon: SendOutlined
     },
       {
@@ -39,6 +50,8 @@ const Services = {
       title: 'RupayUpi',
       type: 'item',
       url: '/services/rupay-upi',           // ← fixed
+      roles: ['Retailer'],
+      serviceCode: 'rupayupi',
       icon: QrCode2Icon
 
     }

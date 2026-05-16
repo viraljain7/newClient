@@ -59,7 +59,7 @@ const PayoutReport = () => {
         gap={2}
       >
         <Box>
-          <Typography variant="h5" fontWeight={700}>T360 Pay Report</Typography>
+          <Typography variant="h5" fontWeight={700}>Payout Report</Typography>
           <Typography variant="body2" color="text.secondary">
             {pagination.total?.toLocaleString() ?? 0} total records
           </Typography>
