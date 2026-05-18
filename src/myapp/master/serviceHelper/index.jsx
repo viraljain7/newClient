@@ -73,7 +73,6 @@ export default function ServiceTable() {
   /* ================= STATUS UPDATE ================= */
 
   const handleToggleStatus = async (row) => {
-    console.log(row)
     try {
       const updatedValue = row.status ? '0' : '1';
 

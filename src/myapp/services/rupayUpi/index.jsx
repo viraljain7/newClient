@@ -32,7 +32,6 @@ export default function RupayUpiLoadRequest() {
       e.preventDefault();
 
       const res = await uploadSlip(formData);
-      console.log(res);
       if (res.status === 'SUCCESS') {
         toast.success('Slip uploaded successfully!');
         setFormData({

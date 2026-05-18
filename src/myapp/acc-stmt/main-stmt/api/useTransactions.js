@@ -64,7 +64,6 @@ const profile = useSelector((state) => state.user.profile);
     } finally {
       setLoading(false);
 
-      console.log('aaaa', error);
     }
   };
 

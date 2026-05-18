@@ -1,21 +1,28 @@
 import api from '../../../../shared/BaseApi';
-import { productName } from '../../../../utils/productName';
 
 export function fetchTransactions({ fromDate, toDate, page, perPage, search, filters = {} }) {
   // remove empty filters
   const cleanFilters = Object.fromEntries(Object.entries(filters).filter(([, v]) => v != null && v !== ''));
 
   return api.post('/statement/rupayupi', {
-    
     from_date: fromDate,
     to_date: toDate,
     page,
     limit: perPage,
     ...cleanFilters
-
   });
 }
 
-export const handleExportAllTxnReport = async (params = {}) => {
+export const handleExportAllTxnReport = async (params = {}) => {};
 
+export const handleApproveReject = async (form) => {
+  const formData = new FormData();
+
+  formData.append('id', form.id);
+  if (form.reason) {
+    formData.append('reason', form.reason);
+  }
+  const res = await api.post(`/admin/rupayupi/${form.type}`, formData);
+
+  return res.data;
 };

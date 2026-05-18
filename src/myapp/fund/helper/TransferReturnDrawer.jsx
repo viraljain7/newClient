@@ -31,7 +31,6 @@ function TransferReturnDrawer({ open, onClose, data, onSuccess ,setLoading }) {
       }));
     }
   }, [data]);
-  //   console.log(data)
 
   const handleChange = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));

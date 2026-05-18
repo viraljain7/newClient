@@ -71,3 +71,19 @@ export const handleExportAllTxnReport = async (params = {}) => {
     console.error('Export failed', err);
   }
 };
+
+
+
+
+export const handleEditApi = async (form) => {
+  const formData = new FormData();
+
+  formData.append('report_id', form.txnid);
+  formData.append('utr', form.utr);
+  formData.append('status', form.status);
+
+
+  const res = await api.post(`/service/update-payout`, formData);
+
+  return res.data;
+};

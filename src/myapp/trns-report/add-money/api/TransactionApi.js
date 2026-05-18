@@ -71,3 +71,12 @@ export const handleExportAllTxnReport = async (params = {}) => {
     console.error('Export failed', err);
   }
 };
+
+export const handleCheckStatusApi = async (form) => {
+  const formData = new FormData();
+
+  formData.append('requestId', form.txnid);
+  const res = await api.post(`/service/paytm/status`, formData);
+
+  return res.data;
+};
