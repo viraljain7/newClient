@@ -1,9 +1,4 @@
-import {
-  DollarCircleOutlined,
-  SwapOutlined,
-  FileTextOutlined,
-  ClockCircleOutlined
-} from '@ant-design/icons';
+import { DollarCircleOutlined, SwapOutlined, FileTextOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
 const fund = {
   id: 'fund',
@@ -18,13 +13,24 @@ const fund = {
       url: '/fund/transfer-return',
       icon: SwapOutlined
     },
-      {
+    {
       id: 'transfer-return-report',
       title: 'Transfer Return Report',
       type: 'item',
       url: '/fund/transfer-return-report',
       icon: FileTextOutlined
     },
+
+    {
+      id: 'rupay-upi-pending-request',
+      title: 'Rupay UPI Pending',
+      type: 'item',
+      url: '/fund/rupay-upi-pending-request',
+      roles: ['Admin', 'Subadmin'],
+
+      icon: FileTextOutlined
+    }
+
     // {
     //   id: 'request',
     //   title: 'Request',
@@ -49,7 +55,7 @@ const fund = {
     // //     size: 'small'
     // //   }
     // },
-  
+
     // {
     //   id: 'all-fund-report',
     //   title: 'All Fund Report',

@@ -69,6 +69,15 @@ const transactionReport = {
       icon: FundProjectionScreenOutlined,
       roles: ['Admin', 'Subadmin', 'Retailer']
     },
+
+      {
+      id: 'rupay-upi-report',
+      title: 'Rupay UPI Report',
+      type: 'item',
+      url: '/transaction-report/rupay-upi',
+      icon: FundProjectionScreenOutlined,
+      roles: ['Admin', 'Subadmin', 'Retailer']
+    },
     // {
     //   id: 'upi-payout-report',
     //   title: 'UPI Payout Report',

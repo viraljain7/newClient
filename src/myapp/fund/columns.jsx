@@ -109,7 +109,8 @@ export const TRANSACTION_COLUMNS = [
     sortable: true,
     filter: {
       type: 'select',
-      options: ['success', 'pending', 'failed', 'refunded']
+      options: ['success', 'pending', 'failed', 'refunded'],
+
     },
 
     renderCell: (row) => <StatusWithActions row={row} />

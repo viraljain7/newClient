@@ -18,6 +18,8 @@ import RupayUpiLoadWalletPage from '../pages/services/RupayUpiLoadWalletPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import SetSchemePage from '../pages/master/SetSchemePage';
 import UserProfilePage from '../pages/Profile/UserProfilePage';
+import RupayUPIReportPage from '../pages/transaction-report/RupayUPIReportPage';
+import RupayUpiApprovePage from '../pages/fund/RupayUpiApprove';
 
 // dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -250,6 +252,14 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
+      {
+      path: 'fund/rupay-upi-pending-request',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin',]}>
+          <RupayUpiApprovePage />
+        </ProtectedRoute>
+      )
+    },
 
     // { path: 'fund/request', element: <FundRequest /> },
     // { path: 'fund/pos-pending-request', element: <PosPendingRequest /> },
@@ -331,11 +341,20 @@ const MainRoutes = {
     {
       path: 'transaction-report/pos',
       element: (
-        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin',  'Retailer']}>
           <POSReport />
         </ProtectedRoute>
       )
     },
+      {
+      path: 'transaction-report/rupay-upi',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'Retailer']}>
+          <RupayUPIReportPage />
+        </ProtectedRoute>
+      )
+    },
+    
     {
       path: 'transaction-report/summary',
       element: (
