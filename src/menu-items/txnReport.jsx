@@ -47,7 +47,7 @@ const transactionReport = {
     // },
     {
       id: 'creditcard-bill-report',
-      title: 'Creditcard Bill Payment Report',
+      title: 'Creditcard Payment Report',
       type: 'item',
       url: '/transaction-report/creditcard-bill-report',
       icon: FileTextOutlined,

@@ -461,7 +461,7 @@ const MainRoutes = {
     {
       path: 'services/bbps',
       element: (
-        <ProtectedRoute roles={['Retailer']} serviceCode="bbps">
+        <ProtectedRoute roles={['Retailer']} serviceCode="creditcard-online">
           <BBPSPage />
         </ProtectedRoute>
       )
@@ -469,7 +469,7 @@ const MainRoutes = {
     {
       path: 'services/bbps/c15',
       element: (
-        <ProtectedRoute roles={['Retailer']} serviceCode="bbps">
+        <ProtectedRoute roles={['Retailer']} serviceCode="creditcard-online">
           <FetchBBPSBillPage />
         </ProtectedRoute>
       )

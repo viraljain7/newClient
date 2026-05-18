@@ -1,8 +1,14 @@
 import * as React from 'react';
 import { Box, Grid, Card, CardContent, Typography, TextField, Button, Stack } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { startLoading, stopLoading } from '../../../store/slices/loaderSlice';
+import { uploadSlip } from './helper/rupayUPIApi';
 
 export default function RupayUpiLoadRequest() {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = React.useState({
     mobile: '',
     name: '',
@@ -20,10 +26,31 @@ export default function RupayUpiLoadRequest() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    try {
+      dispatch(startLoading());
+      e.preventDefault();
 
-    console.log(formData);
+      const res = await uploadSlip(formData);
+      console.log(res);
+      if (res.status === 'SUCCESS') {
+        toast.success('Slip uploaded successfully!');
+        setFormData({
+          mobile: '',
+          name: '',
+          amount: '',
+          txnId: '',
+          slip: null
+        });
+      } else {
+        toast.error('Failed to upload slip. Please try again.');
+        return;
+      }
+    } catch (error) {
+      toast.error('An error occurred while uploading the slip. Please try again.');
+    } finally {
+      dispatch(stopLoading());
+    }
   };
 
   return (
