@@ -1,49 +1,20 @@
-
-
-import {  useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
-import {
-  Avatar,
-  AvatarGroup,
-  Button,
-  Grid,
-  IconButton,
-  List,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Stack,
-  Typography,
-  Box
-} from '@mui/material';
+import { Button, Grid, Stack, Typography, Box, TextField, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 
 // project imports
 import MainCard from 'components/MainCard';
-import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
-import MonthlyBarChart from 'sections/dashboard/default/MonthlyBarChart';
-import ReportAreaChart from 'sections/dashboard/default/ReportAreaChart';
-import UniqueVisitorCard from 'sections/dashboard/default/UniqueVisitorCard';
-import SaleReportCard from 'sections/dashboard/default/SaleReportCard';
-import OrdersTable from 'sections/dashboard/default/OrdersTable';
+import WalletCard from 'components/cards/statistics/WalletCard';
 
 // icons
-import EllipsisOutlined from '@ant-design/icons/EllipsisOutlined';
-import GiftOutlined from '@ant-design/icons/GiftOutlined';
-import MessageOutlined from '@ant-design/icons/MessageOutlined';
 
 // avatars
-import avatar1 from 'assets/images/users/avatar-1.png';
-import avatar2 from 'assets/images/users/avatar-2.png';
-import avatar3 from 'assets/images/users/avatar-3.png';
-import avatar4 from 'assets/images/users/avatar-4.png';
+import { ADBalanceApi, ADServiceWiseBusiness } from './ADApi';
 
-;
+import { DownOutlined } from '@ant-design/icons';
 
 // styles
-const avatarSX = { width: 32, height: 32 };
 const cardSX = {
   borderRadius: 2,
   border: '1px solid',
@@ -52,7 +23,49 @@ const cardSX = {
 };
 
 function ADScreen() {
-  const [orderMenuAnchor, setOrderMenuAnchor] = useState(null);
+
+  const [wallets, setWallets] = useState({
+    admin: {},
+    downline: {}
+  });
+
+  const [stats, setStats] = useState([]);
+
+  useEffect(() => {
+    const fetchBusinessStats = async () => {
+      try {
+        const businessData = await ADBalanceApi();
+        setWallets({
+          admin: businessData?.adminWallets || {},
+          downline: businessData?.downlineWallets || {}
+        });
+      } catch (error) {
+        console.error('Failed to fetch business stats', error);
+      }
+    };
+
+    fetchBusinessStats();
+    handledate();
+  }, []);
+
+  const today = new Date().toISOString().split('T')[0];
+
+  const [filters, setFilters] = useState({
+    from: today,
+    to: today
+  });
+
+  const handleDateChange = (e) => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handledate = async () => {
+    const res = await ADServiceWiseBusiness(filters);
+    setStats(res.data);
+  };
 
   return (
     <Grid container rowSpacing={2} columnSpacing={2}>
@@ -68,144 +81,187 @@ function ADScreen() {
       </Grid>
       {/* KPI CARDS */}
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <AnalyticEcommerce title="Page Views" count="4,42,236" percentage={59.3} extra="35k" sx={cardSX} />
+        <WalletCard
+          title="Main Wallet"
+          count={wallets.admin.mainWallet}
+          percentage={59.3}
+          extra={wallets.downline.mainWallet}
+          sx={cardSX}
+        />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <AnalyticEcommerce title="Users" count="78,250" percentage={70.5} extra="8.9k" sx={cardSX} />
+        <WalletCard title="Qr Wallet" count={wallets.admin.qrWallet} percentage={70.5} extra={wallets.downline.qrWallet} sx={cardSX} />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <AnalyticEcommerce title="Orders" count="18,800" percentage={27.4} color="warning" extra="1,943" sx={cardSX} />
+        <WalletCard
+          title="PG Wallet"
+          count={wallets.admin.pgWallet}
+          percentage={27.4}
+          color="warning"
+          extra={wallets.downline.pgWallet}
+          sx={cardSX}
+        />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <AnalyticEcommerce title="Sales" count="35,078" percentage={27.4} color="warning" extra="20k" sx={cardSX} />
+        <WalletCard
+          title="Aeps Walet"
+          count={wallets.admin.aepsWallet}
+          percentage={27.4}
+          color="warning"
+          extra={"Downline: "+wallets.downline.aepsWallet}
+          sx={cardSX}
+        />
       </Grid>
 
       {/* CHART SECTION */}
-      <Grid size={{ xs: 12, md: 7, lg: 8 }}>
-        <MainCard sx={cardSX}>
-          <Typography variant="subtitle1" fontWeight={600} mb={1}>
-            Visitors
+
+      <Accordion
+        sx={{
+          boxShadow: 'none',
+          border: '1px solid',
+          borderColor: 'divider',
+
+          '&:before': {
+            display: 'none'
+          },
+          width: '100%'
+        }}
+        size={{ xs: 12 }}
+      >
+        <AccordionSummary expandIcon={<DownOutlined />}>
+          <Typography fontWeight={700} variant="h5">
+            {' '}
+            Business Stats
           </Typography>
-          <UniqueVisitorCard />
-        </MainCard>
+        </AccordionSummary>
+
+        <AccordionDetails>
+          <Grid container spacing={2} alignItems="center" justifyContent="flex-end">
+            <Grid size={{ xs: 12, sm: 4 }}>
+              <TextField
+                fullWidth
+                type="date"
+                label="From Date"
+                name="from"
+                value={filters.from}
+                onChange={handleDateChange}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 4 }}>
+              <TextField
+                fullWidth
+                type="date"
+                label="To Date"
+                name="to"
+                value={filters.to}
+                onChange={handleDateChange}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, sm: 4 }}>
+              <Button fullWidth variant="contained" onClick={handledate}>
+                Apply Filter
+              </Button>
+            </Grid>
+          </Grid>
+        </AccordionDetails>
+      </Accordion>
+
+      {/* CARDS */}
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          width: '100%',
+          m: 0
+        }}
+      >
+        {stats.map((item, index) => (
+          <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+            <MainCard
+              content={false}
+              sx={{
+                height: '100%',
+                border: '1.5px dashed',
+                borderColor: 'dashed',
+                bgcolor: '#fff',
+                transition: 'all 0.3s ease',
+
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
+                }
+              }}
+            >
+              <Box sx={{ p: 2.5 }}>
+                {/* TITLE */}
+                <Box>
+                  <Typography variant="h6" fontWeight={700}>
+                    {item.product.toUpperCase()}
+                  </Typography>
+
+                  <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+                     Business Value
+                  </Typography>
+                </Box>
+
+                {/* AMOUNT */}
+                <Typography
+                  variant="h4"
+                  fontWeight={800}
+
+                  sx={{
+                    mt: 3,
+                    letterSpacing: '-1px',
+                    color:'black'
+                  }}
+                >
+                  ₹ {item.total_amount}
+                </Typography>
+
+                {/* FOOTER */}
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{
+                    mt: 3,
+                    pt: 2,
+                    borderTop: '1px dashed',
+                    borderColor: 'divider'
+                  }}
+                >
+                  <Box>
+                    <Typography variant="body1" color="text.secondary">
+                      Transactions
+                    </Typography>
+
+                    <Typography fontWeight={700}>{item.total_txns}</Typography>
+                  </Box>
+
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'success.main',
+                      fontWeight: 700
+                    }}
+                  >
+                    +12.5%
+                  </Typography>
+                </Stack>
+              </Box>
+            </MainCard>
+          </Grid>
+        ))}
       </Grid>
-
-      <Grid size={{ xs: 12, md: 5, lg: 4 }}>
-        <MainCard sx={cardSX} content={false}>
-          <Box sx={{ p: 2 }}>
-            <Typography variant="subtitle1" fontWeight={600}>
-              Income Overview
-            </Typography>
-            <Typography variant="h6" color="text.secondary">
-              This Week
-            </Typography>
-            <Typography variant="h4" fontWeight={700}>
-              $7,650
-            </Typography>
-          </Box>
-          <MonthlyBarChart />
-        </MainCard>
-      </Grid>
-
-      {/* TABLE */}
-      <Grid size={{ xs: 12, md: 7, lg: 8 }}>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="subtitle1" fontWeight={600}>
-            Recent Orders
-          </Typography>
-
-          <IconButton size="small" onClick={(e) => setOrderMenuAnchor(e.currentTarget)}>
-            <EllipsisOutlined style={{ fontSize: 18 }} />
-          </IconButton>
-
-          <Menu anchorEl={orderMenuAnchor} open={Boolean(orderMenuAnchor)} onClose={() => setOrderMenuAnchor(null)}>
-            <MenuItem>Export CSV</MenuItem>
-            <MenuItem>Export Excel</MenuItem>
-          </Menu>
-        </Box>
-
-        <MainCard sx={{ ...cardSX, mt: 1 }} content={false}>
-          <OrdersTable />
-        </MainCard>
-      </Grid>
-
       {/* ANALYTICS */}
-      <Grid size={{ xs: 12, md: 5, lg: 4 }}>
-        <MainCard sx={cardSX} content={false}>
-          <List sx={{ p: 0 }}>
-            <ListItemButton sx={{ py: 1.2 }}>
-              <ListItemText primary="Finance Growth" />
-              <Typography fontWeight={600}>+45%</Typography>
-            </ListItemButton>
-
-            <ListItemButton sx={{ py: 1.2 }}>
-              <ListItemText primary="Expenses Ratio" />
-              <Typography fontWeight={600}>0.58%</Typography>
-            </ListItemButton>
-
-            <ListItemButton sx={{ py: 1.2 }}>
-              <ListItemText primary="Risk Cases" />
-              <Typography fontWeight={600}>Low</Typography>
-            </ListItemButton>
-          </List>
-
-          <ReportAreaChart />
-        </MainCard>
-      </Grid>
-
-      {/* SALES */}
-      <Grid size={{ xs: 12, md: 7, lg: 8 }}>
-        <MainCard sx={cardSX}>
-          <SaleReportCard />
-        </MainCard>
-      </Grid>
-
-      {/* TRANSACTION HISTORY */}
-      <Grid size={{ xs: 12, md: 5, lg: 4 }}>
-        <MainCard sx={cardSX} content={false}>
-          <List sx={{ p: 0 }}>
-            <ListItemButton sx={{ py: 1.2 }}>
-              <ListItemAvatar>
-                <Avatar sx={{ ...avatarSX, bgcolor: 'success.lighter', color: 'success.main' }}>
-                  <GiftOutlined />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Order #002434" secondary="Today" />
-              <Typography fontWeight={600}>+$1430</Typography>
-            </ListItemButton>
-
-            <ListItemButton sx={{ py: 1.2 }}>
-              <ListItemAvatar>
-                <Avatar sx={{ ...avatarSX, bgcolor: 'primary.lighter', color: 'primary.main' }}>
-                  <MessageOutlined />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Order #984947" secondary="5 Aug" />
-              <Typography fontWeight={600}>+$302</Typography>
-            </ListItemButton>
-          </List>
-        </MainCard>
-
-        {/* SUPPORT */}
-        <MainCard sx={{ ...cardSX, mt: 2 }}>
-          <Stack spacing={2}>
-            <Typography variant="subtitle1" fontWeight={600}>
-              Support Chat
-            </Typography>
-
-            <AvatarGroup>
-              <Avatar src={avatar1} />
-              <Avatar src={avatar2} />
-              <Avatar src={avatar3} />
-              <Avatar src={avatar4} />
-            </AvatarGroup>
-
-            <Button variant="contained" size="small">
-              Need Help?
-            </Button>
-          </Stack>
-        </MainCard>
-      </Grid>
     </Grid>
   );
 }
