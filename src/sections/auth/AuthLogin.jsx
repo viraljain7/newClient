@@ -30,7 +30,7 @@ import IconButton from 'components/@extended/IconButton';
 
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
-import { loginUser } from './helper/api';
+import { ForgotPasswordApi, loginUser, sendForgotPasswordOtpApi } from './helper/api';
 import toast from 'react-hot-toast';
 import useInitializeAuth from '../../shared/useActiveServices';
 
@@ -57,9 +57,10 @@ function OTPDialog({ open, onClose, loginPayload }) {
       inputsRef.current[index + 1].focus();
     }
   };
-  const clearOtp = () => {    setOtp(['', '', '', '', '', '']);
+  const clearOtp = () => {
+    setOtp(['', '', '', '', '', '']);
     inputsRef.current[0].focus();
-  }
+  };
 
   const handleSubmit = async () => {
     const finalOtp = otp.join('');
@@ -84,6 +85,8 @@ function OTPDialog({ open, onClose, loginPayload }) {
       console.error(err);
     }
   };
+
+  // ==========================
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
@@ -139,132 +142,270 @@ const AuthLogin = () => {
   const [otpOpen, setOtpOpen] = useState(false);
   const [loginPayload, setLoginPayload] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [openPassword, setOpenPassword] = useState(false);
   const navigate = useNavigate();
 
+  // =========================
+  const [step, setStep] = useState(1);
+
+  const [formData, setFormData] = useState({
+    mobile: '',
+    otp: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+
+  const handleSendOtp = async () => {
+    try {
+      if (!formData.mobile) {
+        toast.error('Please enter mobile number');
+        return;
+      }
+      const res = await sendForgotPasswordOtpApi({
+        mobile: formData.mobile
+      });
+
+      if (res.statuscode === 'TXNOTP') {
+        toast.success(res.message);
+        setStep(2);
+      } else {
+        toast.error(res.message);
+      }
+
+      // API call for send OTP
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      const { otp, newPassword, confirmPassword } = formData;
+
+      if (!otp || !newPassword || !confirmPassword) {
+        toast.error('Please fill all fields');
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        toast.error('Password does not match');
+        return;
+      }
+      const res = await ForgotPasswordApi({
+        mobile: formData.mobile,
+        otp,
+        password: newPassword
+      });
+
+      if (res.statuscode === 'TXN') {
+        toast.success(res.message);
+        setFormData({ mobile: '', otp: '', newPassword: '', confirmPassword: '' });
+        setStep(1);
+      } else {
+        toast.error(res.message);
+        return;
+      }
+      setOpenPassword(false);
+
+      // API call for reset password
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  // ==============
+
   return (
-    <Formik
-      initialValues={{
-        mobile: '',
-        password: ''
-      }}
-      validationSchema={Yup.object({
-        mobile: Yup.string()
-          .matches(/^[0-9]{10}$/, 'Enter valid mobile number')
-          .required('Mobile is required'),
-        password: Yup.string().required('Password is required')
-      })}
-      onSubmit={async (values, { setSubmitting, setErrors }) => {
-        try {
-          const res = await loginUser({
-            ...values,
-            via: 'otp'
-          });
+    <>
+      <Formik
+        initialValues={{
+          mobile: '',
+          password: ''
+        }}
+        validationSchema={Yup.object({
+          mobile: Yup.string()
+            .matches(/^[0-9]{10}$/, 'Enter valid mobile number')
+            .required('Mobile is required'),
+          password: Yup.string().required('Password is required')
+        })}
+        onSubmit={async (values, { setSubmitting, setErrors }) => {
+          try {
+            const res = await loginUser({
+              ...values,
+              via: 'otp'
+            });
 
-          if (res.statuscode === 1300) {
-            toast.success(res.message);
+            if (res.statuscode === 1300) {
+              toast.success(res.message);
 
-            setLoginPayload(values);
-            setOtpOpen(true);
-            return;
+              setLoginPayload(values);
+              setOtpOpen(true);
+              return;
+            }
+
+            if (res.statuscode === 200) {
+              toast.success(res.message);
+
+              localStorage.setItem('app-token', res.token);
+              navigate('/');
+            }
+
+            if (res.statuscode === 401) {
+              toast.error(res.message);
+            }
+          } catch (err) {
+            setErrors({
+              submit: err?.response?.data?.message || 'Login failed'
+            });
+          } finally {
+            setSubmitting(false);
           }
-
-          if (res.statuscode === 200) {
-            toast.success(res.message);
-
-            localStorage.setItem('app-token', res.token);
-            navigate('/');
-          }
-
-          if (res.statuscode === 401) {
-            toast.error(res.message);
-          }
-        } catch (err) {
-          setErrors({
-            submit: err?.response?.data?.message || 'Login failed'
-          });
-        } finally {
-          setSubmitting(false);
-        }
-      }}
-    >
-      {(formik) => (
-        <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={3}>
-            {/* MOBILE */}
-            <Grid size={12}>
-              <Stack sx={{ gap: 1 }}>
-                <InputLabel>Mobile Number</InputLabel>
-                <OutlinedInput
-                  fullWidth
-                  name="mobile"
-                  placeholder="Enter mobile number"
-                  value={formik.values.mobile}
-                  onChange={formik.handleChange}
-                  error={Boolean(formik.touched.mobile && formik.errors.mobile)}
-                />
-              </Stack>
-
-              {formik.touched.mobile && formik.errors.mobile && <FormHelperText error>{formik.errors.mobile}</FormHelperText>}
-            </Grid>
-
-            {/* PASSWORD */}
-            <Grid size={12}>
-              <Stack sx={{ gap: 1 }}>
-                <InputLabel>Password</InputLabel>
-
-                <OutlinedInput
-                  fullWidth
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  placeholder="Enter password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  error={Boolean(formik.touched.password && formik.errors.password)}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton onClick={() => setShowPassword((prev) => !prev)}>
-                        {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </Stack>
-
-              {formik.touched.password && formik.errors.password && <FormHelperText error>{formik.errors.password}</FormHelperText>}
-            </Grid>
-
-            {/* OPTIONS */}
-            <Grid size={12}>
-              <Stack direction="row" justifyContent="space-between">
-                <FormControlLabel control={<Checkbox />} label="Keep me signed in" />
-                <Link component={RouterLink} to="#">
-                  Forgot Password?
-                </Link>
-              </Stack>
-            </Grid>
-
-            {/* ERROR */}
-            {formik.errors.submit && (
+        }}
+      >
+        {(formik) => (
+          <form onSubmit={formik.handleSubmit}>
+            <Grid container spacing={3}>
+              {/* MOBILE */}
               <Grid size={12}>
-                <FormHelperText error>{formik.errors.submit}</FormHelperText>
+                <Stack sx={{ gap: 1 }}>
+                  <InputLabel>Mobile Number</InputLabel>
+                  <OutlinedInput
+                    fullWidth
+                    name="mobile"
+                    placeholder="Enter mobile number"
+                    value={formik.values.mobile}
+                    onChange={formik.handleChange}
+                    error={Boolean(formik.touched.mobile && formik.errors.mobile)}
+                  />
+                </Stack>
+
+                {formik.touched.mobile && formik.errors.mobile && <FormHelperText error>{formik.errors.mobile}</FormHelperText>}
               </Grid>
-            )}
 
-            {/* BUTTON */}
-            <Grid size={12}>
-              <AnimateButton>
-                <Button fullWidth variant="contained" type="submit" disabled={formik.isSubmitting}>
-                  {formik.isSubmitting ? 'Logging in...' : 'Login'}
-                </Button>
-              </AnimateButton>
+              {/* PASSWORD */}
+              <Grid size={12}>
+                <Stack sx={{ gap: 1 }}>
+                  <InputLabel>Password</InputLabel>
+
+                  <OutlinedInput
+                    fullWidth
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    placeholder="Enter password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    error={Boolean(formik.touched.password && formik.errors.password)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton onClick={() => setShowPassword((prev) => !prev)}>
+                          {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </Stack>
+
+                {formik.touched.password && formik.errors.password && <FormHelperText error>{formik.errors.password}</FormHelperText>}
+              </Grid>
+
+              {/* OPTIONS */}
+              <Grid size={12}>
+                <Stack direction="row" justifyContent="space-between">
+                  <FormControlLabel control={<Checkbox />} label="Keep me signed in" />
+                  <Link component={RouterLink} to="#" onClick={() => setOpenPassword(true)}>
+                    Forgot Password?
+                  </Link>
+                </Stack>
+              </Grid>
+
+              {/* ERROR */}
+              {formik.errors.submit && (
+                <Grid size={12}>
+                  <FormHelperText error>{formik.errors.submit}</FormHelperText>
+                </Grid>
+              )}
+
+              {/* BUTTON */}
+              <Grid size={12}>
+                <AnimateButton>
+                  <Button fullWidth variant="contained" type="submit" disabled={formik.isSubmitting}>
+                    {formik.isSubmitting ? 'Logging in...' : 'Login'}
+                  </Button>
+                </AnimateButton>
+              </Grid>
             </Grid>
-          </Grid>
 
-          {/* OTP MODAL */}
-          <OTPDialog open={otpOpen} onClose={() => setOtpOpen(false)} loginPayload={loginPayload} />
-        </form>
+            {/* OTP MODAL */}
+            <OTPDialog open={otpOpen} onClose={() => setOtpOpen(false)} loginPayload={loginPayload} />
+          </form>
+        )}
+      </Formik>
+
+      {openPassword && (
+        <Dialog open={openPassword} onClose={() => setOpenPassword(false)} maxWidth="xs" fullWidth>
+          <DialogTitle>{step === 1 ? 'Forgot Password' : 'Reset Password'}</DialogTitle>
+
+          <DialogContent>
+            <Stack spacing={2} mt={1}>
+              {step === 1 ? (
+                <>
+                  <TextField fullWidth label="Mobile Number" name="mobile" value={formData.mobile} onChange={handleChange} />
+
+                  <Button
+                    variant="contained"
+                    onClick={handleSendOtp}
+                    sx={{
+                      textTransform: 'none'
+                    }}
+                  >
+                    Send OTP
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <TextField fullWidth label="OTP" name="otp" value={formData.otp} onChange={handleChange} />
+
+                  <TextField
+                    fullWidth
+                    type="password"
+                    label="New Password"
+                    name="newPassword"
+                    value={formData.newPassword}
+                    onChange={handleChange}
+                  />
+
+                  <TextField
+                    fullWidth
+                    type="password"
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                  />
+
+                  <Button
+                    variant="contained"
+                    onClick={handleResetPassword}
+                    sx={{
+                      textTransform: 'none'
+                    }}
+                  >
+                    Reset Password
+                  </Button>
+                </>
+              )}
+            </Stack>
+          </DialogContent>
+        </Dialog>
       )}
-    </Formik>
+    </>
   );
 };
 

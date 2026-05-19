@@ -49,7 +49,7 @@ const handleSubmit = async (e) => {
 
     if (data?.statuscode === "TXN") {
       toast.success(data.message || "Payment initiated");
-      window.location.href = data.payment_link;
+      window.location.href = data.redirect_url;
     } else {
       toast.error(data?.message || "Payment failed");
     }

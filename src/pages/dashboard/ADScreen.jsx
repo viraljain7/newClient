@@ -1,8 +1,6 @@
-import { useSelector } from 'react-redux';
-import useInitializeAuth from '../../shared/useActiveServices';
-import RTScreen from './RTScreen';
 
-import { useEffect, useState } from 'react';
+
+import {  useState } from 'react';
 
 // material-ui
 import {
@@ -12,7 +10,6 @@ import {
   Grid,
   IconButton,
   List,
-  ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
@@ -36,7 +33,6 @@ import OrdersTable from 'sections/dashboard/default/OrdersTable';
 import EllipsisOutlined from '@ant-design/icons/EllipsisOutlined';
 import GiftOutlined from '@ant-design/icons/GiftOutlined';
 import MessageOutlined from '@ant-design/icons/MessageOutlined';
-import SettingOutlined from '@ant-design/icons/SettingOutlined';
 
 // avatars
 import avatar1 from 'assets/images/users/avatar-1.png';
@@ -44,11 +40,7 @@ import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
 
-import MaxWidthDialog from '../../myapp/kyc';
-import ADScreen from './ADScreen';
-// import useInitializeAuth from '../../shared/useActiveServices';
-
-// import api from "./baseApi";
+;
 
 // styles
 const avatarSX = { width: 32, height: 32 };
@@ -59,23 +51,12 @@ const cardSX = {
   boxShadow: 'none'
 };
 
-export default function DashboardDefault() {
+function ADScreen() {
   const [orderMenuAnchor, setOrderMenuAnchor] = useState(null);
-
-  // useInitializeAuth();
-
-  const user = useSelector((state) => state.user.profile);
-
-  if (user?.role?.name === 'Retailer') {
-    return <RTScreen />;
-  } else if (user?.role?.name === 'Admin') {
-    return <ADScreen />;
-  }
 
   return (
     <Grid container rowSpacing={2} columnSpacing={2}>
       {/* HEADER */}
-      {user?.role?.name !== 'Admin' && user?.kyc !== 'verified' && <MaxWidthDialog />}
 
       <Grid size={12}>
         <Typography variant="h5" fontWeight={700}>
@@ -228,3 +209,5 @@ export default function DashboardDefault() {
     </Grid>
   );
 }
+
+export default ADScreen;
