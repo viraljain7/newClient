@@ -41,7 +41,7 @@ const ProtectedRoute = ({ children, roles = [], serviceCode }) => {
     const init = async () => {
       await fetchActiveService();
 
-      console.log('SERVICE FETCHED', location.pathname);
+      console.log('SERVICE FETCHEDdd', location.pathname);
     };
 
     init();
@@ -68,6 +68,7 @@ const ProtectedRoute = ({ children, roles = [], serviceCode }) => {
   }
 
   if (serviceCode) {
+
     const hasService = userServices?.some((service) => service.code === serviceCode && service.value === '1');
 
     if (!hasService) {

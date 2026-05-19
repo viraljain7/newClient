@@ -54,25 +54,5 @@ const serviceGroups = [
     redirect: 'payment6'
   },
 // /???????????//////////////////?????????????????????????
-  {
-    title: 'Silver 2',
-    providertype: 'easebuzz',
-    redirect: 'payment7'
-  },
-  {
-    title: 'Diamond 2',
-    providertype: 'payucruise',
-    redirect: 'payment8'
-  },
-
-  {
-    title: 'Premium 2',
-    providertype: 'nixacfpg5',
-    redirect: 'payment9'
-  },
-  {
-    title: 'Premium 2',
-    providertype: 'nixapremium2',
-    redirect: 'payment10'
-  }
+  
 ];

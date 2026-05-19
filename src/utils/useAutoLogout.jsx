@@ -1,45 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from 'react';
 
-const INACTIVITY_LIMIT = 30 * 60 * 1000; // 10 min
+const INACTIVITY_LIMIT = 15 * 60 * 1000;
 
 export default function useAutoLogout(logoutFn) {
+  const timeoutRef = useRef();
+
   useEffect(() => {
-    let timeout;
-
     const resetTimer = () => {
-      const now = Date.now();
-      localStorage.setItem("lastActivity", now.toString());
+      localStorage.setItem('lastActivity', Date.now());
 
-      if (timeout) clearTimeout(timeout);
+      clearTimeout(timeoutRef.current);
 
-      timeout = setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
+        console.log('AUTO LOGOUT');
         logoutFn();
       }, INACTIVITY_LIMIT);
     };
 
-    const handleStorageChange = (e) => {
-      if (e.key === "lastActivity") {
-        resetTimer(); // sync across tabs
-      }
-    };
+    const events = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'];
 
-    const events = ["mousemove", "keydown", "click", "scroll"];
+    events.forEach((event) => {
+      window.addEventListener(event, resetTimer);
+    });
 
-    events.forEach(event =>
-      window.addEventListener(event, resetTimer)
-    );
-
-    window.addEventListener("storage", handleStorageChange);
-
-    // Initial start
+    // start timer first time
     resetTimer();
 
     return () => {
-      events.forEach(event =>
-        window.removeEventListener(event, resetTimer)
-      );
-      window.removeEventListener("storage", handleStorageChange);
-      if (timeout) clearTimeout(timeout);
+      clearTimeout(timeoutRef.current);
+
+      events.forEach((event) => {
+        window.removeEventListener(event, resetTimer);
+      });
     };
   }, [logoutFn]);
 }

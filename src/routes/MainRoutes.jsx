@@ -414,7 +414,7 @@ const MainRoutes = {
     {
       path: 'services/add-money/payment1',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="payueducation">
           <PG1Page />
         </ProtectedRoute>
       )
@@ -422,7 +422,7 @@ const MainRoutes = {
     {
       path: 'services/add-money/payment2',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="zwitch">
           <PG2Page />
         </ProtectedRoute>
       )
@@ -430,7 +430,7 @@ const MainRoutes = {
     {
       path: 'services/add-money/payment3',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="premiumpg3">
           <PG3Page />
         </ProtectedRoute>
       )
@@ -438,7 +438,7 @@ const MainRoutes = {
     {
       path: 'services/add-money/payment4',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="diamondpg1">
           <PG4Page />
         </ProtectedRoute>
       )
@@ -446,7 +446,7 @@ const MainRoutes = {
     {
       path: 'services/add-money/payment5',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="diamondpg2">
           <PG5Page />
         </ProtectedRoute>
       )
@@ -454,7 +454,7 @@ const MainRoutes = {
     {
       path: 'services/add-money/payment6',
       element: (
-        <ProtectedRoute roles={['Retailer']}>
+        <ProtectedRoute roles={['Retailer']} serviceCode="diamondpg3">
           <PG6Page />
         </ProtectedRoute>
       )

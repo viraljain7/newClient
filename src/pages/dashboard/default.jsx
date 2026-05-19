@@ -1,3 +1,7 @@
+import { useSelector } from 'react-redux';
+import useInitializeAuth from '../../shared/useActiveServices';
+import RTScreen from './RTScreen';
+
 import { useEffect, useState } from 'react';
 
 // material-ui
@@ -41,7 +45,7 @@ import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
 
 import MaxWidthDialog from '../../myapp/kyc';
-import useInitializeAuth from '../../shared/useActiveServices';
+// import useInitializeAuth from '../../shared/useActiveServices';
 
 // import api from "./baseApi";
 
@@ -57,12 +61,19 @@ const cardSX = {
 export default function DashboardDefault() {
   const [orderMenuAnchor, setOrderMenuAnchor] = useState(null);
 
-  useInitializeAuth();
+  // useInitializeAuth();
+
+  const user = useSelector((state) => state.user.profile);
+
+  if (user?.role?.name === 'Retailer') {
+    return <RTScreen />;
+  }
 
   return (
     <Grid container rowSpacing={2} columnSpacing={2}>
-      <MaxWidthDialog />
       {/* HEADER */}
+      {user?.role?.name !== 'Admin' && user?.kyc !== 'verified' && <MaxWidthDialog />}
+
       <Grid size={12}>
         <Typography variant="h5" fontWeight={700}>
           Dashboard

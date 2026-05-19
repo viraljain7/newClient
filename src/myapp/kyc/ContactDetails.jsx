@@ -45,6 +45,7 @@ function ContactDetails({ handleNext, user }) {
   // SEND OTP
   // ==============================
   const handleSendOtp = async () => {
+
     try {
       // SEND OTP
       const otpRes = await sendOtp();
@@ -66,6 +67,17 @@ function ContactDetails({ handleNext, user }) {
   // VERIFY OTP + SUBMIT
   // ==============================
   const handleSubmit = async () => {
+  const isEmpty = Object.values(formData).some(
+    (value) => value.trim() === ""
+  );
+
+  if (isEmpty) {
+    toast.error("All fields are required");
+    return;
+  }
+
+
+
     try {
       const otpRes = await verifyOtp({
         otp: formData.otp

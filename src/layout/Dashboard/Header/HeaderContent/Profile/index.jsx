@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -85,30 +85,28 @@ export default function Profile() {
 
   const navigate = useNavigate();
 
-  const userLogoutHandler = async () => {
-    try {
-      const res = await logoutUser();
+const userLogoutHandler = useCallback(async () => {
+  try {
+    const res = await logoutUser();
 
-      if (res?.statuscode === 'TXN') {
-        toast.success(res.message);
-        localStorage.removeItem('app-token');
-
-        navigate('/login');
-      }
-    } catch (err) {
-      // even if API fails, still logout locally
-      toast.error('Session expired');
-    } finally {
-      localStorage.removeItem('app-token');
-      dispatch(clearUserProfile()); // ✅ IMPORTANT
-      dispatch(clearBBPS());
-      dispatch(clearUserActiveService());
-
-      navigate('/login');
+    if (res?.statuscode === "TXN") {
+      toast.success(res.message);
     }
-  };
-  useAutoLogout(userLogoutHandler);
+  } catch (err) {
+    toast.error("Session expired");
+  } finally {
+    localStorage.removeItem("app-token");
+    localStorage.removeItem("lastActivity");
 
+    dispatch(clearUserProfile());
+    dispatch(clearBBPS());
+    dispatch(clearUserActiveService());
+
+    navigate("/login");
+  }
+}, [dispatch, navigate]);
+
+useAutoLogout(userLogoutHandler);
   return (
     <Box sx={{ flexShrink: 0, ml: 'auto' }}>
       <Tooltip title="Profile" disableInteractive>
