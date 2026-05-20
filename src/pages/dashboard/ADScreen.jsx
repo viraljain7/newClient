@@ -23,7 +23,6 @@ const cardSX = {
 };
 
 function ADScreen() {
-
   const [wallets, setWallets] = useState({
     admin: {},
     downline: {}
@@ -85,12 +84,18 @@ function ADScreen() {
           title="Main Wallet"
           count={wallets.admin.mainWallet}
           percentage={59.3}
-          extra={wallets.downline.mainWallet}
+          extra={'Downline: ' + wallets.downline.mainWallet}
           sx={cardSX}
         />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <WalletCard title="Qr Wallet" count={wallets.admin.qrWallet} percentage={70.5} extra={wallets.downline.qrWallet} sx={cardSX} />
+        <WalletCard
+          title="Qr Wallet"
+          count={wallets.admin.qrWallet}
+          percentage={70.5}
+          extra={'Downline: ' + wallets.downline.qrWallet}
+          sx={cardSX}
+        />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
         <WalletCard
@@ -98,7 +103,7 @@ function ADScreen() {
           count={wallets.admin.pgWallet}
           percentage={27.4}
           color="warning"
-          extra={wallets.downline.pgWallet}
+          extra={'Downline: ' + wallets.downline.pgWallet}
           sx={cardSX}
         />
       </Grid>
@@ -108,7 +113,7 @@ function ADScreen() {
           count={wallets.admin.aepsWallet}
           percentage={27.4}
           color="warning"
-          extra={"Downline: "+wallets.downline.aepsWallet}
+          extra={'Downline: ' + wallets.downline.aepsWallet}
           sx={cardSX}
         />
       </Grid>
@@ -208,7 +213,7 @@ function ADScreen() {
                   </Typography>
 
                   <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
-                     Business Value
+                    Business Value
                   </Typography>
                 </Box>
 
@@ -216,11 +221,10 @@ function ADScreen() {
                 <Typography
                   variant="h4"
                   fontWeight={800}
-
                   sx={{
                     mt: 3,
                     letterSpacing: '-1px',
-                    color:'black'
+                    color: 'black'
                   }}
                 >
                   ₹ {item.total_amount}

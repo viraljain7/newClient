@@ -35,7 +35,7 @@ const ProtectedRoute = ({ children, roles = [], serviceCode }) => {
     };
 
     init();
-  }, [token ]);
+  }, [token, location.pathname]);
 
   useEffect(() => {
     const init = async () => {
