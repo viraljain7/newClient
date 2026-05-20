@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 
 import useServiceManager from './useServiceManager';
-import { productName } from '../../../utils/productName';
+// import { productName } from '../../../utils/productName';
 
 /* ================= SKELETON ================= */
 
@@ -60,7 +60,7 @@ export default function ServiceTable() {
 
       status: item?.value === '1',
 
-      name: `${item?.name || '-'} (${item?.id || '-'})`
+      name: `${item?.name || '-'}`
     }));
   }, [services]);
 
@@ -85,6 +85,23 @@ export default function ServiceTable() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const getProductName = (name) => {
+    if (name === 'Payu Education') return 'Silver 1 (nixa-Razorpay)';
+    else if (name === 'Zwitch') return 'Diamond 3 (nixasilver 2 Coastlink)';
+    else if (name === 'Paytm') return 'Silver 2';
+    else if (name === 'Payu Cruise') return 'Diamond 2';
+    else if (name === 'Domestic Remittance') return 'Payout';
+    else if (name === 'CF PG 5') return 'Premium 1';
+    else if (name === 'Premium PG 6') return 'Premium 2';
+    else if (name === 'Premium PG 7') return 'Premium 3 (Yana Cashfree pg 2)';
+    else if (name === 'Premium PG 8') return 'Premium 4 (Yana Razorpay pg 3)';
+    else if (name === 'Premium PG 9') return 'Silver 2 (yanedu smartpg4 razorpay)';
+    else if (name === 'Premium PG 10') return 'Diamond 2 (cruyana diamondpg1 razorpay)';
+    else if (name === 'online credit card') return 'BBPS';
+  
+    else return name; // rest unchanged
   };
 
   return (
@@ -167,7 +184,7 @@ export default function ServiceTable() {
                   {/* DETAILS */}
 
                   <TableCell>
-                    <Typography fontWeight={600}>{productName(row.name)}</Typography>
+                    <Typography fontWeight={600}>{getProductName(row.name)}</Typography>
                   </TableCell>
                 </TableRow>
               ))

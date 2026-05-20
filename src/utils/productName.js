@@ -1,6 +1,6 @@
 function productName(name) {
   let productName = "";
-  if (name === "dmt") productName = "T360 Pay";
+  if (name === "dmt") productName = "Payout";
   else if (name === "payu-education") productName = "Add Money (Silver 1)";
   else if (name === "zwitch") productName = "Add Money (Diamond 3)";
   else if (name === "easebuzz") productName = "Add Money (Silver 2)";

@@ -42,7 +42,7 @@ export const TRANSACTION_COLUMNS  = [
 
   {
     field: "payout",
-    headerName: "T360 Pay (₹)",
+    headerName: "Payout (₹)",
     renderCell: (row) => format(row.payout)
   },
 

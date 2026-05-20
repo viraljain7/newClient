@@ -29,6 +29,36 @@ function SchemeProducts({ open, onClose }) {
     return products.filter((item) => (item?.name || item)?.toLowerCase()?.includes(search.toLowerCase()));
   }, [products, search]);
 
+  const getProductName = (name) => {
+    const up = name.toLowerCase();
+    switch (up) {
+      case 'payueducation':
+        return 'Silver 1';
+
+      case 'zwitch':
+        return 'Diamond 3';
+
+      case 'premiumpg3':
+        return 'Premium 3';
+
+      case 'diamondpg1':
+        return 'Premium 4';
+
+      case 'diamondpg2':
+        return 'Silver 2';
+
+      case 'diamondpg3':
+        return 'Diamond 2';
+
+      case 'dmt':
+        return 'Payout';
+
+      default:
+        return name;
+    }
+  };
+  
+
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>
       <Box
@@ -96,7 +126,7 @@ function SchemeProducts({ open, onClose }) {
                 <OutlineButton
                   key={item}
                   size="large"
-                  label={item}
+                  label={getProductName(item)}
                   sx={{
                     width: '100%',
                     height: 45,
