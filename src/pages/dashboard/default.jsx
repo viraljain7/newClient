@@ -46,6 +46,7 @@ import avatar4 from 'assets/images/users/avatar-4.png';
 
 import MaxWidthDialog from '../../myapp/kyc';
 import ADScreen from './ADScreen';
+import DTScreen from './DTScreen';
 // import useInitializeAuth from '../../shared/useActiveServices';
 
 // import api from "./baseApi";
@@ -70,6 +71,8 @@ export default function DashboardDefault() {
     return <RTScreen />;
   } else if (user?.role?.name === 'Admin') {
     return <ADScreen />;
+  } else if (user?.role?.name === 'Distributor'||user?.role?.name === 'MasterDistributor') {
+    return <DTScreen />;
   }
 
   return (

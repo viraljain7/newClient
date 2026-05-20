@@ -35,7 +35,7 @@ const ProtectedRoute = ({ children, roles = [], serviceCode }) => {
     };
 
     init();
-  }, [token]);
+  }, [token ]);
 
   useEffect(() => {
     const init = async () => {
@@ -68,7 +68,6 @@ const ProtectedRoute = ({ children, roles = [], serviceCode }) => {
   }
 
   if (serviceCode) {
-
     const hasService = userServices?.some((service) => service.code === serviceCode && service.value === '1');
 
     if (!hasService) {
