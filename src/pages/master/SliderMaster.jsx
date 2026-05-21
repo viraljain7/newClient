@@ -1,8 +1,8 @@
-import React from 'react'
+import SliderManager from '../../myapp/master/SliderManager'
 
 function SliderMaster() {
   return (
-    <div>SliderMaster</div>
+    <SliderManager/>
   )
 }
 

@@ -23,9 +23,13 @@ import BankDetails from './BankDetails';
 import VideoKyc from './VideoKyc';
 import Agreement from './Agreement';
 import Completed from './Completed';
-import Rejected from './Rejected';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { logoutUser } from '../../sections/auth/helper/api';
+import { clearUserActiveService, clearUserProfile } from '../../store/slices/userSlice';
+import { clearBBPS } from '../../store/slices/bbpsSlice';
+import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 // ==============================|| STEPS ||============================== //
 
 const steps = [
@@ -63,9 +67,9 @@ const steps = [
 
 export default function VerticalKycDialogStepper() {
   const [open, setOpen] = React.useState(true);
-  
+
   const user = useSelector((state) => state?.user?.profile);
-  const [activeStep, setActiveStep] = React.useState(user?.progress||0)
+  const [activeStep, setActiveStep] = React.useState(user?.progress || 0);
 
   // Disable backdrop + esc close
   const handleClose = (_, reason) => {
@@ -88,6 +92,30 @@ export default function VerticalKycDialogStepper() {
     setActiveStep(0);
   };
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userLogoutHandler = React.useCallback(async () => {
+    try {
+      const res = await logoutUser();
+
+      if (res?.statuscode === 'TXN') {
+        toast.success(res.message);
+      }
+    } catch (err) {
+      toast.error('Session expired');
+    } finally {
+      localStorage.removeItem('app-token');
+      localStorage.removeItem('lastActivity');
+
+      dispatch(clearUserProfile());
+      dispatch(clearBBPS());
+      dispatch(clearUserActiveService());
+
+      navigate('/login');
+    }
+  }, []);
+
   return (
     <Dialog open={open} fullScreen disableEscapeKeyDown onClose={handleClose}>
       {/* Header */}
@@ -101,9 +129,19 @@ export default function VerticalKycDialogStepper() {
         }}
       >
         Complete Your KYC
-        {/* <IconButton onClick={() => setOpen(false)}>
-          <CloseIcon />
-        </IconButton> */}
+        <IconButton
+          onClick={userLogoutHandler}
+          sx={{
+            bgcolor: 'error.main',
+            color: '#fff',
+            borderRadius: 2,
+            '&:hover': {
+              bgcolor: 'error.dark'
+            }
+          }}
+        >
+          <LogoutIcon fontSize="small" />
+        </IconButton>
       </DialogTitle>
 
       {/* Body */}

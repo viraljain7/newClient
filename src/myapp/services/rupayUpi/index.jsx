@@ -4,7 +4,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { startLoading, stopLoading } from '../../../store/slices/loaderSlice';
-import { uploadSlip } from './helper/rupayUPIApi';
+import { getQr, uploadSlip } from './helper/rupayUPIApi';
 
 export default function RupayUpiLoadRequest() {
   const dispatch = useDispatch();
@@ -52,6 +52,17 @@ export default function RupayUpiLoadRequest() {
     }
   };
 
+
+
+  const [currentQr, setCurrentQr] = React.useState(null);
+
+// fetch existing QR on load
+React.useEffect(() => {
+  getQr()
+    .then((data) => { if (data?.status) setCurrentQr(data.image_url); })
+    .catch(console.error);
+}, []);
+
   return (
     <Box
       sx={{
@@ -84,7 +95,7 @@ export default function RupayUpiLoadRequest() {
             >
               <Box
                 component="img"
-                src={import.meta.env.VITE_IMG_URL + 'payments/QRRuPayUPI.png?v=' + new Date().getTime()}
+                src={currentQr}
                 alt="Payment"
                 sx={{
                   width: '70%',

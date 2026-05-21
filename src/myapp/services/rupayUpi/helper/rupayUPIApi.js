@@ -16,3 +16,9 @@ export const uploadSlip = async (form) => {
   return res.data;
 };
 
+// Get current QR image URL
+export const getQr = async () => {
+  const res = await api.get('/qr-image');
+  return res.data;
+  // returns: { status: true, image_url: "https://..." }
+};
