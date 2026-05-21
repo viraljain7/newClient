@@ -17,14 +17,17 @@ import {
   Menu,
   MenuItem,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  FormControl,
+  Select
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { useMember } from './useMember';
-import { BlueButton } from '../../../components/CommonComponent';
+import { BlueButton, OutlineButton } from '../../../components/CommonComponent';
 import AddAgentDrawer from './AddAgentDrawer';
 import { useNavigate } from 'react-router';
+import { Stack } from '@mui/system';
 
 /* ================= WALLET DROPDOWN ================= */
 const WalletDetails = ({ wallet }) => {
@@ -112,15 +115,28 @@ export default function AgentTable({ agentType, agentCode }) {
         aeps: item.aepsbalance,
         lock: item.lockamount
       },
-      role: item.role.name
+      role: item.role.name,
+      kyc: item.kyc
     }));
   }, [data]);
 
-  // 🔍 Search
-  const filteredRows = rows.filter((r) => r.name.toLowerCase().includes(search.toLowerCase()) || r.mobile.includes(search));
+  const [filteredType, setFilteredType] = React.useState('all');
+
+  // 🔍 Search + Filter
+  const filteredRows = rows.filter((r) => {
+    const matchesSearch = r.name.toLowerCase().includes(search.toLowerCase()) || r.mobile.includes(search);
+
+    const matchesFilter = filteredType === 'all' ? true : r.kyc === filteredType;
+
+    return matchesSearch && matchesFilter;
+  });
 
   const visibleRows = filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
+  // Pending Filter
+  const handlerPending = () => {
+    setFilteredType('submitted');
+  };
   const navigate = useNavigate();
 
   return (
@@ -140,6 +156,7 @@ export default function AgentTable({ agentType, agentCode }) {
       </Backdrop>
 
       {/* 🔥 Top Bar */}
+
       <Box
         sx={{
           display: 'flex',
@@ -158,7 +175,27 @@ export default function AgentTable({ agentType, agentCode }) {
           }}
           sx={{ width: 'auto' }}
         />
-        <BlueButton sx={{ width: 'auto' }} label="+  Add New Agent" onClick={() => setOpenDrawer(true)} />
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <FormControl size="small" sx={{ minWidth: 180 }}>
+            <Select
+              value={filteredType}
+              onChange={(e) => {
+                setFilteredType(e.target.value);
+                setPage(0);
+              }}
+              displayEmpty
+            >
+              <MenuItem value="all">All Users</MenuItem>
+
+              <MenuItem value="submitted">Submitted KYC</MenuItem>
+
+              <MenuItem value="verified">Verified KYC</MenuItem>
+
+              <MenuItem value="pending">Pending KYC</MenuItem>
+            </Select>
+          </FormControl>
+          <BlueButton sx={{ width: 'auto' }} label="+  Add New Agent" onClick={() => setOpenDrawer(true)} />
+        </Stack>
       </Box>
 
       {/* 📊 Table */}

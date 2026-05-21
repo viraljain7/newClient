@@ -93,13 +93,12 @@ export default function ServiceTable() {
     else if (name === 'Paytm') return 'Silver 2';
     else if (name === 'Payu Cruise') return 'Diamond 2';
     else if (name === 'Domestic Remittance') return 'Payout';
-    else if (name === 'CF PG 5') return 'Premium 1';
-    else if (name === 'Premium PG 6') return 'Premium 2';
-    else if (name === 'Premium PG 7') return 'Premium 3 (Yana Cashfree pg 2)';
+    else if (name === 'Premium PG 7') return 'Premium 2 (Yana Cashfree pg 2)';
     else if (name === 'Premium PG 8') return 'Premium 4 (Yana Razorpay pg 3)';
     else if (name === 'Premium PG 9') return 'Silver 2 (yanedu smartpg4 razorpay)';
     else if (name === 'Premium PG 10') return 'Diamond 2 (cruyana diamondpg1 razorpay)';
-    else if (name === 'online credit card') return 'BBPS';
+    else if (name === 'Online Credit Card') return 'BBPS';
+    else if (name === 'BBPS') return 'AEPS(BBPS)';
   
     else return name; // rest unchanged
   };

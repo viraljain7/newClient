@@ -20,6 +20,7 @@ import SetSchemePage from '../pages/master/SetSchemePage';
 import UserProfilePage from '../pages/Profile/UserProfilePage';
 import RupayUPIReportPage from '../pages/transaction-report/RupayUPIReportPage';
 import RupayUpiApprovePage from '../pages/fund/RupayUpiApprove';
+import PG7Page from '../pages/services/PG/PG7Page';
 
 // dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -456,6 +457,14 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="diamondpg3">
           <PG6Page />
+        </ProtectedRoute>
+      )
+    },
+  {
+      path: 'services/add-money/payment7',
+      element: (
+        <ProtectedRoute roles={['Retailer']} serviceCode="platinumpg1">
+          <PG7Page />
         </ProtectedRoute>
       )
     },

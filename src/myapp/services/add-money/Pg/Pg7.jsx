@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import api from '../../../../shared/BaseApi';
 
-function Pg3() {
+function Pg7() {
   const [amount, setAmount] = useState('');
   const [finalAmount, setFinalAmount] = useState(null);
 
@@ -28,8 +28,7 @@ const handleSubmit = async (e) => {
   const surlWithParams = `${window.location.origin}/invoice/${newTxnId}`;
 
   try {
-
-        const amountDecimal = parseFloat(finalAmount.toFixed(2));
+      const amountDecimal = parseFloat(finalAmount.toFixed(2));
 
       const formData = new FormData();
       formData.append("name", user.name);
@@ -39,7 +38,7 @@ const handleSubmit = async (e) => {
       formData.append("redirect_url", surlWithParams);
       formData.append("txnid", newTxnId);
 
-    const res = await api.post("/service/payin/pg7", formData, {
+    const res = await api.post("/service/payin/pg10", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -49,7 +48,7 @@ const handleSubmit = async (e) => {
 
     if (data?.statuscode === "TXN") {
       toast.success(data.message || "Payment initiated");
-      window.location.href = data.redirect_url;
+          window.location.href = data.redirect_url;
     } else {
       toast.error(data?.message || "Payment failed");
     }
@@ -80,7 +79,7 @@ const handleSubmit = async (e) => {
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {/* Title */}
           <Typography variant="h5" fontWeight={700} textAlign="center">
-            Premium 2
+            Platinum 2
           </Typography>
 
           {/* Amount Field */}
@@ -155,4 +154,4 @@ const handleSubmit = async (e) => {
   );
 }
 
-export default Pg3;
+export default Pg7;

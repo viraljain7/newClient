@@ -73,8 +73,11 @@ function TransferReturnDrawer({ open, onClose, data, onSuccess ,setLoading }) {
         });
         onClose(); // close drawer
         onSuccess();
+      }else{
+
+        toast.error(res.message || 'Transaction Failed ❌');
+        return ;
       }
-      toast.error(res.message || 'Transaction Failed ❌');
     } catch (err) {
       console.error(err);
       toast.error('Transaction Failed ❌');

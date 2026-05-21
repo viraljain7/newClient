@@ -11,7 +11,7 @@ const Services = {
   children: [
     {
       id: 'add-money',
-      title: 'Payment Gateway',
+      title: 'Add Money',
       type: 'item',
       url: '/services/add-money',
       roles: ['Retailer'],

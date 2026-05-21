@@ -101,7 +101,7 @@ export default function RTScreen() {
     },
 
     {
-      title: 'Payment Gateway',
+      title: 'Add Money',
       subtitle: 'Money Collection',
       icon: <ApiOutlined />,
       color: '#7c3aed',

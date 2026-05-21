@@ -39,7 +39,7 @@ function SchemeProducts({ open, onClose }) {
         return 'Diamond 3';
 
       case 'premiumpg3':
-        return 'Premium 3';
+        return 'Premium 2';
 
       case 'diamondpg1':
         return 'Premium 4';
