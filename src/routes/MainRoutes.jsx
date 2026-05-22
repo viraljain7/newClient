@@ -22,6 +22,8 @@ import RupayUPIReportPage from '../pages/transaction-report/RupayUPIReportPage';
 import RupayUpiApprovePage from '../pages/fund/RupayUpiApprove';
 import PG7Page from '../pages/services/PG/PG7Page';
 
+
+
 // dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
 
@@ -48,7 +50,8 @@ const Retailer = Loadable(lazy(() => import('pages/member/Retailer')));
 const TransferReturn = Loadable(lazy(() => import('pages/fund/TransferReturn')));
 const TransferReturnReport = Loadable(lazy(() => import('pages/fund/TransferReturnReport')));
 const FundRequest = Loadable(lazy(() => import('pages/fund/Request')));
-const PosPendingRequest = Loadable(lazy(() => import('pages/fund/PosPendingRequest')));
+const PosPendingRequestPageAD = Loadable(lazy(() => import('pages/fund/PosPendingRequestPageAD')));
+const PosRequestPageRT = Loadable(lazy(() => import('../pages/fund/PosRequestPageRT')));
 const AllFundReport = Loadable(lazy(() => import('pages/fund/AllFundReport')));
 
 // transaction report
@@ -263,7 +266,9 @@ const MainRoutes = {
     },
 
     // { path: 'fund/request', element: <FundRequest /> },
-    // { path: 'fund/pos-pending-request', element: <PosPendingRequest /> },
+    { path: 'fund/pos-pending-request', element: <PosPendingRequestPageAD /> },
+    { path: 'fund/pos-request', element: <PosRequestPageRT /> },
+
     // { path: 'fund/all-fund-report', element: <AllFundReport /> },
 
     // transaction report

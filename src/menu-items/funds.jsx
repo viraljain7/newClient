@@ -29,7 +29,7 @@ const fund = {
       roles: ['Admin', 'Subadmin'],
 
       icon: FileTextOutlined
-    }
+    },
 
     // {
     //   id: 'request',
@@ -43,18 +43,24 @@ const fund = {
     // //     size: 'small'
     // //   }
     // },
-    // {
-    //   id: 'pos-pending-request',
-    //   title: 'POS Pending Request',
-    //   type: 'item',
-    //   url: '/fund/pos-pending-request',
-    //   icon: ClockCircleOutlined,
-    // //   chip: {
-    // //     label: '0',
-    // //     color: 'success',
-    // //     size: 'small'
-    // //   }
-    // },
+    {
+      id: 'pos-pending-request',
+      title: 'POS Pending Request',
+      type: 'item',
+      url: '/fund/pos-pending-request',
+      icon: ClockCircleOutlined,
+      roles: ['Admin', 'Subadmin'],
+    },
+
+      {
+      id: 'pos-request',
+      title: 'POS Request',
+      type: 'item',
+      url: '/fund/pos-request',
+      icon: ClockCircleOutlined,
+      roles: ['Retailer'],
+
+    },
 
     // {
     //   id: 'all-fund-report',
