@@ -1,7 +1,4 @@
-import {
-  BankOutlined,
-  FileTextOutlined
-} from '@ant-design/icons';
+import { BankOutlined, FileTextOutlined } from '@ant-design/icons';
 
 const accountStatement = {
   id: 'account-statement',
@@ -22,8 +19,15 @@ const accountStatement = {
       type: 'item',
       url: '/account-statement/vendor-logs',
       icon: FileTextOutlined,
-      roles: ['Admin', 'Subadmin'],
-
+      roles: ['Admin', 'Subadmin']
+    },
+    {
+      id: 'login-logs',
+      title: 'Login Logs',
+      type: 'item',
+      url: '/account-statement/login-logs',
+      icon: FileTextOutlined,
+      roles: ['Admin', 'Subadmin']
     }
   ]
 };

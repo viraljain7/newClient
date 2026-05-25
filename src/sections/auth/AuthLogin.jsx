@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -62,6 +62,23 @@ function OTPDialog({ open, onClose, loginPayload }) {
     inputsRef.current[0].focus();
   };
 
+
+    const [ip, setIp] = useState('');
+
+  useEffect(() => {
+    const getIp = async () => {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json(); // fetch needs .json(), not .data
+        setIp(data.ip); // response is { ip: "x.x.x.x" }
+      } catch (err) {
+        console.error('Failed to fetch IP:', err);
+      }
+    };
+
+    getIp();
+  }, []);
+
   const handleSubmit = async () => {
     const finalOtp = otp.join('');
 
@@ -69,7 +86,9 @@ function OTPDialog({ open, onClose, loginPayload }) {
       const res = await loginUser({
         ...loginPayload,
         via: 'otp',
-        value: finalOtp
+        value: finalOtp,
+        ip_address:ip
+
       });
 
       if (res.statuscode === 200) {
@@ -220,6 +239,22 @@ const AuthLogin = () => {
     }
   };
 
+  const [ip, setIp] = useState('');
+
+  useEffect(() => {
+    const getIp = async () => {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json(); // fetch needs .json(), not .data
+        setIp(data.ip); // response is { ip: "x.x.x.x" }
+      } catch (err) {
+        console.error('Failed to fetch IP:', err);
+      }
+    };
+
+    getIp();
+  }, []);
+
   // ==============
 
   return (
@@ -239,7 +274,8 @@ const AuthLogin = () => {
           try {
             const res = await loginUser({
               ...values,
-              via: 'otp'
+              via: 'otp',
+              ip_address: ip
             });
 
             if (res.statuscode === 1300) {

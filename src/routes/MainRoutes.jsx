@@ -21,6 +21,7 @@ import UserProfilePage from '../pages/Profile/UserProfilePage';
 import RupayUPIReportPage from '../pages/transaction-report/RupayUPIReportPage';
 import RupayUpiApprovePage from '../pages/fund/RupayUpiApprove';
 import PG7Page from '../pages/services/PG/PG7Page';
+import LoginLogsReport from '../pages/account-statement/LoginLogs';
 
 
 
@@ -400,6 +401,14 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <VendorLogs />
+        </ProtectedRoute>
+      )
+    },
+      {
+      path: 'account-statement/login-logs',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
+          <LoginLogsReport />
         </ProtectedRoute>
       )
     },
