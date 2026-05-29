@@ -5,6 +5,7 @@ import { Box, Button, Grid, MenuItem, Stack, Typography } from '@mui/material';
 import { CustomInput, TabPanel } from '../UserProfile';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router';
+import { updateProfile } from '../memberUserUpdateApi';
 
 function Kyc({ tab, userDetails, handleUpdateKycStatus, refetchUserDetails }) {
   const [form, setForm] = useState({
@@ -30,15 +31,29 @@ function Kyc({ tab, userDetails, handleUpdateKycStatus, refetchUserDetails }) {
 
   const handleSubmit = async () => {
     try {
-     const response = await handleUpdateKycStatus({
-        user_id: userDetails?.id,
-        status: form.kyc_type
-      });
+      if (form.kyc_type === 'rejected') {
+        let payload = {
+          progress: 4,
+          user_id: userDetails?.id,
+        };
+        const res = await updateProfile(payload);
+        if (res?.statuscode === 'TXN') {
+          toast.success(res?.message || 'Profile updated successfully');
+        } else {
+          toast.error(res?.message || 'Failed to update profile');
+          return;
+        }
+      } else {
+        const response = await handleUpdateKycStatus({
+          user_id: userDetails?.id,
+          status: form.kyc_type
+        });
 
-      toast.success(response?.message || 'KYC status updated successfully');
-      await refetchUserDetails({
-        user_id: userDetails?.id
-      });
+        toast.success(response?.message || 'KYC status updated successfully');
+        await refetchUserDetails({
+          user_id: userDetails?.id
+        });
+      }
     } catch (error) {
       toast.error('Failed to update KYC status', error?.response?.data?.message || '');
       console.log(error);

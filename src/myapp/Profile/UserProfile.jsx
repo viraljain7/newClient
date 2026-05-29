@@ -22,6 +22,9 @@ import DeviceMapping from './helper/DeviceMapping';
 import { useParams } from 'react-router';
 import useUserProfile from './useUserProfile';
 import { getKycStyle } from './helper/Color';
+import { BlueButton,  } from '../../components/CommonComponent';
+import { updateProfile } from './memberUserUpdateApi';
+import toast from 'react-hot-toast';
 
 export function TabPanel({ children, value, index }) {
   return value === index ? children : null;
@@ -101,6 +104,20 @@ export default function UserProfile() {
 
   const [tab, setTab] = useState(0);
 
+  const SkipHandler = async () => {
+    let payload = {
+      progress: 3,
+      user_id
+    };
+    const res = await updateProfile(payload);
+    if (res?.statuscode === 'TXN') {
+      toast.success(res?.message || 'Profile updated successfully');
+    } else {
+      toast.error(res?.message || 'Failed to update profile');
+      return;
+    }
+  };
+
   return (
     <Card
       elevation={0}
@@ -137,7 +154,7 @@ export default function UserProfile() {
               </Typography>
               <Typography fontSize={16} fontWeight={600}></Typography>
 
-              <Stack direction="row" spacing={1} mt={1}>
+              <Stack direction="row" alignItems="center" mt={1}>
                 <Chip
                   size="small"
                   label={`KYC ${userDetails?.kyc || 'Not Verified'}`}
@@ -149,6 +166,7 @@ export default function UserProfile() {
                   }}
                 />
               </Stack>
+              <BlueButton label="Skip Aadhar & Pan" onClick={SkipHandler} />
             </Box>
           </Stack>
         </Stack>
