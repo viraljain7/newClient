@@ -26,7 +26,8 @@ const PosReport = () => {
     setSearch, // called when user submits search (Enter / clear)
     setFilters, // called when user clicks "Apply" in filter drawer
     filters,
-    search
+    search,
+    summary
   } = useTransactions({
     fromDate,
     toDate,
@@ -96,6 +97,7 @@ const PosReport = () => {
         onServerSearch={setSearch}
         onServerFilterApply={setFilters}
         onExport={handleExport}
+        summary={summary}
       />
     </Box>
   );

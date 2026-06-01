@@ -21,6 +21,7 @@ export function useTransactions({
 
   const [search, setSearch] = useState(initialSearch);
   const [filters, setFilters] = useState(initialFilters);
+  const [summary, setSummary] = useState(null);
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -54,6 +55,8 @@ export function useTransactions({
         perPage,
         total: body.total
       });
+
+      setSummary(body?.summary || null);
     } catch (err) {
       setError(err?.response?.data?.message || err.message || 'Failed to load transactions');
     } finally {
@@ -118,6 +121,7 @@ export function useTransactions({
     refetch,
 
     filters,
-    search
+    search,
+    summary 
   };
 }

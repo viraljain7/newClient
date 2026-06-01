@@ -1,16 +1,14 @@
-
-import { useEffect, useState } from "react";
-import { fetchTransactions } from "./TransactionApi";
-import { DEFAULT_PER_PAGE } from "../../../../shared/Constants";
+import { useEffect, useState } from 'react';
+import { fetchTransactions } from './TransactionApi';
+import { DEFAULT_PER_PAGE } from '../../../../shared/Constants';
 
 export function useTransactions({
   fromDate,
   toDate,
   initialPerPage = DEFAULT_PER_PAGE,
-  search: initialSearch = "",
+  search: initialSearch = '',
   filters: initialFilters = {}
 }) {
-
   // -------------------- STATE --------------------
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,6 +19,7 @@ export function useTransactions({
 
   const [search, setSearch] = useState(initialSearch);
   const [filters, setFilters] = useState(initialFilters);
+  const [summary, setSummary] = useState(null);
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -57,12 +56,9 @@ export function useTransactions({
         total: body.pagination.total
       });
 
+      setSummary(body?.summary || null);
     } catch (err) {
-      setError(
-        err?.response?.data?.message ||
-        err.message ||
-        "Failed to load transactions"
-      );
+      setError(err?.response?.data?.message || err.message || 'Failed to load transactions');
     } finally {
       setLoading(false);
     }
@@ -103,14 +99,13 @@ export function useTransactions({
   //   fetchData();
   // };
 
-
   const refetch = () => {
-  setFilters({});   // clear all filters
-  setSearch("");    // clear search
-  setPage(1); 
-  setPerPage(initialPerPage);
-        // go to first page
-};
+    setFilters({}); // clear all filters
+    setSearch(''); // clear search
+    setPage(1);
+    setPerPage(initialPerPage);
+    // go to first page
+  };
 
   // -------------------- RETURN --------------------
   return {
@@ -126,10 +121,7 @@ export function useTransactions({
     refetch,
 
     filters,
-    search
+    search,
+    summary
   };
 }
-
-
-
-
