@@ -19,7 +19,15 @@ const cardSX = {
   borderRadius: 2,
   border: '1px solid',
   borderColor: 'divider',
-  boxShadow: 'none'
+  boxShadow: 'none',
+  letterSpacing: '1px',
+  transition: 'all 0.3s ease',
+
+  '&:hover': {
+    transform: 'translateY(-4px)',
+    boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
+  }
+
 };
 
 function ADScreen() {
@@ -80,7 +88,6 @@ function ADScreen() {
     else if (name === 'dynamic-qr') productName = 'QR COLLECTION';
     else if (name === 'paytm_pos') productName = 'POS';
     else if (name === 'premiumpg3') productName = 'Premium 2';
-
     else if (name === 'diamondpg2') productName = 'Silver 2';
     else if (name === 'diamondpg3') productName = 'Diamond 2';
     // else if (name === 'cf_pg5') productName = 'Add Money (Premium 2)';
@@ -243,14 +250,18 @@ function ADScreen() {
                 {/* AMOUNT */}
                 <Typography
                   variant="h4"
-                  fontWeight={800}
+                  fontWeight={900}
                   sx={{
                     mt: 3,
-                    letterSpacing: '-1px',
+                    letterSpacing: '1px',
                     color: 'black'
                   }}
                 >
-                  ₹ {item.total_amount}
+                  ₹{' '}
+                  {Number(item.total_amount || 0).toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })}
                 </Typography>
 
                 {/* FOOTER */}

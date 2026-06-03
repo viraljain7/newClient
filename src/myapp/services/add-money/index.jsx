@@ -10,8 +10,8 @@ function AddMoney() {
   );
 
   return (
-    <Box sx={{ p: 1, maxWidth: '1200px', mx: 'auto' }}>
-      <Grid container spacing={3}>
+    <Box sx={{ p: 1,  mx: 'auto' }}>
+      <Grid sx={{display: 'flex', flexWrap: 'wrap', gap: 2 }} spacing={3}>
         {activeServiceGroups.map((group) => (
           <PgCharges group={group} />
         ))}

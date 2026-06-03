@@ -15,7 +15,7 @@ const Row = ({ label, value, highlight, color }) => (
   </Box>
 );
 
-const RightSide = ({ bill,setLoading,setBill }) => {
+const RightSide = ({ bill, setLoading, setBill }) => {
   const [amount, setAmount] = useState('');
 
   // 🔹 Helpers
@@ -26,34 +26,31 @@ const RightSide = ({ bill,setLoading,setBill }) => {
     })}`;
   };
 
-
-
   const maxAmount = Number(bill?.billAmount) / 100 || 0;
 
   const payHandler = async () => {
     setLoading(true);
-  try {
-    const res = await payBbpsBill(bill, amount); 
-    if (res?.statuscode === "TXN") {
-      setBill(null);
-      toast.success(res.message);
+    try {
+      if (amount >= 100000) {
+        toast.error('Amount should be less than ₹100000');
+        setLoading(false);
+        return;
+      }
+      const res = await payBbpsBill(bill, amount);
+      if (res?.statuscode === 'TXN') {
+        setBill(null);
+        toast.success(res.message);
+      } else {
+        toast.error(res?.message || 'Payment failed');
+      }
+    } catch (err) {
+      console.error(err);
 
-    } else {
-      toast.error(res?.message || "Payment failed");
+      toast.error(err?.response?.data?.message || 'Payment error');
+      setLoading(false);
     }
-
-  } catch (err) {
-    console.error(err);
-
-    toast.error(
-      err?.response?.data?.message || "Payment error"
-    );
     setLoading(false);
-
-  }
-    setLoading(false);
-
-};
+  };
 
   return (
     <Grid size={{ xs: 12, md: 7 }}>
@@ -86,7 +83,6 @@ const RightSide = ({ bill,setLoading,setBill }) => {
 
             {/* Amounts */}
             <Row label="Total Amount" value={formatAmount(bill?.billAmount)} highlight />
-
 
             <Divider />
 
@@ -134,11 +130,15 @@ const RightSide = ({ bill,setLoading,setBill }) => {
                 </Grid>
               </Grid>
               {/* 🔹 Validation */}
-              <ErrorValidation amount={amount}  maxAmount={maxAmount} />
+              <ErrorValidation amount={amount} maxAmount={maxAmount} />
             </Box>
 
             <Divider />
-
+            <Row
+              label="Note:"
+              value={<span style={{ fontWeight: 700 }}>[ Transaction Limit ] HDFC Bank: Max ₹49,995 | Other Banks: Max ₹99,995</span>}
+              color="error.main"
+            />
             <Row label="Bill Fetched: " value="Successfully" color="success.main" />
           </Box>
         </CardContent>
@@ -149,11 +149,9 @@ const RightSide = ({ bill,setLoading,setBill }) => {
 
 export default RightSide;
 
-const ErrorValidation = ({ amount,  maxAmount }) => {
+const ErrorValidation = ({ amount, maxAmount }) => {
   return (
     <>
-    
-
       {amount && Number(amount) > maxAmount && (
         <Typography fontSize={12} color="error.main" mt={0.5}>
           Amount should be ≤ ₹{maxAmount}
