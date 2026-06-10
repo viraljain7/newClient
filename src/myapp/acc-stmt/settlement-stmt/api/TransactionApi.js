@@ -1,9 +1,9 @@
 import api from '../../../../shared/BaseApi';
 
-export function fetchTransactions({ user_id }) {
+export function fetchTransactions({ user_id  }) {
   return api.post('/statement/main', {
     user_id,
-    settlement_type: 'instant'
+    settlement_type: 't1'
   });
 }
 

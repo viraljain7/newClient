@@ -1,70 +1,34 @@
 import { Typography } from "@mui/material";
+
 const format = (val) =>
   `₹ ${Number(val || 0).toLocaleString("en-IN")}`;
-export const TRANSACTION_COLUMNS  = [
-  {
-    field: "row_label",
-    headerName: "User",
-    renderCell: (row) => (
-      <Typography fontWeight={600}>{row.row_label}</Typography>
-    )
-  },
 
-  {
-    field: "pg_1_pg_4",
-    headerName: "Diamond 1 & 2 (₹)",
-    renderCell: (row) => format(row.pg_1_pg_4)
-  },
+export const generateColumns = (summary = {}) => {
+  return Object.keys(summary).map((key) => ({
+    field: key,
 
-  {
-    field: "pg_2",
-    headerName: "Silver 1 (₹)",
-    renderCell: (row) => format(row.pg_2)
-  },
+    headerName: key
+      .replaceAll("_", " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase()),
 
-  {
-    field: "pg_3",
-    headerName: "Silver 2 (₹)",
-    renderCell: (row) => format(row.pg_3)
-  },
+    renderCell: (row) => {
+      if (key === "row_label") {
+        return (
+          <Typography fontWeight={600}>
+            {row[key]}
+          </Typography>
+        );
+      }
 
-  {
-    field: "credit_card",
-    headerName: "Credit Card (₹)",
-    renderCell: (row) => format(row.credit_card)
-  },
+      if (key === "grand_total") {
+        return (
+          <Typography fontWeight={700}>
+            {format(row[key])}
+          </Typography>
+        );
+      }
 
-  {
-    field: "recharge",
-    headerName: "Recharge (₹)",
-    renderCell: (row) => format(row.recharge)
-  },
-
-  {
-    field: "payout",
-    headerName: "Payout (₹)",
-    renderCell: (row) => format(row.payout)
-  },
-
-  {
-    field: "billpay",
-    headerName: "BBPS (₹)",
-    renderCell: (row) => format(row.billpay)
-  },
-
-  {
-    field: "dmt",
-    headerName: "DMT (₹)",
-    renderCell: (row) => format(row.dmt)
-  },
-
-  {
-    field: "grand_total",
-    headerName: "Total (₹)",
-    renderCell: (row) => (
-      <Typography fontWeight={700}>
-        {format(row.grand_total)}
-      </Typography>
-    )
-  }
-];
+      return format(row[key]);
+    }
+  }));
+};

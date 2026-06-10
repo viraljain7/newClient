@@ -130,8 +130,8 @@ export default function RTScreen() {
       </Grid>
       <Grid size={{ xs: 12, sm: 4, lg: 4 }}>
         <AnalyticEcommerce
-          title="Aeps Wallet"
-          count={'₹ ' + user?.aepsbalance}
+          title="Settlement Wallet"
+          count={'₹ ' + user?.settlementwallet}
           percentage={27.4}
           color="warning"
           extra="1,943"

@@ -120,11 +120,11 @@ function ADScreen() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
         <WalletCard
-          title="Qr Wallet"
-          count={wallets.admin.qrWallet}
+          title="Settlement Wallet"
+          count={wallets.admin.settlementWallet}
           percentage={70.5}
-          extra={'Downline: ' + wallets.downline.qrWallet}
-          sx={cardSX}
+          extra={'Downline: ' + wallets.downline.settlementWallet}
+          sx={cardSX} 
         />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>

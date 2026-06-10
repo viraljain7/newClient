@@ -78,7 +78,10 @@ const StatusWithActions = ({ row }) => {
       {/* ✅ Dropdown Menu */}
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {(userRole === 'Admin' || userRole === 'Subadmin') && (
-          <MenuItem onClick={() => handleCheckStatus(row.apitxnid)}>Check Status</MenuItem>
+          <>
+            {console.log(row)}
+            <MenuItem onClick={() => handleCheckStatus(row.txnid)}>Check Status</MenuItem>
+          </>
         )}
         <MenuItem onClick={printInvoice}>invoice</MenuItem>
       </Menu>

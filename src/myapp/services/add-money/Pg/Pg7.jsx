@@ -8,56 +8,55 @@ function Pg7() {
   const [amount, setAmount] = useState('');
   const [finalAmount, setFinalAmount] = useState(null);
 
-  const user=useSelector(state=>state.user.profile)
+  const user = useSelector((state) => state.user.profile);
   const quickAmounts = [5, 7, 12, 15, 19];
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!amount) return toast.error("Enter amount");
-  if (finalAmount === null) return toast.error("Select a slab");
+    if (!amount) return toast.error('Enter amount');
+    if (finalAmount === null) return toast.error('Select a slab');
 
-  if (finalAmount < 100) {
-    toast.error("Amount must be greater than 100");
-    return;
-  }
+    if (finalAmount < 100) {
+      toast.error('Amount must be greater than 100');
+      return;
+    }
 
+    const newTxnId = `T${user?.id}${Date.now()}`;
+    const surlWithParams = `${window.location.origin}/invoice`;
 
-
-  const newTxnId = `T${user?.id}${Date.now()}`;
-  const surlWithParams = `${window.location.origin}/invoice/${newTxnId}`;
-
-  try {
+    try {
       const amountDecimal = parseFloat(finalAmount.toFixed(2));
 
       const formData = new FormData();
-      formData.append("name", user.name);
-      formData.append("mobile", user.mobile);
-      formData.append("email", user.email);
-      formData.append("amount", amountDecimal); // sends numeric decimal
-      formData.append("redirect_url", surlWithParams);
-      formData.append("txnid", newTxnId);
+      formData.append('name', user.name);
+      formData.append('mobile', user.mobile);
+      formData.append('email', user.email);
+      formData.append('amount', amountDecimal); // sends numeric decimal
+      formData.append('redirect_url', surlWithParams);
+      formData.append('txnid', newTxnId);
+      formData.append('settlement_type', 't1');
 
-    const res = await api.post("/service/payin/pg10", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+      const res = await api.post('/service/payin/pg11', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
 
-    const data = res.data;
+      const data = res.data;
 
-    if (data?.statuscode === "TXN") {
-      toast.success(data.message || "Payment initiated");
-          window.location.href = data.redirect_url;
-    } else {
-      toast.error(data?.message || "Payment failed");
+      if (data?.statuscode === 'TXN') {
+        toast.success(data.message || 'Payment initiated');
+        window.location.href = data.redirect_url;
+      } else {
+        toast.error(data?.message || 'Payment failed');
+      }
+    } catch (error) {
+      console.error('Payment error:', error?.response || error.message);
+      toast.error('Something went wrong');
+    } finally {
     }
-  } catch (error) {
-    console.error("Payment error:", error?.response || error.message);
-    toast.error("Something went wrong");
-  } finally {
-  }
-};
+  };
 
   const numericAmount = Number(amount) || 0;
 

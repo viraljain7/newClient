@@ -50,6 +50,10 @@ function SchemeProducts({ open, onClose }) {
       case 'diamondpg3':
         return 'Diamond 2';
 
+
+      case 'platinumpg1':
+        return 'Platinum 2 (pinlab yana Grocery)';
+
       case 'dmt':
         return 'Payout';
 

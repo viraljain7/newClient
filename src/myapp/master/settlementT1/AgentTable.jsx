@@ -19,43 +19,23 @@ import {
   Backdrop,
   CircularProgress,
   FormControl,
-  Select
+  Select,
+  Checkbox
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import { useMember } from './useMember';
-import { BlueButton, OutlineButton } from '../../../components/CommonComponent';
-import AddAgentDrawer from './AddAgentDrawer';
 import { useNavigate } from 'react-router';
-import { Stack } from '@mui/system';
+import { Stack, width } from '@mui/system';
+import { useMember } from '../../member/helper/useMember';
+import { BlueButton } from '../../../components/CommonComponent';
+import { createSettlementTransfer } from './memberApi';
+import toast from 'react-hot-toast';
+
+import { startLoading, stopLoading } from '../../../store/slices/loaderSlice.js';
+import { useDispatch } from 'react-redux';
 
 /* ================= WALLET DROPDOWN ================= */
 const WalletDetails = ({ wallet }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  return (
-    <>
-      <IconButton
-        size="small"
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-        sx={{
-          border: '1px solid #ddd',
-          borderRadius: 2,
-          backgroundColor: '#fafafa'
-        }}
-      >
-        <AccountBalanceWalletIcon fontSize="small" />
-      </IconButton>
-
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Main Wallet: ₹ {wallet.main}</MenuItem>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Qr Wallet: ₹ {wallet.qr}</MenuItem>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Pg Wallet: ₹ {wallet.pg}</MenuItem>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Aeps Wallet: ₹ {wallet.aeps}</MenuItem>
-        <MenuItem sx={{ color: 'red', fontSize: 12 }}>Lock Wallet: ₹ {wallet.lock}</MenuItem>
-      </Menu>
-    </>
-  );
+  return <MenuItem sx={{ color: 'red !important', fontSize: 12, textAlign: 'center' }}>₹ {wallet.settlement}</MenuItem>;
 };
 
 /* ================= SKELETON ================= */
@@ -95,8 +75,6 @@ export default function AgentTable({ agentType, agentCode }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [search, setSearch] = React.useState('');
 
-  const [openDrawer, setOpenDrawer] = React.useState(false);
-
   // ✅ Separate loading state only for the Backdrop (triggered by drawer actions)
   const [backdropLoading, setBackdropLoading] = React.useState(false);
 
@@ -113,7 +91,8 @@ export default function AgentTable({ agentType, agentCode }) {
         qr: item.qrbalance,
         pg: item.pgbalance,
         aeps: item.aepsbalance,
-        lock: item.lockamount
+        lock: item.lockamount,
+        settlement: item.settlementwallet
       },
       role: item.role.name,
       kyc: item.kyc
@@ -128,16 +107,79 @@ export default function AgentTable({ agentType, agentCode }) {
 
     const matchesFilter = filteredType === 'all' ? true : r.kyc === filteredType;
 
-    return matchesSearch && matchesFilter;
+    const walletPending = Number(r.wallet.settlement) > 1;
+    return matchesSearch && matchesFilter && walletPending;
   });
 
   const visibleRows = filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-  // Pending Filter
-  const handlerPending = () => {
-    setFilteredType('submitted');
-  };
   const navigate = useNavigate();
+  // State for bulk settlement remark
+  const [bulkRemark, setBulkRemark] = React.useState('');
+
+  // State for selected users
+  const [selectedIds, setSelectedIds] = React.useState([]);
+  const dispatch = useDispatch();
+
+  const handleBulkSettlement = React.useCallback(async () => {
+    if (selectedIds.length === 0) {
+      toast.error('Please select at least one user for settlement');
+      return;
+    }
+    if (!bulkRemark.trim()) {
+      toast.error('Please enter a settlement remark');
+      return;
+    }
+
+    setBackdropLoading(true);
+    dispatch(startLoading());
+
+    try {
+      const transfers = selectedIds.map((userId, i) => {
+        const row = rows.find((r) => r.id === userId);
+        return {
+          user_id: userId,
+          amount: row.wallet.settlement,
+          txnid: `STL${userId}${Date.now()}${i}`,
+          remark: bulkRemark
+        };
+      });
+
+      const results = await Promise.allSettled(transfers.map((payload) => createSettlementTransfer(payload)));
+
+      const succeeded = results.filter((r) => r.status === 'fulfilled');
+      const failed = results.filter((r) => r.status === 'rejected');
+
+      if (succeeded.length) toast.success(`${succeeded.length} settlement(s) successful`);
+      if (failed.length) toast.error(`${failed.length} settlement(s) failed`);
+
+      setSelectedIds([]);
+      setBulkRemark('');
+      refetch();
+    } catch (err) {
+      // Only hits if something outside Promise.allSettled throws
+      // e.g. rows.find() returning undefined, or a sync error in the map
+      toast.error('Unexpected error during settlement');
+      console.error(err);
+    } finally {
+      setBackdropLoading(false);
+      dispatch(stopLoading());
+    }
+  }, [selectedIds, bulkRemark, rows, refetch]);
+
+  const handleRowSelect = (id) => {
+    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  };
+
+  const allSelected = visibleRows.length > 0 && visibleRows.every((r) => selectedIds.includes(r.id));
+
+  const handleSelectAll = () => {
+    if (allSelected) {
+      setSelectedIds((prev) => prev.filter((id) => !visibleRows.find((r) => r.id === id)));
+    } else {
+      setSelectedIds((prev) => [...new Set([...prev, ...visibleRows.map((r) => r.id)])]);
+    }
+  };
 
   return (
     <Paper
@@ -176,25 +218,20 @@ export default function AgentTable({ agentType, agentCode }) {
           sx={{ width: 'auto' }}
         />
         <Stack direction="row" spacing={1.5} alignItems="center">
-          <FormControl size="small" sx={{ minWidth: 180 }}>
-            <Select
-              value={filteredType}
-              onChange={(e) => {
-                setFilteredType(e.target.value);
-                setPage(0);
-              }}
-              displayEmpty
-            >
-              <MenuItem value="all">All Users</MenuItem>
+          {/* check for all selected */}
 
-              <MenuItem value="submitted">Submitted KYC</MenuItem>
+          <Checkbox checked={allSelected} onChange={handleSelectAll} size="small" />
 
-              <MenuItem value="verified">Verified KYC</MenuItem>
+          {/* Remark Input */}
+          <TextField
+            className="form-control form-control-sm"
+            placeholder="Settlement Remark"
+            size="medium"
+            value={bulkRemark}
+            onChange={(e) => setBulkRemark(e.target.value)}
+          />
 
-              <MenuItem value="pending">Pending KYC</MenuItem>
-            </Select>
-          </FormControl>
-          <BlueButton sx={{ width: 'auto' }} label="+  Add New Agent" onClick={() => setOpenDrawer(true)} />
+          <BlueButton label="Apply" sx={{ width: '100px' }} onClick={handleBulkSettlement} />
         </Stack>
       </Box>
 
@@ -221,7 +258,7 @@ export default function AgentTable({ agentType, agentCode }) {
               <TableCell>Status</TableCell>
               <TableCell>User Details</TableCell>
               <TableCell>Parent Details</TableCell>
-              <TableCell align="center">Wallet</TableCell>
+              <TableCell align="center">SLT Wallet</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
@@ -238,8 +275,8 @@ export default function AgentTable({ agentType, agentCode }) {
             ) : (
               visibleRows.map((row) => (
                 <TableRow key={row.id} hover>
-                  <TableCell>
-                    <Switch checked={row.status} size="small" />
+                  <TableCell padding="checkbox">
+                    <Checkbox checked={selectedIds.includes(row.id)} onChange={() => handleRowSelect(row.id)} size="small" />
                   </TableCell>
 
                   <TableCell>
@@ -286,7 +323,7 @@ export default function AgentTable({ agentType, agentCode }) {
       {/* 📄 Pagination */}
       <TablePagination
         component="div"
-        count={total}
+        count={filteredRows.length}
         page={page}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[25, 50, 100, 500]}
@@ -296,20 +333,6 @@ export default function AgentTable({ agentType, agentCode }) {
           setPage(0);
         }}
         sx={{ borderTop: '1px solid #eee' }}
-      />
-
-      <AddAgentDrawer
-        open={openDrawer}
-        onClose={() => setOpenDrawer(false)}
-        agentCode={agentCode}
-        states={states}
-        agentType={agentType}
-        addAgent={addAgent} // ✅ passed from this hook instance
-        setLoading={setBackdropLoading}
-        onSuccess={() => {
-          refetch(); // ✅ Refetch after successful addition
-          setBackdropLoading(false); // ✅ Stop backdrop loading
-        }}
       />
     </Paper>
   );

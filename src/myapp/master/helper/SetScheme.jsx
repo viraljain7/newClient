@@ -86,6 +86,20 @@ const SetScheme = () => {
         name: 'servicecharge',
         label: 'Service Charge',
         type: 'number'
+      },
+      {
+        name: 'instantcharge',
+        label: 'Instant Charge',
+        type: 'number'
+      },
+      {
+        name: 'instantchargetype',
+        label: 'Instant Charge Type',
+        type: 'select',
+        options: [
+          { value: 'percent', label: 'Percent' },
+          { value: 'flat', label: 'Flat' }
+        ]
       }
     ],
     []
@@ -113,7 +127,7 @@ const SetScheme = () => {
       const formData = new FormData();
 
       formData.append('type', 'providers');
-      formData.append('producttype',productType);
+      formData.append('producttype', productType);
 
       const response = await fetch(API, {
         method: 'POST',
@@ -197,7 +211,11 @@ const SetScheme = () => {
 
                 servicetype: operatorData.chargetype || '',
 
-                servicecharge: operatorData.servicecharge || ''
+                servicecharge: operatorData.servicecharge || '',
+
+                instantcharge: operatorData.instantcharge || '',
+
+                instantchargetype: operatorData.instantchargetype || ''
               }
             : { ...emptyForm };
         });
@@ -245,7 +263,10 @@ const SetScheme = () => {
         'distributor',
         'retailer',
         'servicetype',
-        'servicecharge'
+        'servicecharge',
+        'instantcharge',
+
+        'instantchargetype'
       ];
 
       const isInvalid = requiredFields.some((field) => user[field] === '' || user[field] === null || user[field] === undefined);
@@ -280,7 +301,10 @@ const SetScheme = () => {
 
         retailer: user.retailer,
 
-        servicecharge: user.servicecharge
+        servicecharge: user.servicecharge,
+        instantcharge: user.instantcharge,
+        
+        instantchargetype: user.instantchargetype
       };
 
       const token = localStorage.getItem('app-token');
@@ -337,8 +361,8 @@ const SetScheme = () => {
       }}
     >
       <CardContent>
-        <Typography variant="h6" fontWeight={700} sx={{p:1, mb:3}}>
-           {schemeName?.toUpperCase()} / {productType?.toUpperCase()}
+        <Typography variant="h6" fontWeight={700} sx={{ p: 1, mb: 3 }}>
+          {schemeName?.toUpperCase()} / {productType?.toUpperCase()}
         </Typography>
 
         <TableContainer

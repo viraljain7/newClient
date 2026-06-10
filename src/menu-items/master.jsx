@@ -93,6 +93,14 @@ const master = {
       url: '/master/slider-master',
       roles: ['Admin', 'Subadmin'],
       icon: icons.PictureOutlined
+    },
+      {
+      id: 'settlement-t1',
+      title: 'Settlement T1',
+      type: 'item',
+      url: '/master/settlement-t1',
+      roles: ['Admin', 'Subadmin'],
+      icon: icons.ApiOutlined
     }
   ]
 };

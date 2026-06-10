@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchTransactions } from './TransactionApi';
 import { DEFAULT_PER_PAGE } from '../../../../shared/Constants';
+import { useSelector } from 'react-redux';
 
 export function useTransactions({
   fromDate,
@@ -11,8 +12,6 @@ export function useTransactions({
 }) {
   // -------------------- STATE --------------------
   const [rows, setRows] = useState([]);
-  const [footerRows, setFooterRows] = useState([]);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -22,14 +21,13 @@ export function useTransactions({
   const [search, setSearch] = useState(initialSearch);
   const [filters, setFilters] = useState(initialFilters);
 
-  const [summary, setSummary] = useState({});
-
   const [pagination, setPagination] = useState({
     currentPage: 1,
     lastPage: 1,
     perPage: initialPerPage,
     total: 0
   });
+const profile = useSelector((state) => state.user.profile);
 
   // -------------------- FETCH FUNCTION --------------------
   const fetchData = async () => {
@@ -38,31 +36,34 @@ export function useTransactions({
 
     try {
       const res = await fetchTransactions({
-        fromDate,
-        toDate,
-        page,
-        perPage
+        user_id:profile.id
       });
 
       const body = res.data;
 
       // set table data
       setRows(body?.data || []);
-      setFooterRows(body?.summary || []);
-      // set pagination
-      setPagination({
-        currentPage: body.current_page,
-        lastPage: body.total_pages,
-        perPage,
-        total: body.total
-      });
+      const vtotal = body?.data?.length || 0;
+      const vperPage = 10; // or your default
 
-      //summary
-      setSummary(body?.summary || {});
+      setPagination({
+        currentPage: 1,
+        perPage,
+        total: vtotal,
+        lastPage: Math.ceil(vtotal / vperPage)
+      });
+      // set pagination
+      // setPagination({
+      //   currentPage:1,
+      //   lastPage:10,
+      //   perPage:1,
+      //   total:25
+      // });
     } catch (err) {
       setError(err?.response?.data?.message || err.message || 'Failed to load transactions');
     } finally {
       setLoading(false);
+
     }
   };
 
@@ -112,10 +113,6 @@ export function useTransactions({
   // -------------------- RETURN --------------------
   return {
     rows,
-    footerRows,
-      summary,
-
-
     loading,
     error,
     pagination,

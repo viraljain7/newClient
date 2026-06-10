@@ -13,6 +13,13 @@ const accountStatement = {
       url: '/account-statement/main-ledger',
       icon: BankOutlined
     },
+      {
+      id: 'settlement-ledger',
+      title: 'Settlement Ledger',
+      type: 'item',
+      url: '/account-statement/settlement-ledger',
+      icon: BankOutlined
+    },
     {
       id: 'vendor-logs',
       title: 'Vendor Logs',

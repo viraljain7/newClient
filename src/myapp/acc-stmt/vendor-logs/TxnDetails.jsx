@@ -34,7 +34,7 @@ const TxnDetails = ({ data }) => {
   if ([
     "payu-education", "zwitch", "payucruise", "easebuzz",
     "cf_pg5", "nixapremium2", "premiumpg3",
-    "diamondpg1", "diamondpg2", "diamondpg3",
+    "diamondpg1", "diamondpg2", "diamondpg3","platinumpg1"
   ].includes(product))
     return (
       <>

@@ -82,18 +82,7 @@ export const TRANSACTION_COLUMNS = [
     )
   },
 
-  // ── Transaction Details ────────────────────────────────────────────────────
-  {
-    field: 'transaction',
-    headerName: 'Transaction Details',
-    renderCell: (row) => (
-      <Box sx={{ minWidth: 180 }}>
-        <Typography variant="body2" lineHeight={1.8} fontWeight={600}>
-          <TxnDetails data={row} />
-        </Typography>
-      </Box>
-    )
-  },
+
 
   // ── Reference ─────────────────────────────────────────────────────────────
   {
@@ -118,8 +107,7 @@ export const TRANSACTION_COLUMNS = [
         'fundloadwallet',
         'payout',
         'tds',
-        'paytm_pos',
-        
+        'paytm_pos'
       ]
     },
 
@@ -134,6 +122,9 @@ export const TRANSACTION_COLUMNS = [
         <Typography variant="body2" fontWeight={600}>
           Product: {productName(row.product)}
         </Typography>
+          <Typography variant="body2" fontWeight={600}>
+          Desc: {row.description}
+        </Typography>
       </Box>
     )
   },
@@ -141,36 +132,60 @@ export const TRANSACTION_COLUMNS = [
   // ── Amount ─────────────────────────────────────────────────────────────────
   {
     field: 'amount',
-    headerName: 'Amount',
+    headerName: 'Amount Details',
     sortable: true,
     renderCell: (row) => (
       <Box sx={{ minWidth: 150 }}>
         {[
           ['Amount', row.amount],
           ['Charge', row.charge],
-          ['Opening', row.opening_balance],
-          ['Closing', row.closing_balance]
+        
         ].map(([label, val]) => (
           <Typography key={label} variant="body2" fontWeight={600}>
             {label}: {Number(val ?? 0).toLocaleString('en-IN')}
+          </Typography>
+        ))}
+      <StatusWithActions row={row} />
+      </Box>
+    )
+  },
+
+    {
+    field: 'amount',
+    headerName: 'Opening',
+    sortable: true,
+    renderCell: (row) => (
+      <Box sx={{ minWidth: 150 }}>
+        {[
+        
+          ['Opening', row.opening_balance],
+          
+        ].map(([label, val]) => (
+          <Typography key={label}  fontWeight={700} color='success.main'>
+             {Number(val ?? 0).toLocaleString('en-IN')}
           </Typography>
         ))}
       </Box>
     )
   },
 
-  // ── Status ─────────────────────────────────────────────────────────────────
-  // field name matches the API POST param: { status: "success" }
-  {
-    field: 'status',
-    headerName: 'Status',
+    {
+    field: 'amount',
+    headerName: 'Closing',
     sortable: true,
-    filter: {
-      type: 'select',
-      options: ['success', 'pending', 'failed', 'refunded']
-    },
+    renderCell: (row) => (
+      <Box sx={{ minWidth: 150 }}>
+        {[
+      
+          ['Closing', row.closing_balance]
+        ].map(([label, val]) => (
+          <Typography key={label}  fontWeight={700} color='error.main'>
+             {Number(val ?? 0).toLocaleString('en-IN')}
+          </Typography>
+        ))}
+      </Box>
+    )
+  },
 
-    renderCell: (row) => <StatusWithActions row={row} />
 
-  }
 ];

@@ -29,6 +29,7 @@ import LoginLogsReport from '../pages/account-statement/LoginLogs';
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
 
 // master
+const SettlementT1Layer= Loadable(lazy(() => import('../myapp/master/settlementT1')));
 const SchemeManager = Loadable(lazy(() => import('pages/master/SchemeManager')));
 const ApiManager = Loadable(lazy(() => import('pages/master/ApiManager')));
 const SmsMaster = Loadable(lazy(() => import('pages/master/SmsMaster')));
@@ -72,6 +73,7 @@ const CommissionDistributionReport = Loadable(lazy(() => import('pages/transacti
 
 // account statement
 const MainLedger = Loadable(lazy(() => import('pages/account-statement/MainLedger')));
+const SettlementLedger = Loadable(lazy(() => import('pages/account-statement/SettlementLedger')));
 const VendorLogs = Loadable(lazy(() => import('pages/account-statement/VendorLogs')));
 
 // roles & permission
@@ -170,6 +172,14 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <SliderMaster />
+        </ProtectedRoute>
+      )
+    },
+      {
+      path: 'master/settlement-t1',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
+          <SettlementT1Layer />
         </ProtectedRoute>
       )
     },
@@ -393,6 +403,14 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
           <MainLedger />
+        </ProtectedRoute>
+      )
+    },
+      {
+      path: 'account-statement/settlement-ledger',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <SettlementLedger />
         </ProtectedRoute>
       )
     },
