@@ -114,7 +114,6 @@ function AddBankDrawer({ open, onClose, payoutUser, setLoading, setPayoutUser })
               <TextField
                 label="IFSC Code"
                 value={form.ifsc}
-                disabled
                 onChange={(e) => setForm({ ...form, ifsc: e.target.value.toUpperCase() })}
               />
 
