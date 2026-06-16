@@ -25,7 +25,7 @@ const handleSubmit = async (e) => {
 
 
   const newTxnId = `T${user?.id}${Date.now()}`;
-  const surlWithParams = `${window.location.origin}/invoice/${newTxnId}`;
+  const surlWithParams = `${window.location.origin}/invoice`;
 
   try {
 

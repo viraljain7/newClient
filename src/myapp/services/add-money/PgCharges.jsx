@@ -2,7 +2,6 @@ import { Box, Typography, Button, Grid, Skeleton } from '@mui/material';
 import { useState, useEffect } from 'react';
 import api from '../../../shared/BaseApi';
 import { Link } from 'react-router-dom';
-import { width } from '@mui/system';
 
 function PgCharges({ group }) {
   const [ccList, setCcList] = useState([]);
