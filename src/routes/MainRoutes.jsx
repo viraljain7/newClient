@@ -22,6 +22,7 @@ import RupayUPIReportPage from '../pages/transaction-report/RupayUPIReportPage';
 import RupayUpiApprovePage from '../pages/fund/RupayUpiApprove';
 import PG7Page from '../pages/services/PG/PG7Page';
 import LoginLogsReport from '../pages/account-statement/LoginLogs';
+import OfflineBBPSPage from '../pages/services/OfflineBBPSPage';
 
 
 
@@ -514,6 +515,14 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
           <InvoicePage />
+        </ProtectedRoute>
+      )
+    },
+      {
+      path: 'services/bbps-offline',
+      element: (
+        <ProtectedRoute roles={['Retailer']} serviceCode="creditcard">
+          <OfflineBBPSPage />
         </ProtectedRoute>
       )
     },

@@ -47,7 +47,18 @@ const Services = {
       roles: ['Retailer'],
       serviceCode: 'rupayupi',
       icon: QrCode2Icon
-    }
+    },
+
+      {
+      id: 'bbps-offline',
+      title: 'Credit Card Bill (offline)',
+      type: 'item',
+      url: '/services/bbps-offline', // ← fixed
+      roles: ['Retailer'],
+      serviceCode: 'creditcard',
+
+      icon: ThunderboltOutlined
+    },
   ]
 };
 

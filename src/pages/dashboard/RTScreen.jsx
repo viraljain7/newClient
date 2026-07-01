@@ -89,6 +89,15 @@ export default function RTScreen() {
       redirect: '/services/bbps',
       serviceCode: 'creditcard-online'
     },
+      {
+      title: 'Credit Card Bill(offline)',
+      subtitle: 'Bill Payments',
+      icon: <CreditCardOutlined />,
+      color: '#059669',
+      bg: 'linear-gradient(135deg,#ecfdf5,#d1fae5)',
+      redirect: '/services/bbps-offline',
+      serviceCode: 'creditcard'
+    },
 
     {
       title: 'Rupay UPI',
