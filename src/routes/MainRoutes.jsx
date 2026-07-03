@@ -21,6 +21,8 @@ import UserProfilePage from '../pages/Profile/UserProfilePage';
 import RupayUPIReportPage from '../pages/transaction-report/RupayUPIReportPage';
 import RupayUpiApprovePage from '../pages/fund/RupayUpiApprove';
 import PG7Page from '../pages/services/PG/PG7Page';
+import PG8Page from '../pages/services/PG/PG8Page';
+
 import LoginLogsReport from '../pages/account-statement/LoginLogs';
 import OfflineBBPSPage from '../pages/services/OfflineBBPSPage';
 
@@ -501,7 +503,14 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-
+  {
+      path: 'services/add-money/payment8',
+      element: (
+        <ProtectedRoute roles={['Retailer']} serviceCode="premiumpg4">
+          <PG8Page />
+        </ProtectedRoute>
+      )
+    },
     {
       path: 'invoice/:txnid',
       element: (

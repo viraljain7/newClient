@@ -53,6 +53,9 @@ const cardSX = {
 export default function RTScreen() {
   const [orderMenuAnchor, setOrderMenuAnchor] = useState(null);
   const user = useSelector((state) => state.user.profile);
+  const [loading, setLoading] = useState(false);
+
+
   const activeService = useSelector((state) => state.user.service);
   const [bussinesStats, setBussinesStats] = useState([]);
 
@@ -61,6 +64,7 @@ export default function RTScreen() {
       try {
         const businessData = await RTBussinessStats();
         setBussinesStats(businessData?.data || []);
+        setLoading(true);
       } catch (error) {
         console.error('Failed to fetch business stats', error);
       }
@@ -89,7 +93,7 @@ export default function RTScreen() {
       redirect: '/services/bbps',
       serviceCode: 'creditcard-online'
     },
-      {
+    {
       title: 'Credit Card Bill(offline)',
       subtitle: 'Bill Payments',
       icon: <CreditCardOutlined />,
@@ -135,20 +139,34 @@ export default function RTScreen() {
       </Grid>
       {/* KPI CARDS */}
       <Grid size={{ xs: 12, sm: 4, lg: 4 }}>
-        <AnalyticEcommerce title="Main Wallet" count={'₹ ' + user?.mainbalance} percentage={59.3} extra="35k" sx={cardSX} />
+        {loading ? (
+          <AnalyticEcommerce title="Main Wallet" count={`₹ ${user.mainbalance}`} percentage={59.3} extra="35k" sx={cardSX} />
+        ) : (
+          <WalletSkeleton />
+        )}
       </Grid>
+
       <Grid size={{ xs: 12, sm: 4, lg: 4 }}>
-        <AnalyticEcommerce
-          title="Settlement Wallet"
-          count={'₹ ' + user?.settlementwallet}
-          percentage={27.4}
-          color="warning"
-          extra="1,943"
-          sx={cardSX}
-        />
+        {loading ? (
+          <AnalyticEcommerce
+            title="Settlement Wallet"
+            count={`₹ ${user.settlementwallet}`}
+            percentage={27.4}
+            color="warning"
+            extra="1,943"
+            sx={cardSX}
+          />
+        ) : (
+          <WalletSkeleton />
+        )}
       </Grid>
+
       <Grid size={{ xs: 12, sm: 4, lg: 4 }}>
-        <AnalyticEcommerce title="UPI Wallet" count={'₹ ' + user?.qrbalance} percentage={70.5} extra="8.9k" sx={cardSX} />
+        {loading ? (
+          <AnalyticEcommerce title="UPI Wallet" count={`₹ ${user.qrbalance}`} percentage={70.5} extra="8.9k" sx={cardSX} />
+        ) : (
+          <WalletSkeleton />
+        )}
       </Grid>
 
       {/* TABLE */}
@@ -385,3 +403,15 @@ export default function RTScreen() {
     </Grid>
   );
 }
+
+import { Skeleton, Card, CardContent } from '@mui/material';
+
+export const WalletSkeleton = () => (
+  <Card sx={{ borderRadius: 2 }}>
+    <CardContent>
+      <Skeleton variant="text" width="40%" height={24} />
+      <Skeleton variant="text" width="70%" height={40} sx={{ mt: 1 }} />
+      <Skeleton variant="text" width="30%" height={20} />
+    </CardContent>
+  </Card>
+);

@@ -13,6 +13,7 @@ import WalletCard from 'components/cards/statistics/WalletCard';
 import { ADBalanceApi, ADServiceWiseBusiness } from './ADApi';
 
 import { DownOutlined } from '@ant-design/icons';
+import { WalletSkeleton } from './RTScreen';
 
 // styles
 const cardSX = {
@@ -27,7 +28,6 @@ const cardSX = {
     transform: 'translateY(-4px)',
     boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
   }
-
 };
 
 function ADScreen() {
@@ -37,6 +37,7 @@ function ADScreen() {
   });
 
   const [stats, setStats] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchBusinessStats = async () => {
@@ -46,6 +47,7 @@ function ADScreen() {
           admin: businessData?.adminWallets || {},
           downline: businessData?.downlineWallets || {}
         });
+        setLoading(true);
       } catch (error) {
         console.error('Failed to fetch business stats', error);
       }
@@ -110,42 +112,58 @@ function ADScreen() {
       </Grid>
       {/* KPI CARDS */}
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <WalletCard
-          title="Main Wallet"
-          count={wallets.admin.mainWallet}
-          percentage={59.3}
-          extra={'Downline: ' + wallets.downline.mainWallet}
-          sx={cardSX}
-        />
+        {loading ? (
+          <WalletCard
+            title="Main Wallet"
+            count={wallets.admin.mainWallet}
+            percentage={59.3}
+            extra={'Downline: ' + wallets.downline.mainWallet}
+            sx={cardSX}
+          />
+        ) : (
+          <WalletSkeleton />
+        )}
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <WalletCard
-          title="Settlement Wallet"
-          count={wallets.admin.settlementWallet}
-          percentage={70.5}
-          extra={'Downline: ' + wallets.downline.settlementWallet}
-          sx={cardSX} 
-        />
+        {loading ? (
+          <WalletCard
+            title="Settlement Wallet"
+            count={wallets.admin.settlementWallet}
+            percentage={70.5}
+            extra={'Downline: ' + wallets.downline.settlementWallet}
+            sx={cardSX}
+          />
+        ) : (
+          <WalletSkeleton />
+        )}
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <WalletCard
-          title="PG Wallet"
-          count={wallets.admin.pgWallet}
-          percentage={27.4}
-          color="warning"
-          extra={'Downline: ' + wallets.downline.pgWallet}
-          sx={cardSX}
-        />
+        {loading ? (
+          <WalletCard
+            title="PG Wallet"
+            count={wallets.admin.pgWallet}
+            percentage={27.4}
+            color="warning"
+            extra={'Downline: ' + wallets.downline.pgWallet}
+            sx={cardSX}
+          />
+        ) : (
+          <WalletSkeleton />
+        )}
       </Grid>
       <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-        <WalletCard
-          title="Aeps Walet"
-          count={wallets.admin.aepsWallet}
-          percentage={27.4}
-          color="warning"
-          extra={'Downline: ' + wallets.downline.aepsWallet}
-          sx={cardSX}
-        />
+        {loading ? (
+          <WalletCard
+            title="Aeps Walet"
+            count={wallets.admin.aepsWallet}
+            percentage={27.4}
+            color="warning"
+            extra={'Downline: ' + wallets.downline.aepsWallet}
+            sx={cardSX}
+          />
+        ) : (
+          <WalletSkeleton />
+        )}
       </Grid>
 
       {/* CHART SECTION */}

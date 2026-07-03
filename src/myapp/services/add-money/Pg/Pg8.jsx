@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import api from '../../../../shared/BaseApi';
 
-function Pg7() {
+function Pg8() {
   const [amount, setAmount] = useState('');
   const [finalAmount, setFinalAmount] = useState(null);
 
@@ -29,15 +29,15 @@ function Pg7() {
       const amountDecimal = parseFloat(finalAmount.toFixed(2));
 
       const formData = new FormData();
-      formData.append('name', user.name);
-      formData.append('mobile', user.mobile);
-      formData.append('email', user.email);
+      formData.append('customer_name', user.name);
+      formData.append('customer_phone', user.mobile);
+      formData.append('customer_email', user.email);
       formData.append('amount', amountDecimal); // sends numeric decimal
       formData.append('redirect_url', surlWithParams);
       formData.append('txnid', newTxnId);
       formData.append('settlement_type', 'instant');
 
-      const res = await api.post('/service/payin/pg11', formData, {
+      const res = await api.post('/service/payin/pg12', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -47,7 +47,7 @@ function Pg7() {
 
       if (data?.statuscode === 'TXN') {
         toast.success(data.message || 'Payment initiated');
-        window.location.href = data.redirect_url;
+        window.location.href = data.payment_url;
       } else {
         toast.error(data?.message || 'Payment failed');
       }
@@ -78,7 +78,7 @@ function Pg7() {
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {/* Title */}
           <Typography variant="h5" fontWeight={700} textAlign="center">
-            Platinum 2
+            Diamond 4 
           </Typography>
 
           {/* Amount Field */}
@@ -153,4 +153,4 @@ function Pg7() {
   );
 }
 
-export default Pg7;
+export default Pg8;

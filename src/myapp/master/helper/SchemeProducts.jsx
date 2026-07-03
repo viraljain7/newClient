@@ -50,10 +50,11 @@ function SchemeProducts({ open, onClose }) {
       case 'diamondpg3':
         return 'Diamond 2';
 
-
       case 'platinumpg1':
         return 'Platinum 2 (pinlab yana Grocery)';
 
+      case 'premiumpg4':
+        return 'Diamond 4 (Nixa Premium 3)';
       case 'dmt':
         return 'Payout';
 
@@ -61,7 +62,6 @@ function SchemeProducts({ open, onClose }) {
         return name;
     }
   };
-  
 
   return (
     <Drawer anchor="right" open={open} onClose={onClose}>

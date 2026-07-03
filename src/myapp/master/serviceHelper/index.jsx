@@ -98,10 +98,9 @@ export default function ServiceTable() {
     else if (name === 'Premium PG 9') return 'Silver 2 (Yanedu smartpg4 razorpay)';
     else if (name === 'Premium PG 10') return 'Diamond 2 (cruyana diamondpg1 razorpay)';
     else if (name === 'PLATINUMPG1') return 'Platinum 2 (pinlab yana Grocery)';
-
     else if (name === 'Online Credit Card') return 'BBPS';
     else if (name === 'BBPS') return 'AEPS(BBPS)';
-  
+    else if (name === 'Premium PG 4') return 'Diamond 4 (Nixa Premium 3)';
     else return name; // rest unchanged
   };
 

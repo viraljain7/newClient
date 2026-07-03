@@ -16,6 +16,7 @@ function productName(name) {
   else if (name === "diamondpg2") productName = " Silver 2";
   else if (name === "diamondpg3") productName = " Diamond 2";
   else if (name === "platinumpg1") productName = " Platinum 2";
+  else if (name === "cf_pg6") productName = "Diamond 4";
 
 
 
