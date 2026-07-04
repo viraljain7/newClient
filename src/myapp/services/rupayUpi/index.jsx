@@ -52,16 +52,16 @@ export default function RupayUpiLoadRequest() {
     }
   };
 
-
-
   const [currentQr, setCurrentQr] = React.useState(null);
 
-// fetch existing QR on load
-React.useEffect(() => {
-  getQr()
-    .then((data) => { if (data?.status) setCurrentQr(data.image_url); })
-    .catch(console.error);
-}, []);
+  // fetch existing QR on load
+  React.useEffect(() => {
+    getQr()
+      .then((data) => {
+        if (data?.status) setCurrentQr(data.image_url);
+      })
+      .catch(console.error);
+  }, []);
 
   return (
     <Box
@@ -141,10 +141,39 @@ React.useEffect(() => {
 
                   <TextField fullWidth label="Full Name" name="name" value={formData.name} onChange={handleChange} />
 
-                  <TextField fullWidth label="Amount" name="amount" type="number" value={formData.amount} onChange={handleChange} />
+                  <TextField
+                    fullWidth
+                    label="Amount"
+                    name="amount"
+                    type="number"
+                    value={formData.amount}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
 
-                  <TextField fullWidth label="Transaction ID" name="txnId" value={formData.txnId} onChange={handleChange} />
+                      if (e.target.value === '' || value <= 100000) {
+                        handleChange(e);
+                      }
+                    }}
+                    inputProps={{
+                      min: 1,
+                      max: 100000
+                    }}
+                  />
 
+                  <TextField
+                    fullWidth
+                    label="Transaction ID"
+                    name="txnId"
+                    value={formData.txnId}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 12) {
+                        handleChange(e);
+                      }
+                    }}
+                    inputProps={{
+                      maxLength: 12
+                    }}
+                  />
                   <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />}>
                     Upload Payment Slip
                     <input hidden type="file" name="slip" accept="image/*" onChange={handleChange} />

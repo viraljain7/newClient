@@ -1,10 +1,12 @@
-import React from 'react'
+import React from 'react';
+import CreditCardOfflineReport from '../../myapp/trns-report/credit-card-offline';
 
-function CreditCard() {
+function CreditCardOfflinePage() {
   return (
-    <div>CreditCard</div>
-  )
+    <>
+       <CreditCardOfflineReport />
+    </>
+  );
 }
 
-export default CreditCard
-
+export default CreditCardOfflinePage;

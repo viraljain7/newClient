@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Skeleton
-} from '@mui/material';
+import { Box, Typography, Card, CardContent, Accordion, AccordionSummary, AccordionDetails, Skeleton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import api from '../../../shared/BaseApi';
 import { useDispatch } from 'react-redux';
@@ -19,10 +10,9 @@ function BbpsService() {
   const [data, setData] = useState(null);
   const [expanded, setExpanded] = useState('Credit Cards');
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-
-const dispatch=  useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchServices();
@@ -31,7 +21,14 @@ const dispatch=  useDispatch();
   const fetchServices = async () => {
     try {
       const res = await api.get('/service/bbpscc/c15');
+      // const removeIndexes = [3, 5, 8, 17, 20, 25];
+      
+      // const cardList = res?.data?.data.creditcard.filter((_, index) => !removeIndexes.includes(index));
+      // console.log(cardList)
+      // setData(cardList);
+
       setData(res?.data?.data);
+
     } catch (err) {
       console.error(err);
     }
@@ -43,7 +40,7 @@ const dispatch=  useDispatch();
   };
 
   // 🔹 Card Component
-  const CardItem = ({ icon, title,code }) => (
+  const CardItem = ({ icon, title, code }) => (
     <Card
       variant="outlined"
       sx={{
@@ -57,11 +54,10 @@ const dispatch=  useDispatch();
           transform: 'translateY(-3px)'
         }
       }}
-
-      onClick={()=>{
-        dispatch(setBBPS({title,code}))
-      navigate("c15")
-    }}
+      onClick={() => {
+        dispatch(setBBPS({ title, code }));
+        navigate('c15');
+      }}
     >
       <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         {icon}
@@ -105,7 +101,7 @@ const dispatch=  useDispatch();
                   minWidth: '200px'
                 }}
               >
-                <CardItem icon={icon} title={item.blr_name} code={item.blr_id}/>
+                <CardItem icon={icon} title={item.blr_name} code={item.blr_id} />
               </Box>
             ))}
           </Box>
@@ -153,10 +149,9 @@ const dispatch=  useDispatch();
             {
               title: 'Credit Cards',
               list: data?.creditcard,
-              icon:
-                'https://static.vecteezy.com/system/resources/previews/000/357/048/large_2x/vector-credit-card-icon.jpg',
+              icon: 'https://static.vecteezy.com/system/resources/previews/000/357/048/large_2x/vector-credit-card-icon.jpg',
               defaultOpen: true
-            },
+            }
             // {
             //   title: 'Electricity',
             //   list: data?.electricity,
@@ -173,13 +168,7 @@ const dispatch=  useDispatch();
               title={section.title}
               list={section.list}
               defaultOpen={section.defaultOpen || false}
-              icon={
-                <img
-                  src={section.icon}
-                  alt={section.title}
-                  style={{ width: 35 }}
-                />
-              }
+              icon={<img src={section.icon} alt={section.title} style={{ width: 35 }} />}
             />
           ))}
         </>

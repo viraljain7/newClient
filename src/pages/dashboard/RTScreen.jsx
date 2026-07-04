@@ -407,7 +407,7 @@ export default function RTScreen() {
 import { Skeleton, Card, CardContent } from '@mui/material';
 
 export const WalletSkeleton = () => (
-  <Card sx={{ borderRadius: 2 }}>
+  <Card sx={{ borderRadius: 1 }}>
     <CardContent>
       <Skeleton variant="text" width="40%" height={24} />
       <Skeleton variant="text" width="70%" height={40} sx={{ mt: 1 }} />

@@ -38,13 +38,15 @@ const transactionReport = {
     //   url: '/transaction-report/recharge',
     //   icon: MobileOutlined
     // },
-    // {
-    //   id: 'credit-card-report',
-    //   title: 'Credit Card Report',
-    //   type: 'item',
-    //   url: '/transaction-report/credit-card',
-    //   icon: CreditCardOutlined
-    // },
+    {
+      id: 'credit-card-report',
+      title: 'Creditcard Offline Report',
+      type: 'item',
+      url: '/transaction-report/credit-card',
+      icon: CreditCardOutlined,
+      roles: ['Admin', 'Subadmin', 'Retailer']
+
+    },
     {
       id: 'creditcard-bill-report',
       title: 'Creditcard Payment Report',
