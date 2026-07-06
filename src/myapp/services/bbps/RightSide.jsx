@@ -31,8 +31,8 @@ const RightSide = ({ bill, setLoading, setBill }) => {
   const payHandler = async () => {
     setLoading(true);
     try {
-      if (amount >= 100000) {
-        toast.error('Amount should be less than ₹100000');
+      if (amount > 49999) {
+        toast.error('Amount should be less than ₹50000');
         setLoading(false);
         return;
       }
@@ -136,7 +136,7 @@ const RightSide = ({ bill, setLoading, setBill }) => {
             <Divider />
             <Row
               label="Note:"
-              value={<span style={{ fontWeight: 700 }}>[ Transaction Limit ] HDFC Bank: Max ₹49,995 | Other Banks: Max ₹99,995</span>}
+              value={<span style={{ fontWeight: 700 }}>[ Transaction Limit ]  | All Banks: Max ₹49,999</span>}
               color="error.main"
             />
             <Row label="Bill Fetched: " value="Successfully" color="success.main" />

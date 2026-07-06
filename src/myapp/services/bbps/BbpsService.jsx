@@ -21,14 +21,21 @@ function BbpsService() {
   const fetchServices = async () => {
     try {
       const res = await api.get('/service/bbpscc/c15');
-      // const removeIndexes = [3, 5, 8, 17, 20, 25];
-      
-      // const cardList = res?.data?.data.creditcard.filter((_, index) => !removeIndexes.includes(index));
-      // console.log(cardList)
-      // setData(cardList);
+      const removeBanks = [
+        'BoB Credit Card',
+        'DBS Bank Credit Card',
+        'HDFC Credit Card',
+        'Kotak Mahindra Bank Credit Card',
+        'RBL Bank Credit Card',
+        'Yes Bank Credit Card'
+      ];
 
-      setData(res?.data?.data);
+      const filteredData = {
+        ...res.data.data,
+        creditcard: res.data.data.creditcard.filter((card) => !removeBanks.includes(card.blr_name))
+      };
 
+      setData(filteredData);
     } catch (err) {
       console.error(err);
     }
