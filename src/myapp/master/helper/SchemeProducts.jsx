@@ -55,6 +55,8 @@ function SchemeProducts({ open, onClose }) {
 
       case 'premiumpg4':
         return 'Diamond 4 (Nixa Premium 3)';
+      case 'easebuzz':
+        return 'silver 3 (Nixa silver 3)';
       case 'dmt':
         return 'Payout';
 
