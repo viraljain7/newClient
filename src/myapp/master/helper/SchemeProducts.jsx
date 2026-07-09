@@ -33,10 +33,13 @@ function SchemeProducts({ open, onClose }) {
     const up = name.toLowerCase();
     switch (up) {
       case 'payueducation':
-        return 'Silver 1';
+        return 'Silver 1 (Nixa silver 1)';
 
       case 'zwitch':
-        return 'Diamond 3';
+        return 'Diamond 3 (Nixa silver 2)';
+
+      case 'easebuzz':
+        return 'silver 3 (Nixa silver 3)';
 
       case 'premiumpg3':
         return 'Premium 2';
@@ -55,8 +58,10 @@ function SchemeProducts({ open, onClose }) {
 
       case 'premiumpg4':
         return 'Diamond 4 (Nixa Premium 3)';
-      case 'easebuzz':
-        return 'silver 3 (Nixa silver 3)';
+
+      case 'premiumpg5':
+        return 'Premium 5 (Nixa Premium 4)';
+
       case 'dmt':
         return 'Payout';
 
@@ -73,7 +78,7 @@ function SchemeProducts({ open, onClose }) {
             xs: '100vw',
             sm: 500,
             md: 700,
-            lg: 800
+            lg: 900
           },
           height: '100%'
         }}

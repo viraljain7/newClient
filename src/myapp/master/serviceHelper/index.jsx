@@ -88,9 +88,9 @@ export default function ServiceTable() {
   };
 
   const getProductName = (name) => {
-    if (name === 'Payu Education') return 'Silver 1 (nixa-Razorpay)';
-    else if (name === 'Zwitch') return 'Diamond 3 (nixasilver 2 Coastlink)';
-    else if (name === 'Paytm') return 'Silver 3 (nixa silver 3)';
+    if (name === 'Payu Education') return 'Silver 1 (Nixa silver 1)';
+    else if (name === 'Zwitch') return 'Diamond 3 (Nixa silver 2)';
+    else if (name === 'Paytm') return 'Silver 3 (Nixa silver 3)';
     else if (name === 'Payu Cruise') return 'Diamond 2';
     else if (name === 'Domestic Remittance') return 'Payout';
     else if (name === 'Premium PG 7') return 'Premium 2 (Yana Cashfree pg 2)';
@@ -101,6 +101,8 @@ export default function ServiceTable() {
     else if (name === 'Online Credit Card') return 'BBPS';
     else if (name === 'BBPS') return 'AEPS(BBPS)';
     else if (name === 'Premium PG 4') return 'Diamond 4 (Nixa Premium 3)';
+    else if (name === 'Premium PG 5') return 'Premium 5 (Nixa Premium 4)';
+
 
     else return name; // rest unchanged
   };

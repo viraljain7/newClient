@@ -17,6 +17,7 @@ function productName(name) {
   else if (name === "diamondpg3") productName = " Diamond 2";
   else if (name === "platinumpg1") productName = " Platinum 2";
   else if (name === "cf_pg6") productName = "Diamond 4";
+    else if (name === 'cf_pg7') productName = 'Premium 5';
 
 
 
@@ -43,6 +44,8 @@ function productName(name) {
     else if (name === 'diamondpg2') productName = 'Silver 2';
     else if (name === 'diamondpg3') productName = 'Diamond 2';
     else if (name === 'cf_pg6') productName = 'Diamond 4';
+    else if (name === 'cf_pg7') productName = 'Premium 5';
+
 
     // else if (name === 'cf_pg5') productName = 'Add Money (Premium 2)';
     // else if (name === 'nixapremium2') productName = 'Add Money (Premium 2)';    else if (name === 'diamondpg1') productName = 'Premium 4';

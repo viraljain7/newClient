@@ -3,7 +3,7 @@ import AgentTable from './AgentTable'
 
 function SettlementT1Layer() {
   return (
-    <AgentTable agentType={"retailer"} agentCode={"7"}/>
+    <AgentTable  agentCode={"7"}/>
   )
 }
 

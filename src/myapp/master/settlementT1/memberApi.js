@@ -1,7 +1,7 @@
 import api from '../../../shared/BaseApi';
 
-export const fetchMember = async (type) => {
-  const res = await api.get(`/member/${type}`);
+export const fetchSettlements = async () => {
+  const res = await api.get(`/member/retailers/eligible-settlement`);
 
   return res.data;
 };
@@ -10,7 +10,6 @@ export const fetchStates = async () => {
   const formData = new FormData();
   formData.append('type', 'states');
   const res = await api.post(`/member/transaction`, formData);
-
   return res.data;
 };
 

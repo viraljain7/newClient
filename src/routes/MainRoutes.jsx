@@ -20,9 +20,12 @@ import SetSchemePage from '../pages/master/SetSchemePage';
 import UserProfilePage from '../pages/Profile/UserProfilePage';
 import RupayUPIReportPage from '../pages/transaction-report/RupayUPIReportPage';
 import RupayUpiApprovePage from '../pages/fund/RupayUpiApprove';
+
 import PG7Page from '../pages/services/PG/PG7Page';
 import PG8Page from '../pages/services/PG/PG8Page';
 import PG9Page from '../pages/services/PG/PG9Page';
+import PG10Page from '../pages/services/PG/PG10Page';
+
 
 
 import LoginLogsReport from '../pages/account-statement/LoginLogs';
@@ -518,6 +521,14 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="easebuzz">
           <PG9Page />
+        </ProtectedRoute>
+      )
+    },
+      {
+      path: 'services/add-money/payment10',
+      element: (
+        <ProtectedRoute roles={['Retailer']} serviceCode="premiumpg5">
+          <PG10Page />
         </ProtectedRoute>
       )
     },

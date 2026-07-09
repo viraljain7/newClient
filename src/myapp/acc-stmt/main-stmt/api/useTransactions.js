@@ -36,7 +36,11 @@ const profile = useSelector((state) => state.user.profile);
 
     try {
       const res = await fetchTransactions({
-        user_id:profile.id
+        user_id:profile.id,
+        page,
+        per_page: perPage,
+        date_from: fromDate,
+        date_to: toDate
       });
 
       const body = res.data;

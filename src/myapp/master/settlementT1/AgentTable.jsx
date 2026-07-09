@@ -9,25 +9,20 @@ import {
   TableHead,
   TableRow,
   TablePagination,
-  Switch,
   IconButton,
   TextField,
   Typography,
   Skeleton,
-  Menu,
   MenuItem,
   Backdrop,
   CircularProgress,
-  FormControl,
-  Select,
   Checkbox
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router';
 import { Stack, width } from '@mui/system';
-import { useMember } from '../../member/helper/useMember';
 import { BlueButton } from '../../../components/CommonComponent';
-import { createSettlementTransfer } from './memberApi';
+import { createSettlementTransfer, fetchSettlements } from './memberApi';
 import toast from 'react-hot-toast';
 
 import { startLoading, stopLoading } from '../../../store/slices/loaderSlice.js';
@@ -35,7 +30,7 @@ import { useDispatch } from 'react-redux';
 
 /* ================= WALLET DROPDOWN ================= */
 const WalletDetails = ({ wallet }) => {
-  return <MenuItem sx={{ color: 'red !important', fontSize: 12, textAlign: 'center' }}>₹ {wallet.settlement}</MenuItem>;
+  return <MenuItem sx={{ color: 'red !important', fontSize: 12, textAlign: 'center' }}>₹ {wallet}</MenuItem>;
 };
 
 /* ================= SKELETON ================= */
@@ -68,8 +63,23 @@ const TableSkeleton = ({ rows = 5 }) => {
 };
 
 /* ================= MAIN COMPONENT ================= */
-export default function AgentTable({ agentType, agentCode }) {
-  const { data, total, loading, states, addAgent, refetch } = useMember(agentType);
+export default function AgentTable({ }) {
+  fetchSettlements();
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const getSettlements = async () => {
+      try {
+        const res = await fetchSettlements();
+        setData(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getSettlements();
+  }, []);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -81,37 +91,25 @@ export default function AgentTable({ agentType, agentCode }) {
   // 🔥 Mapping
   const rows = React.useMemo(() => {
     return data.map((item) => ({
-      id: item.id,
-      status: item.status === 'active',
-      name: `${item.name} (${item.id})`,
-      parent: item.parent || null,
-      mobile: item.mobile,
-      wallet: {
-        main: item.mainbalance,
-        qr: item.qrbalance,
-        pg: item.pgbalance,
-        aeps: item.aepsbalance,
-        lock: item.lockamount,
-        settlement: item.settlementwallet
-      },
-      role: item.role.name,
-      kyc: item.kyc
+      id: item?.id,
+      name: `${item?.name} (${item?.id})`,
+      mobile: item?.mobile,
+      already_transferred: item?.already_transferred,
+      eligible_amount: item?.eligible_amount,
+      available_settlement: item?.available_settlement,
     }));
   }, [data]);
-
-  const [filteredType, setFilteredType] = React.useState('all');
 
   // 🔍 Search + Filter
   const filteredRows = rows.filter((r) => {
     const matchesSearch = r.name.toLowerCase().includes(search.toLowerCase()) || r.mobile.includes(search);
+  
 
-    const matchesFilter = filteredType === 'all' ? true : r.kyc === filteredType;
-
-    const walletPending = Number(r.wallet.settlement) > 1;
-    return matchesSearch && matchesFilter && walletPending;
+    return matchesSearch;
   });
 
   const visibleRows = filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  console.log(visibleRows)
 
   const navigate = useNavigate();
   // State for bulk settlement remark
@@ -139,7 +137,7 @@ export default function AgentTable({ agentType, agentCode }) {
         const row = rows.find((r) => r.id === userId);
         return {
           user_id: userId,
-          amount: row.wallet.settlement,
+          amount: row.available_settlement,
           txnid: `STL${userId}${Date.now()}${i}`,
           remark: bulkRemark
         };
@@ -155,7 +153,7 @@ export default function AgentTable({ agentType, agentCode }) {
 
       setSelectedIds([]);
       setBulkRemark('');
-      refetch();
+      // refetch();
     } catch (err) {
       // Only hits if something outside Promise.allSettled throws
       // e.g. rows.find() returning undefined, or a sync error in the map
@@ -165,7 +163,7 @@ export default function AgentTable({ agentType, agentCode }) {
       setBackdropLoading(false);
       dispatch(stopLoading());
     }
-  }, [selectedIds, bulkRemark, rows, refetch]);
+  }, [selectedIds, bulkRemark, rows]);
 
   const handleRowSelect = (id) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -256,9 +254,10 @@ export default function AgentTable({ agentType, agentCode }) {
           <TableHead>
             <TableRow>
               <TableCell>Status</TableCell>
-              <TableCell>User Details</TableCell>
-              <TableCell>Parent Details</TableCell>
-              <TableCell align="center">SLT Wallet</TableCell>
+              <TableCell>RT Details</TableCell>
+              <TableCell>T+1 Amount</TableCell>
+              <TableCell align="center">Already Transferred</TableCell>
+              <TableCell align="center">Available T+1 Settlement Amount</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
@@ -284,22 +283,18 @@ export default function AgentTable({ agentType, agentCode }) {
                     <Typography variant="body2" fontWeight={600} color="text.secondary">
                       {row.mobile}
                     </Typography>
-                    <Typography variant="body2" fontWeight={600} color="primary.main">
-                      {row.role}
-                    </Typography>
-                  </TableCell>
-
-                  <TableCell>
-                    <Typography fontWeight={600}>
-                      {row.parent?.name || '-'} ({row.parent.id})
-                    </Typography>
-                    <Typography variant="body2" fontWeight={600} color="text.secondary">
-                      {row.parent?.mobile || '-'}
-                    </Typography>
                   </TableCell>
 
                   <TableCell align="center">
-                    <WalletDetails wallet={row.wallet} />
+                    <WalletDetails wallet={row.eligible_amount} />
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <WalletDetails wallet={row.already_transferred} />
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <WalletDetails wallet={row.available_settlement} />
                   </TableCell>
 
                   <TableCell align="center">
