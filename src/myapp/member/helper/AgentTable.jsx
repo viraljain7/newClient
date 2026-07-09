@@ -49,9 +49,7 @@ const WalletDetails = ({ wallet }) => {
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
         <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Main Wallet: ₹ {wallet.main}</MenuItem>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Qr Wallet: ₹ {wallet.qr}</MenuItem>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Pg Wallet: ₹ {wallet.pg}</MenuItem>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Aeps Wallet: ₹ {wallet.aeps}</MenuItem>
+        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Stmt Wallet: ₹ {wallet.settlementwallet}</MenuItem>
         <MenuItem sx={{ color: 'red', fontSize: 12 }}>Lock Wallet: ₹ {wallet.lock}</MenuItem>
       </Menu>
     </>
@@ -102,6 +100,7 @@ export default function AgentTable({ agentType, agentCode }) {
 
   // 🔥 Mapping
   const rows = React.useMemo(() => {
+
     return data.map((item) => ({
       id: item.id,
       status: item.status === 'active',
@@ -110,9 +109,7 @@ export default function AgentTable({ agentType, agentCode }) {
       mobile: item.mobile,
       wallet: {
         main: item.mainbalance,
-        qr: item.qrbalance,
-        pg: item.pgbalance,
-        aeps: item.aepsbalance,
+        settlementwallet: item.settlementwallet,
         lock: item.lockamount
       },
       role: item.role.name,

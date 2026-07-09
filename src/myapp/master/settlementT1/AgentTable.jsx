@@ -43,16 +43,18 @@ const TableSkeleton = ({ rows = 5 }) => {
 
       <TableCell>
         <Skeleton width="60%" height={20} />
-        <Skeleton width="40%" height={16} />
+        <Skeleton width="30%" height={20} />
       </TableCell>
 
       <TableCell>
-        <Skeleton width="50%" height={20} />
-        <Skeleton width="30%" height={16} />
+        <Skeleton width="60%" height={20} />
       </TableCell>
 
-      <TableCell align="center">
-        <Skeleton variant="circular" width={32} height={32} />
+      <TableCell>
+        <Skeleton width="60%" height={20} />
+      </TableCell>
+      <TableCell>
+        <Skeleton width="60%" height={20} />
       </TableCell>
 
       <TableCell align="center">
@@ -63,10 +65,10 @@ const TableSkeleton = ({ rows = 5 }) => {
 };
 
 /* ================= MAIN COMPONENT ================= */
-export default function AgentTable({ }) {
+export default function AgentTable({}) {
   fetchSettlements();
   const [data, setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     const getSettlements = async () => {
@@ -75,6 +77,8 @@ export default function AgentTable({ }) {
         setData(res.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -96,20 +100,19 @@ export default function AgentTable({ }) {
       mobile: item?.mobile,
       already_transferred: item?.already_transferred,
       eligible_amount: item?.eligible_amount,
-      available_settlement: item?.available_settlement,
+      available_settlement: item?.available_settlement
     }));
   }, [data]);
 
   // 🔍 Search + Filter
   const filteredRows = rows.filter((r) => {
     const matchesSearch = r.name.toLowerCase().includes(search.toLowerCase()) || r.mobile.includes(search);
-  
 
     return matchesSearch;
   });
 
   const visibleRows = filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  console.log(visibleRows)
+  console.log(visibleRows);
 
   const navigate = useNavigate();
   // State for bulk settlement remark
