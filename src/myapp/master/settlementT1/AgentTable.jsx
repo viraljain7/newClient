@@ -70,20 +70,20 @@ export default function AgentTable({}) {
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    const getSettlements = async () => {
-      try {
-        const res = await fetchSettlements();
-        setData(res.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const getSettlements = React.useCallback(async () => {
+    setLoading(true);
 
-    getSettlements();
+    try {
+      const res = await fetchSettlements();
+      setData(res.data);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  React.useEffect(() => {
+    getSettlements();
+  }, [getSettlements]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -112,7 +112,6 @@ export default function AgentTable({}) {
   });
 
   const visibleRows = filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  console.log(visibleRows);
 
   const navigate = useNavigate();
   // State for bulk settlement remark
@@ -138,9 +137,10 @@ export default function AgentTable({}) {
     try {
       const transfers = selectedIds.map((userId, i) => {
         const row = rows.find((r) => r.id === userId);
+        const settlement_value = row.available_settlement.replace(/,/g, '');
         return {
           user_id: userId,
-          amount: row.available_settlement,
+          amount: settlement_value,
           txnid: `STL${userId}${Date.now()}${i}`,
           remark: bulkRemark
         };
