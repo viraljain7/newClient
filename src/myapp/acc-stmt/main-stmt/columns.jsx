@@ -123,7 +123,7 @@ export const TRANSACTION_COLUMNS = [
           Product: {productName(row.product)}
         </Typography>
           <Typography variant="body2" fontWeight={600}>
-          Desc: {row.description}
+          Desc: {row.remark}
         </Typography>
       </Box>
     )

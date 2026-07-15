@@ -1,35 +1,39 @@
 import * as React from 'react';
 import {
+  Backdrop,
   Box,
+  CircularProgress,
+  FormControl,
+  IconButton,
+  Menu,
+  MenuItem,
   Paper,
+  Select,
+  Skeleton,
+  Stack,
+  Switch,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   TablePagination,
-  Switch,
-  IconButton,
+  TableRow,
   TextField,
-  Typography,
-  Skeleton,
-  Menu,
-  MenuItem,
-  Backdrop,
-  CircularProgress,
-  FormControl,
-  Select
+  Typography
 } from '@mui/material';
+
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import { useMember } from './useMember';
-import { BlueButton, OutlineButton } from '../../../components/CommonComponent';
-import AddAgentDrawer from './AddAgentDrawer';
-import { useNavigate } from 'react-router';
-import { Stack } from '@mui/system';
 
-/* ================= WALLET DROPDOWN ================= */
+import { useNavigate } from 'react-router';
+import { BlueButton } from '../../../components/CommonComponent';
+
+import { useMember } from './useMember';
+import AddAgentDrawer from './AddAgentDrawer';
+
+/* ================= WALLET MENU ================= */
+
 const WalletDetails = ({ wallet }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -41,100 +45,107 @@ const WalletDetails = ({ wallet }) => {
         sx={{
           border: '1px solid #ddd',
           borderRadius: 2,
-          backgroundColor: '#fafafa'
+          bgcolor: '#fafafa'
         }}
       >
         <AccountBalanceWalletIcon fontSize="small" />
       </IconButton>
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Main Wallet: ₹ {wallet.main}</MenuItem>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Stmt Wallet: ₹ {wallet.settlementwallet}</MenuItem>
-        <MenuItem sx={{ color: 'red', fontSize: 12 }}>Lock Wallet: ₹ {wallet.lock}</MenuItem>
+        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Main Wallet : ₹ {wallet.main}</MenuItem>
+
+        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Settlement : ₹ {wallet.settlementwallet}</MenuItem>
+
+        <MenuItem sx={{ color: 'red', fontSize: 12 }}>Lock : ₹ {wallet.lock}</MenuItem>
       </Menu>
     </>
   );
 };
 
-/* ================= SKELETON ================= */
-const TableSkeleton = ({ rows = 5 }) => {
-  return [...Array(rows)].map((_, i) => (
+/* ================= TABLE SKELETON ================= */
+
+const TableSkeleton = ({ rows = 20 }) =>
+  [...Array(rows)].map((_, i) => (
     <TableRow key={i}>
       <TableCell>
-        <Skeleton variant="rounded" width={40} height={24} />
+        <Skeleton variant="rounded" width={42} height={24} />
       </TableCell>
 
       <TableCell>
-        <Skeleton width="60%" height={20} />
-        <Skeleton width="40%" height={16} />
+        <Skeleton width="65%" />
+        <Skeleton width="40%" />
       </TableCell>
 
       <TableCell>
-        <Skeleton width="50%" height={20} />
-        <Skeleton width="30%" height={16} />
+        <Skeleton width="60%" />
+        <Skeleton width="35%" />
       </TableCell>
 
       <TableCell align="center">
-        <Skeleton variant="circular" width={32} height={32} />
+        <Skeleton variant="circular" width={34} height={34} />
       </TableCell>
 
       <TableCell align="center">
-        <Skeleton variant="circular" width={32} height={32} />
+        <Skeleton variant="circular" width={34} height={34} />
       </TableCell>
     </TableRow>
   ));
-};
 
 /* ================= MAIN COMPONENT ================= */
-export default function AgentTable({ agentType, agentCode }) {
-  const { data, total, loading, states, addAgent, refetch } = useMember(agentType);
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+export default function AgentTable({ agentType, agentCode }) {
+  const navigate = useNavigate();
+
+  const {
+    data,
+    total,
+    loading,
+    states,
+    addAgent,
+    refetch,
+
+    currentPage,
+    itemsPerPage,
+
+    setCurrentPage,
+    setItemsPerPage,
+
+    setSearchTerm,
+  } = useMember(agentType);
+
   const [search, setSearch] = React.useState('');
+
+  const [filteredType, setFilteredType] = React.useState('all');
 
   const [openDrawer, setOpenDrawer] = React.useState(false);
 
-  // ✅ Separate loading state only for the Backdrop (triggered by drawer actions)
   const [backdropLoading, setBackdropLoading] = React.useState(false);
 
-  // 🔥 Mapping
-  const rows = React.useMemo(() => {
+  /* Mapping */
 
+  const rows = React.useMemo(() => {
     return data.map((item) => ({
       id: item.id,
+
       status: item.status === 'active',
+
       name: `${item.name} (${item.id})`,
-      parent: item.parent || null,
+
       mobile: item.mobile,
+
+      parent: item.parent,
+
       wallet: {
         main: item.mainbalance,
         settlementwallet: item.settlementwallet,
         lock: item.lockamount
       },
-      role: item.role.name,
+
+      role: item.role?.name,
+
       kyc: item.kyc
     }));
   }, [data]);
-
-  const [filteredType, setFilteredType] = React.useState('all');
-
-  // 🔍 Search + Filter
-  const filteredRows = rows.filter((r) => {
-    const matchesSearch = r.name.toLowerCase().includes(search.toLowerCase()) || r.mobile.includes(search);
-
-    const matchesFilter = filteredType === 'all' ? true : r.kyc === filteredType;
-
-    return matchesSearch && matchesFilter;
-  });
-
-  const visibleRows = filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
-  // Pending Filter
-  const handlerPending = () => {
-    setFilteredType('submitted');
-  };
-  const navigate = useNavigate();
 
   return (
     <Paper
@@ -147,40 +158,54 @@ export default function AgentTable({ agentType, agentCode }) {
     >
       <Backdrop
         open={backdropLoading}
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.modal + 1, backgroundColor: 'rgba(0,0,0,0.5)' }}
+        sx={{
+          color: '#fff',
+          zIndex: (theme) => theme.zIndex.modal + 1,
+          backgroundColor: 'rgba(0,0,0,.45)'
+        }}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-
-      {/* 🔥 Top Bar */}
-
+      {/* ================= Toolbar ================= */}
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 2,
           p: 2,
-          borderBottom: '1px solid #eee'
+          borderBottom: '1px solid #eee',
+          flexWrap: 'wrap'
         }}
       >
         <TextField
           size="small"
-          placeholder="Search..."
+          placeholder="Search Name / Mobile..."
           value={search}
           onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(0);
+            const value = e.target.value;
+
+            setSearch(value);
+
+            setCurrentPage(1);
+
+            setSearchTerm(value);
           }}
-          sx={{ width: 'auto' }}
+          sx={{ minWidth: 260 }}
         />
-        <Stack direction="row" spacing={1.5} alignItems="center">
+
+        <Stack direction="row" spacing={1.5}>
           <FormControl size="small" sx={{ minWidth: 180 }}>
             <Select
               value={filteredType}
               onChange={(e) => {
-                setFilteredType(e.target.value);
-                setPage(0);
+                const value = e.target.value;
+
+                setFilteredType(value);
+
+                setCurrentPage(1);
+
               }}
-              displayEmpty
             >
               <MenuItem value="all">All Users</MenuItem>
 
@@ -191,49 +216,50 @@ export default function AgentTable({ agentType, agentCode }) {
               <MenuItem value="pending">Pending KYC</MenuItem>
             </Select>
           </FormControl>
-          <BlueButton sx={{ width: 'auto' }} label="+  Add New Agent" onClick={() => setOpenDrawer(true)} />
+
+          <BlueButton sx={{ width: 'auto' }} label="+ Add New Agent" onClick={() => setOpenDrawer(true)} />
         </Stack>
       </Box>
-
-      {/* 📊 Table */}
+      {/* ================= TABLE ================= */}
       <TableContainer>
         <Table
           sx={{
             '& th': {
-              fontWeight: 600,
+              fontWeight: 700,
               backgroundColor: '#fafafa'
             },
-            '& td, & th': {
-              borderBottom: '1px solid #eee'
-            },
-            '& .MuiTableCell-root': { border: '1px solid', borderColor: 'divider' },
-            '& .MuiTableHead-root .MuiTableCell-root': {
-              fontWeight: 700,
-              backgroundColor: 'grey.100'
+
+            '& td,& th': {
+              border: '1px solid',
+              borderColor: 'divider'
             }
           }}
         >
           <TableHead>
             <TableRow>
               <TableCell>Status</TableCell>
+
               <TableCell>User Details</TableCell>
+
               <TableCell>Parent Details</TableCell>
+
               <TableCell align="center">Wallet</TableCell>
+
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
             {loading ? (
-              <TableSkeleton rows={rowsPerPage} />
-            ) : visibleRows.length === 0 ? (
+              <TableSkeleton rows={itemsPerPage} />
+            ) : rows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
-                  <Typography color="text.secondary">No data found</Typography>
+                  <Typography color="text.secondary">No Users Found</Typography>
                 </TableCell>
               </TableRow>
             ) : (
-              visibleRows.map((row) => (
+              rows.map((row) => (
                 <TableRow key={row.id} hover>
                   <TableCell>
                     <Switch checked={row.status} size="small" />
@@ -241,20 +267,23 @@ export default function AgentTable({ agentType, agentCode }) {
 
                   <TableCell>
                     <Typography fontWeight={600}>{row.name}</Typography>
-                    <Typography variant="body2" fontWeight={600} color="text.secondary">
+
+                    <Typography variant="body2" color="text.secondary">
                       {row.mobile}
                     </Typography>
-                    <Typography variant="body2" fontWeight={600} color="primary.main">
+
+                    <Typography variant="body2" color="primary" fontWeight={600}>
                       {row.role}
                     </Typography>
                   </TableCell>
 
                   <TableCell>
                     <Typography fontWeight={600}>
-                      {row.parent?.name || '-'} ({row.parent.id})
+                      {row.parent?.name ?? '-'} ({row.parent?.id ?? '-'})
                     </Typography>
-                    <Typography variant="body2" fontWeight={600} color="text.secondary">
-                      {row.parent?.mobile || '-'}
+
+                    <Typography variant="body2" color="text.secondary">
+                      {row.parent?.mobile ?? '-'}
                     </Typography>
                   </TableCell>
 
@@ -278,34 +307,41 @@ export default function AgentTable({ agentType, agentCode }) {
             )}
           </TableBody>
         </Table>
-      </TableContainer>
-
-      {/* 📄 Pagination */}
+      </TableContainer>{' '}
+      {/* ================= PAGINATION ================= */}
       <TablePagination
         component="div"
         count={total}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[25, 50, 100, 500]}
-        onPageChange={(e, newPage) => setPage(newPage)}
-        onRowsPerPageChange={(e) => {
-          setRowsPerPage(parseInt(e.target.value, 10));
-          setPage(0);
+        page={currentPage - 1} // MUI starts from 0
+        rowsPerPage={itemsPerPage}
+        rowsPerPageOptions={[10, 20, 50, 100, 500]}
+        onPageChange={(event, newPage) => {
+          setCurrentPage(newPage + 1); // Laravel starts from 1
         }}
-        sx={{ borderTop: '1px solid #eee' }}
-      />
+        onRowsPerPageChange={(event) => {
+          const value = Number(event.target.value);
 
+          setItemsPerPage(value);
+
+          setCurrentPage(1);
+        }}
+        sx={{
+          borderTop: '1px solid #eee'
+        }}
+      />
+      {/* ================= ADD AGENT ================= */}
       <AddAgentDrawer
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
         agentCode={agentCode}
         states={states}
         agentType={agentType}
-        addAgent={addAgent} // ✅ passed from this hook instance
+        addAgent={addAgent}
         setLoading={setBackdropLoading}
         onSuccess={() => {
-          refetch(); // ✅ Refetch after successful addition
-          setBackdropLoading(false); // ✅ Stop backdrop loading
+          setOpenDrawer(false);
+          refetch();
+          setBackdropLoading(false);
         }}
       />
     </Paper>

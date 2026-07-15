@@ -1,7 +1,20 @@
 import api from '../../../shared/BaseApi';
 
-export const fetchMember = async (type) => {
-  const res = await api.get(`/member/${type}`);
+// api/memberApi.js
+
+export const fetchMember = async ({ type, page = 1, perPage = 20, search = '' }) => {
+  const params = {
+    page,
+    per_page: perPage
+  };
+
+  if (search) {
+    params.search = search;
+  }
+
+  const res = await api.get(`/member/${type}`, {
+    params
+  });
 
   return res.data;
 };

@@ -27,7 +27,7 @@ export function useTransactions({
     perPage: initialPerPage,
     total: 0
   });
-const profile = useSelector((state) => state.user.profile);
+  const profile = useSelector((state) => state.user.profile);
 
   // -------------------- FETCH FUNCTION --------------------
   const fetchData = async () => {
@@ -36,22 +36,24 @@ const profile = useSelector((state) => state.user.profile);
 
     try {
       const res = await fetchTransactions({
-        user_id:profile.id
+        user_id: profile.id,
+        page,
+        per_page: perPage,
+        date_from: fromDate,
+        date_to: toDate
       });
 
-      const body = res.data;
+      const body = res.data.data; // paginator object
 
-      // set table data
-      setRows(body?.data || []);
-      const vtotal = body?.data?.length || 0;
-      const vperPage = 10; // or your default
+      setRows(body.data);
 
       setPagination({
-        currentPage: 1,
-        perPage,
-        total: vtotal,
-        lastPage: Math.ceil(vtotal / vperPage)
+        currentPage: body.current_page,
+        perPage: body.per_page,
+        total: body.total,
+        lastPage: body.last_page
       });
+
       // set pagination
       // setPagination({
       //   currentPage:1,
@@ -63,7 +65,6 @@ const profile = useSelector((state) => state.user.profile);
       setError(err?.response?.data?.message || err.message || 'Failed to load transactions');
     } finally {
       setLoading(false);
-
     }
   };
 
