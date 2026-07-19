@@ -66,7 +66,6 @@ const TableSkeleton = ({ rows = 5 }) => {
 
 /* ================= MAIN COMPONENT ================= */
 export default function AgentTable({}) {
-  fetchSettlements();
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -166,7 +165,7 @@ export default function AgentTable({}) {
       setBackdropLoading(false);
       dispatch(stopLoading());
     }
-  }, [selectedIds, bulkRemark, rows]);
+  }, [selectedIds]);
 
   const handleRowSelect = (id) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));

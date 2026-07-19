@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchMember, fetchStates, createAgent } from "./memberApi";
-
+import { useDebounce } from "use-debounce";
 export const useMember = (type) => {
   const [data, setData] = React.useState([]);
   const [states, setStates] = React.useState([]);
@@ -16,6 +16,7 @@ export const useMember = (type) => {
 
   // Filters
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [debouncedSearch] = useDebounce(searchTerm, 750);
 
   // 🔹 Fetch Members
   const getMembers = React.useCallback(async () => {
@@ -26,7 +27,7 @@ export const useMember = (type) => {
         type,
         page: currentPage,
         perPage: itemsPerPage,
-        search: searchTerm,
+        search: debouncedSearch,
       });
 
       const pageData = res.data;
@@ -45,7 +46,7 @@ export const useMember = (type) => {
     type,
     currentPage,
     itemsPerPage,
-    searchTerm,
+    debouncedSearch,
   ]);
 
   // 🔹 Fetch States
