@@ -107,13 +107,39 @@ export const updateUserParent = async (payload) => {
   return res.data;
 };
 
-export const updateUserMid = async (payload) => {
+export const linkUserMid = async (payload) => {
   const formData = new FormData();
 
-  formData.append('retailer_id', payload.user_id);
+  formData.append('retailer_id', payload.retailer_id);
   formData.append('mid', payload.mid);
 
   const res = await api.post(`/member/set-mid`, formData);
 
   return res.data;
 };
+
+
+export const getUserMid = async (payload) => {
+  const formData = new FormData();
+
+  formData.append('retailer_id', payload.retailer_id);
+
+  const res = await api.post(`/member/get-mids`, formData);
+
+  return res.data;
+};
+
+export const updateUserMid = async (payload) => {
+  const formData = new FormData();
+
+  formData.append('retailer_id', payload.retailer_id);
+  formData.append('id', payload.id);
+  formData.append('mid', payload.mid);
+
+
+  const res = await api.post(`/member/update-mid`, formData);
+
+  return res.data;
+};
+
+

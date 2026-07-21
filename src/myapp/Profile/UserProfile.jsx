@@ -22,7 +22,7 @@ import DeviceMapping from './helper/DeviceMapping';
 import { useParams } from 'react-router';
 import useUserProfile from './useUserProfile';
 import { getKycStyle } from './helper/Color';
-import { BlueButton,  } from '../../components/CommonComponent';
+import { BlueButton } from '../../components/CommonComponent';
 import { updateProfile } from './memberUserUpdateApi';
 import toast from 'react-hot-toast';
 
@@ -92,7 +92,10 @@ export default function UserProfile() {
     getUserParents,
     handleUpdateParent,
 
-    handleUpdateMid
+    updateMidForUser,
+
+    linkMidForUser,
+    getMidForUser
   } = useUserProfile();
   const currentStyle = getKycStyle(userDetails?.kyc);
 
@@ -241,7 +244,13 @@ export default function UserProfile() {
         <ParentMapping tab={tab} userDetails={userDetails} getUserParents={getUserParents} handleUpdateParent={handleUpdateParent} />
 
         {/* DEVICE MAPPING TAB */}
-        <DeviceMapping tab={tab} userDetails={userDetails} handleUpdateMid={handleUpdateMid} />
+        <DeviceMapping
+          tab={tab}
+          userDetails={userDetails}
+          updateMidForUser={updateMidForUser}
+          linkMidForUser={linkMidForUser}
+          getMidForUser={getMidForUser}
+        />
       </Box>
     </Card>
   );

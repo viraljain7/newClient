@@ -10,6 +10,8 @@ import {
   updateUserWallet,
   fetchUserParent,
   updateUserParent,
+  linkUserMid,
+  getUserMid,
   updateUserMid
 } from './memberUserUpdateApi';
 import { startLoading, stopLoading } from '../../store/slices/loaderSlice';
@@ -106,8 +108,17 @@ const useUserProfile = () => {
 
   // ================= MID =================
 
-  const handleUpdateMid = async (payload) => {
+  const updateMidForUser = async (payload) => {
+
     return handleRequest(() => updateUserMid(payload));
+  };
+
+  const linkMidForUser = async (payload) => {
+    return handleRequest(() => linkUserMid(payload));
+  };
+
+  const getMidForUser = async (payload) => {
+    return handleRequest(() => getUserMid(payload));
   };
 
   return {
@@ -132,7 +143,9 @@ const useUserProfile = () => {
     getUserParents,
     handleUpdateParent,
 
-    handleUpdateMid
+    updateMidForUser,
+    linkMidForUser,
+    getMidForUser
   };
 };
 
