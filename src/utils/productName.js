@@ -18,7 +18,8 @@ function productName(name) {
   else if (name === "platinumpg1") productName = " Platinum 2";
   else if (name === "cf_pg6") productName = "Diamond 4";
     else if (name === 'cf_pg7') productName = 'Premium 5';
-
+    else if(name==="fundrequest") productName = "POS Request";
+  
 
 
 
@@ -45,6 +46,8 @@ function productName(name) {
     else if (name === 'diamondpg3') productName = 'Diamond 2';
     else if (name === 'cf_pg6') productName = 'Diamond 4';
     else if (name === 'cf_pg7') productName = 'Premium 5';
+    else if(name==="fundrequest") productName = "POS Request";
+
 
 
     // else if (name === 'cf_pg5') productName = 'Add Money (Premium 2)';

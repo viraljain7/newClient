@@ -44,12 +44,47 @@ export const handleExportAllTxnReport = async (params = {}) => {
     //     (match) => productName(match)
     //   );
 
-    // 🔥 IMPORTANT: use response directly
-    const blob = new Blob([res.data]);
+  // Convert Blob -> Text
+const csvText = await res.data.text();
 
-    // 🔥 create URL
-    const url = window.URL.createObjectURL(blob);
+const lines = csvText.split(/\r?\n/);
 
+if (lines.length > 1) {
+  const headers = lines[0].split(",");
+
+  const txnIndex = headers.findIndex(
+    (h) => h.replace(/"/g, "").trim() === "TXN ID"
+  );
+
+  const utrIndex = headers.findIndex(
+    (h) => h.replace(/"/g, "").trim() === "UTR"
+  );
+
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i]) continue;
+
+    const cols = lines[i].split(",");
+
+    if (txnIndex !== -1 && cols[txnIndex]) {
+      const txn = cols[txnIndex].replace(/"/g, "");
+      cols[txnIndex] = `'${txn}'`;
+    }
+
+    if (utrIndex !== -1 && cols[utrIndex]) {
+      const utr = cols[utrIndex].replace(/"/g, "");
+      cols[utrIndex] = `'${utr}'`;
+    }
+
+    lines[i] = cols.join(",");
+  }
+}
+
+const updatedCsv = lines.join("\n");
+const blob = new Blob([updatedCsv], {
+  type: "text/csv;charset=utf-8;",
+});
+
+const url = URL.createObjectURL(blob);
     // 🔥 create link
     const link = document.createElement('a');
     link.href = url;

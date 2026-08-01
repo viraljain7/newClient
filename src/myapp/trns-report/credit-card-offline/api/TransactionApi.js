@@ -99,11 +99,26 @@ export const handleExportAllTxnReport = async (params = {}) => {
 
 
 
+
+
+
 export const handleEditApi = async (form) => {
   const formData = new FormData();
 
-  formData.append('txnid', form.txnid);
-  const res = await api.post(`/service/credit-card/failed`, formData);
+  formData.append("txnid", form.txnid);
+
+  // Only send these for success
+  if (form.status === "success") {
+    formData.append("utr", form.utr);
+    formData.append("message", "transaction is successful");
+  }
+
+  const endpoint =
+    form.status === "success"
+      ? "/service/credit-card/success"
+      : "/service/credit-card/failed";
+
+  const res = await api.post(endpoint, formData);
 
   return res.data;
 };

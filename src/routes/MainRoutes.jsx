@@ -75,6 +75,7 @@ const UPIPayoutReport = Loadable(lazy(() => import('pages/transaction-report/Upi
 const QRCollectionReport = Loadable(lazy(() => import('pages/transaction-report/QrCollection')));
 const CommissionReport = Loadable(lazy(() => import('pages/transaction-report/Commission')));
 const POSReport = Loadable(lazy(() => import('pages/transaction-report/Pos')));
+const PosLoadReport = Loadable(lazy(() => import('pages/transaction-report/PosLoad')));
 const SummaryReport = Loadable(lazy(() => import('pages/transaction-report/Summary')));
 const UserwiseBusinessReport = Loadable(lazy(() => import('pages/transaction-report/UserwiseBusiness')));
 const CommissionDistributionReport = Loadable(lazy(() => import('pages/transaction-report/CommissionDistribution')));
@@ -368,6 +369,14 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin',  'Retailer']}>
           <POSReport />
+        </ProtectedRoute>
+      )
+    },
+      {
+      path: 'transaction-report/posload',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin',  'Retailer']}>
+          <PosLoadReport />
         </ProtectedRoute>
       )
     },

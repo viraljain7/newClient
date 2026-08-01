@@ -71,7 +71,14 @@ const transactionReport = {
       icon: FundProjectionScreenOutlined,
       roles: ['Admin', 'Subadmin', 'Retailer']
     },
-
+    {
+      id: 'posload-report',
+      title: 'POS Request Report',
+      type: 'item',
+      url: '/transaction-report/posload',
+      icon: FundProjectionScreenOutlined,
+      roles: ['Admin', 'Subadmin', 'Retailer']
+    },
       {
       id: 'rupay-upi-report',
       title: 'Rupay UPI Report',

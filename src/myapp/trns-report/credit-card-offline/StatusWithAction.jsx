@@ -30,7 +30,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { handleEditApi } from './api/TransactionApi';
 
 const StatusWithActions = ({ row }) => {
-  console.log(row)
   const navigate = useNavigate();
 
   const status = row.status?.toLowerCase();
@@ -91,15 +90,15 @@ const StatusWithActions = ({ row }) => {
     }));
   };
 
-
   // ---------------- Submit ----------------
   const dispatch = useDispatch();
   const handleEdit = async () => {
     dispatch(startLoading());
     try {
-
       const data = await handleEditApi({
         txnid: formData.txnid,
+        status: formData.status,
+        utr: formData.utr
       });
 
       if (data.statuscode === 'TXN') {
@@ -155,7 +154,9 @@ const StatusWithActions = ({ row }) => {
 
         {/* Menu */}
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-          {(userRole === 'Admin' || userRole === 'Subadmin') &&(formData.status==="success"||formData.status==="pending") && <MenuItem onClick={handleDialogOpen}>Edit Status</MenuItem>}
+          {(userRole === 'Admin' || userRole === 'Subadmin') && (formData.status === 'success' || formData.status === 'pending') && (
+            <MenuItem onClick={handleDialogOpen}>Edit Status</MenuItem>
+          )}
 
           <MenuItem onClick={printInvoice}>Invoice</MenuItem>
         </Menu>
@@ -242,7 +243,18 @@ const StatusWithActions = ({ row }) => {
               <TextField fullWidth name="utr" placeholder="Enter UTR Number" value={formData.utr} onChange={handleChange} />
             </Box>
 
-        
+            <Box>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                Status
+              </Typography>
+
+              <TextField select fullWidth name="status" value={formData.status} onChange={handleChange}>
+
+                <MenuItem value="success">Success</MenuItem>
+
+                <MenuItem value="failed">Failed</MenuItem>
+              </TextField>
+            </Box>
           </Stack>
         </DialogContent>
 

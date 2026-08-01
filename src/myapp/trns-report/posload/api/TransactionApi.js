@@ -16,7 +16,7 @@ export function fetchTransactions({ fromDate, toDate, page, perPage, search, fil
 
     ...(search ? { search } : {}),
     ...cleanFilters,
-    product: "paytm_pos",
+    product: "fundrequest",
   });
 }
 
@@ -29,52 +29,6 @@ export const handleExportAllTxnReport = async (params = {}) => {
   try {
     const cleanFilters = Object.fromEntries(Object.entries(filters).filter(([, v]) => v != null && v !== ''));
 
-    // const res = await api.post(
-    //   '/statement/all',
-    //   {
-    //     from_date: fromDate,
-    //     to_date: toDate,
-    //     page,
-    //     per_page: perPage,
-    //     ...(search ? { search } : {}),
-    //     ...cleanFilters,
-    //     export: 1,
-    //     settlement_type: 'all',
-    //     product: 'paytm_pos'
-    //   },
-    //   {
-    //     responseType: 'blob'
-    //   }
-    // );
-    // // const updatedCsv = res.data.replace(
-    // //     /\b(dmt|payu-education|zwitch|easebuzz|mtb|qrmtb|upipayout|bbps|payout|dynamic-qr|paytm_pos|cf_pg5|nixapremium2|premiumpg3|diamondpg1|diamondpg2|diamondpg3)\b/g,
-    // //     (match) => productName(match)
-    // //   );
-
-    // // 🔥 IMPORTANT: use response directly
-    // const blob = new Blob([res.data]);
-
-    // // 🔥 create URL
-    // const url = window.URL.createObjectURL(blob);
-
-    // // 🔥 create link
-    // const link = document.createElement('a');
-    // link.href = url;
-
-    // // 🔥 FORCE DOWNLOAD
-    // link.setAttribute('download', `Transactions-Report.csv`);
-
-    // // 🔥 MUST append to DOM
-    // document.body.appendChild(link);
-
-    // // 🔥 trigger
-    // link.click();
-
-    // // cleanup
-    // document.body.removeChild(link);
-    // window.URL.revokeObjectURL(url);
-
-    // toast.success("Report exported successfully");
 
 
     const res = await api.post(
@@ -88,7 +42,7 @@ export const handleExportAllTxnReport = async (params = {}) => {
     ...cleanFilters,
     export: 1,
     settlement_type: "all",
-    product: "paytm_pos",
+    product: "fundrequest",
   },
   {
     responseType: "blob",
@@ -139,7 +93,7 @@ const url = URL.createObjectURL(blob);
 
 const link = document.createElement("a");
 link.href = url;
-link.download = "Pos-Report.csv";
+link.download = "Pos-Request-Report.csv";
 document.body.appendChild(link);
 link.click();
 document.body.removeChild(link);

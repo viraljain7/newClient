@@ -104,7 +104,21 @@ export const TRANSACTION_COLUMNS = [
       type: 'select',
       key: 'product',
       options: [
-      
+        'recharge',
+        'upipayout',
+        'dmt',
+        'mtb',
+        'qrmtb',
+        'bbps',
+        'credit-card',
+        'dynamic-qr',
+        'fundrequest',
+        'fundtransfer',
+        'fundreturn',
+        'fundloadwallet',
+        'payout',
+        'tds',
+        'paytm_pos'
       ]
     },
 
