@@ -105,13 +105,14 @@ const RightSide = ({ bill, setLoading, setBill }) => {
                         },
                         '&.Mui-focused fieldset': {
                           borderColor: '#1976d2',
+
                           borderWidth: '2px'
                         }
                       }
                     }}
                     onChange={(e) => {
                       const val = e.target.value;
-                      if (!/^\d*$/.test(val)) return;
+                      if (!/^\d*\.?\d{0,2}$/.test(val)) return;
                       setAmount(val);
                     }}
                   />
@@ -136,7 +137,7 @@ const RightSide = ({ bill, setLoading, setBill }) => {
             <Divider />
             <Row
               label="Note:"
-              value={<span style={{ fontWeight: 700 }}>[ Transaction Limit ]  | All Banks: Max ₹49,999</span>}
+              value={<span style={{ fontWeight: 700 }}>[ Transaction Limit ] | All Banks: Max ₹49,999</span>}
               color="error.main"
             />
             <Row label="Bill Fetched: " value="Successfully" color="success.main" />
