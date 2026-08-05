@@ -27,10 +27,14 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 import { useNavigate } from 'react-router';
-import { BlueButton } from '../../../components/CommonComponent';
+import { BlueButton, OutlineButton } from '../../../components/CommonComponent';
 
 import { useMember } from './useMember';
 import AddAgentDrawer from './AddAgentDrawer';
+import { exportReport } from './memberApi';
+
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+
 
 /* ================= WALLET MENU ================= */
 
@@ -78,6 +82,10 @@ const TableSkeleton = ({ rows = 20 }) =>
 
       <TableCell>
         <Skeleton width="60%" />
+        <Skeleton width="60%" />
+      </TableCell>
+      <TableCell>
+        <Skeleton width="60%" />
         <Skeleton width="35%" />
       </TableCell>
 
@@ -110,7 +118,7 @@ export default function AgentTable({ agentType, agentCode }) {
     setCurrentPage,
     setItemsPerPage,
 
-    setSearchTerm,
+    setSearchTerm
   } = useMember(agentType);
 
   const [search, setSearch] = React.useState('');
@@ -143,7 +151,8 @@ export default function AgentTable({ agentType, agentCode }) {
 
       role: item.role?.name,
 
-      kyc: item.kyc
+      kyc: item.kyc,
+      mids: item.mids
     }));
   }, [data]);
 
@@ -204,7 +213,6 @@ export default function AgentTable({ agentType, agentCode }) {
                 setFilteredType(value);
 
                 setCurrentPage(1);
-
               }}
             >
               <MenuItem value="all">All Users</MenuItem>
@@ -216,6 +224,13 @@ export default function AgentTable({ agentType, agentCode }) {
               <MenuItem value="pending">Pending KYC</MenuItem>
             </Select>
           </FormControl>
+
+          <OutlineButton
+            sx={{ width: 'auto' }}
+            startIcon={<FileDownloadIcon />}
+            label="Export"
+            onClick={() => exportReport({ type: agentType, page: currentPage, perPage: itemsPerPage, search })}
+          />
 
           <BlueButton sx={{ width: 'auto' }} label="+ Add New Agent" onClick={() => setOpenDrawer(true)} />
         </Stack>
@@ -243,6 +258,8 @@ export default function AgentTable({ agentType, agentCode }) {
 
               <TableCell>Parent Details</TableCell>
 
+              <TableCell align="center">MID Details</TableCell>
+
               <TableCell align="center">Wallet</TableCell>
 
               <TableCell align="center">Action</TableCell>
@@ -254,7 +271,7 @@ export default function AgentTable({ agentType, agentCode }) {
               <TableSkeleton rows={itemsPerPage} />
             ) : rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
+                <TableCell colSpan={6} align="center" sx={{ py: 6 }}>
                   <Typography color="text.secondary">No Users Found</Typography>
                 </TableCell>
               </TableRow>
@@ -285,6 +302,16 @@ export default function AgentTable({ agentType, agentCode }) {
                     <Typography variant="body2" color="text.secondary">
                       {row.parent?.mobile ?? '-'}
                     </Typography>
+                  </TableCell>
+
+                  <TableCell align="center">
+                    {row.mids?.length
+                      ? row.mids.map((item, index) => (
+                          <Typography key={item.mid || index} component="div" sx={{ fontSize: '14px', fontWeight: 600, lineHeight: 1.6 }}>
+                            {item.mid}
+                          </Typography>
+                        ))
+                      : 'NA'}
                   </TableCell>
 
                   <TableCell align="center">
