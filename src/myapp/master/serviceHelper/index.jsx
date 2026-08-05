@@ -99,9 +99,10 @@ export default function ServiceTable() {
     else if (name === 'Premium PG 10') return 'Diamond 2 (cruyana diamondpg1 razorpay)';
     else if (name === 'PLATINUMPG1') return 'Platinum 2 (pinlab yana Grocery)';
     else if (name === 'Online Credit Card') return 'BBPS';
-    else if (name === 'BBPS') return 'AEPS(BBPS)';
+    else if (name === 'BBPS') return 'POS REQUEST';
     else if (name === 'Premium PG 4') return 'Diamond 4 (Nixa Premium 3)';
     else if (name === 'Premium PG 5') return 'Premium 5 (Nixa Premium 4)';
+
 
 
     else return name; // rest unchanged
@@ -187,7 +188,7 @@ export default function ServiceTable() {
                   {/* DETAILS */}
 
                   <TableCell>
-                    <Typography fontWeight={600}>{getProductName(row.name)}</Typography>
+                   <Typography fontWeight={600}>{getProductName(row.name)}</Typography>
                   </TableCell>
                 </TableRow>
               ))

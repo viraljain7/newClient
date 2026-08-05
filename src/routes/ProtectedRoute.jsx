@@ -74,9 +74,9 @@ const ProtectedRoute = ({ children, roles = [], serviceCode }) => {
       return <Navigate to="/dashboard/default" replace />;
     }
   }
-
+  
   //new Addition
-
+  
   return children;
 };
 

@@ -286,8 +286,22 @@ const MainRoutes = {
     },
 
     // { path: 'fund/request', element: <FundRequest /> },
-    { path: 'fund/pos-pending-request', element: <PosPendingRequestPageAD /> },
-    { path: 'fund/pos-request', element: <PosRequestPageRT /> },
+    {
+      path: 'fund/pos-pending-request',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
+          <PosPendingRequestPageAD />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'fund/pos-request',
+      element: (
+        <ProtectedRoute roles={['Retailer']} serviceCode="bbps">
+          <PosRequestPageRT />
+        </ProtectedRoute>
+      )
+    },
 
     // { path: 'fund/all-fund-report', element: <AllFundReport /> },
 

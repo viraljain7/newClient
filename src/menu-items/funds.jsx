@@ -49,18 +49,18 @@ const fund = {
       type: 'item',
       url: '/fund/pos-pending-request',
       icon: ClockCircleOutlined,
-      roles: ['Admin', 'Subadmin'],
+      roles: ['Admin', 'Subadmin']
     },
 
-      {
+    {
       id: 'pos-request',
       title: 'POS Request',
       type: 'item',
       url: '/fund/pos-request',
       icon: ClockCircleOutlined,
       roles: ['Retailer'],
-
-    },
+      serviceCode: 'bbps'
+    }
 
     // {
     //   id: 'all-fund-report',
