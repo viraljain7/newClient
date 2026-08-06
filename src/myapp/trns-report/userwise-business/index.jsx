@@ -41,13 +41,7 @@ const UserwiseBusinessReport = () => {
   const handleExport = () => {
     handleExportAllTxnReport({
       fromDate,
-      toDate,
-      page: pagination.currentPage || 1,
-      perPage: pagination.perPage || 25,
-
-      // if you store these, pass them
-      search,
-      filters
+      toDate
     });
   };
 
