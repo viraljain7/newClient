@@ -65,6 +65,9 @@ function SchemeProducts({ open, onClose }) {
       case 'dmt':
         return 'Payout';
 
+      case 'payucruise':
+        return 'Silver 4 (Nixa silver 4)';
+
       default:
         return name;
     }

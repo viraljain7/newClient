@@ -91,7 +91,7 @@ export default function ServiceTable() {
     if (name === 'Payu Education') return 'Silver 1 (Nixa silver 1)';
     else if (name === 'Zwitch') return 'Diamond 3 (Nixa silver 2)';
     else if (name === 'Paytm') return 'Silver 3 (Nixa silver 3)';
-    else if (name === 'Payu Cruise') return 'Diamond 2';
+    else if (name === 'Payu Cruise') return 'Silver 4 (Nixa silver 4)';
     else if (name === 'Domestic Remittance') return 'Payout';
     else if (name === 'Premium PG 7') return 'Premium 2 (Yana Cashfree pg 2)';
     else if (name === 'Premium PG 8') return 'Premium 4 (Yana Razorpay pg 3)';
