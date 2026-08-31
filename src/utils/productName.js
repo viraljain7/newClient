@@ -4,6 +4,7 @@ function productName(name) {
   else if (name === "payu-education") productName = " Silver 1";
   else if (name === "zwitch") productName = " Diamond 3";
   else if (name === "easebuzz") productName = " Silver 3";
+    else if (name === 'payucruise') productName = 'Silver 4';
   else if (name === "mtb") productName = "Add Money MTB";
   else if (name === "qrmtb") productName = "QR MTB";
   else if (name === "upipayout") productName = "UPI Payout";
@@ -33,6 +34,7 @@ function productName(name) {
     if (name === 'dmt') productName = 'Payout';
     else if (name === 'payu-education') productName = 'silver 1';
     else if (name === 'zwitch') productName = 'Diamond 3';
+    else if (name === 'payucruise') productName = 'Silver 4';
     else if (name === 'easebuzz') productName = 'Silver 3';
     else if (name === 'mtb') productName = 'Add Money MTB';
     else if (name === 'qrmtb') productName = 'QR MTB';

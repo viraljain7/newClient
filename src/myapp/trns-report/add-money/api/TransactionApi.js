@@ -11,6 +11,8 @@ export function fetchTransactions({ fromDate, toDate, page, perPage, search, fil
     to_date: toDate,
     page,
     per_page: perPage,
+    settlement_type: 'all',
+
     ...(search ? { search } : {}),
     ...cleanFilters
   });

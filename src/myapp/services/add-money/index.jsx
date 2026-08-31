@@ -74,7 +74,7 @@ const serviceGroups = [
     redirect: 'payment10'
   },
   {
-    title: 'Silver 4',
+    title: 'Silver 4 (T+1 Settlement)',
     providertype: 'payucruise',
     redirect: 'payment11'
   },
