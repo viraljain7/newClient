@@ -68,17 +68,24 @@ const TableSkeleton = ({ rows = 5 }) => {
 export default function AgentTable({}) {
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [date, setDate] = React.useState(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  });
 
   const getSettlements = React.useCallback(async () => {
     setLoading(true);
 
     try {
-      const res = await fetchSettlements();
+      const res = await fetchSettlements(date);
       setData(res.data);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [date]);
 
   React.useEffect(() => {
     getSettlements();
@@ -141,7 +148,8 @@ export default function AgentTable({}) {
           user_id: userId,
           amount: settlement_value,
           txnid: `STL${userId}${Date.now()}${i}`,
-          remark: bulkRemark
+          remark: bulkRemark,
+          date:date
         };
       });
 
@@ -229,6 +237,13 @@ export default function AgentTable({}) {
             size="medium"
             value={bulkRemark}
             onChange={(e) => setBulkRemark(e.target.value)}
+          />
+          <TextField
+            type="date"
+            size="small"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            sx={{ width: '150px' }}
           />
 
           <BlueButton label="Apply" sx={{ width: '100px' }} onClick={handleBulkSettlement} />

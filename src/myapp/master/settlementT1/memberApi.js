@@ -1,7 +1,9 @@
 import api from '../../../shared/BaseApi';
 
-export const fetchSettlements = async () => {
-  const res = await api.get(`/member/retailers/eligible-settlement`);
+export const fetchSettlements = async (date) => {
+    const formData = new FormData();
+  formData.append('date', date);
+  const res = await api.post(`/member/retailers/eligible-settlement`,formData);
 
   return res.data;
 };
@@ -24,6 +26,8 @@ export const createSettlementTransfer = async (data) => {
   formData.append('amount', data.amount);
   formData.append('txnid', data.txnid);
   formData.append('remark', data.remark);
+  formData.append('date', data.date);
+
 
   const res = await api.post(`/fund/transaction`, formData);
   return res.data;
