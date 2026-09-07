@@ -149,7 +149,7 @@ export default function AgentTable({}) {
           amount: settlement_value,
           txnid: `STL${userId}${Date.now()}${i}`,
           remark: bulkRemark,
-          date:date
+          date: date
         };
       });
 
@@ -238,13 +238,7 @@ export default function AgentTable({}) {
             value={bulkRemark}
             onChange={(e) => setBulkRemark(e.target.value)}
           />
-          <TextField
-            type="date"
-            size="small"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            sx={{ width: '150px' }}
-          />
+          <TextField type="date" size="small" value={date} onChange={(e) => setDate(e.target.value)} sx={{ width: '150px' }} />
 
           <BlueButton label="Apply" sx={{ width: '100px' }} onClick={handleBulkSettlement} />
         </Stack>
@@ -272,9 +266,9 @@ export default function AgentTable({}) {
             <TableRow>
               <TableCell>Status</TableCell>
               <TableCell>RT Details</TableCell>
-              <TableCell>T+1 Amount</TableCell>
-              <TableCell align="center">Already Transferred</TableCell>
-              <TableCell align="center">Available T+1 Settlement Amount</TableCell>
+              <TableCell>T+1 Settlement Amount</TableCell>
+              <TableCell align="center">Settled Amount</TableCell>
+              <TableCell align="center">Pending Settlement Amount</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
