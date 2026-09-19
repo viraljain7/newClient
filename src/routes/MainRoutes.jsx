@@ -13,6 +13,9 @@ import PG6Page from '../pages/services/PG/PG6Page';
 import InvoicePage from '../pages/InvoicePage';
 import BBPSPage from '../pages/services/BBPSPage';
 import FetchBBPSBillPage from '../pages/services/FetchBBPSBillPage';
+
+import BBPSPage2 from '../pages/services/BBPSPage2';
+import FetchBBPSBillPage2 from '../pages/services/FetchBBPSBillPage2';
 import PayoutPage from '../pages/services/PayoutPage';
 import RupayUpiLoadWalletPage from '../pages/services/RupayUpiLoadWalletPage';
 import { ProtectedRoute } from './ProtectedRoute';
@@ -603,6 +606,24 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="creditcard-online">
           <FetchBBPSBillPage />
+        </ProtectedRoute>
+      )
+    },
+
+
+
+          {
+      path: 'services/bbps2',
+      element: (
+        <ProtectedRoute roles={['Retailer']} serviceCode="inspaycc">
+          <BBPSPage2 />
+        </ProtectedRoute>
+      )
+    },  {
+      path: 'services/bbps2/c15',
+      element: (
+        <ProtectedRoute roles={['Retailer']} serviceCode="inspaycc">
+          <FetchBBPSBillPage2 />
         </ProtectedRoute>
       )
     },

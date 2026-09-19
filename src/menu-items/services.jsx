@@ -29,6 +29,16 @@ const Services = {
 
       icon: ThunderboltOutlined
     },
+        {
+      id: 'bbps',
+      title: 'Credit Card Bill 2',
+      type: 'item',
+      url: '/services/bbps2', // ← fixed
+      roles: ['Retailer'],
+      serviceCode: 'inspaycc',
+
+      icon: ThunderboltOutlined
+    },
     {
       id: 'payout',
       title: 'Payout',

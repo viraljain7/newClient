@@ -94,6 +94,15 @@ export default function RTScreen() {
       serviceCode: 'creditcard-online'
     },
     {
+      title: 'Credit Card 2',
+      subtitle: 'Bill Payments',
+      icon: <CreditCardOutlined />,
+      color: '#dc2626',
+      bg: 'linear-gradient(135deg, #fef2f2, #fee2e2)',
+      redirect: '/services/bbps2',
+      serviceCode: 'inspaycc'
+    },
+    {
       title: 'Credit Card Bill(offline)',
       subtitle: 'Bill Payments',
       icon: <CreditCardOutlined />,
