@@ -31,10 +31,10 @@ import { BlueButton, OutlineButton } from '../../../components/CommonComponent';
 
 import { useMember } from './useMember';
 import AddAgentDrawer from './AddAgentDrawer';
-import { exportReport } from './memberApi';
+import { changeUserStatus, exportReport } from './memberApi';
 
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-
+import toast from 'react-hot-toast';
 
 /* ================= WALLET MENU ================= */
 
@@ -155,6 +155,14 @@ export default function AgentTable({ agentType, agentCode }) {
       mids: item.mids
     }));
   }, [data]);
+
+  const changeStatus = async (id) => {
+    const res = await changeUserStatus({ user_id: id });
+    if (res.statuscode === 'TXN') {
+      toast.success(res.message);
+      refetch()
+    }
+  };
 
   return (
     <Paper
@@ -279,7 +287,7 @@ export default function AgentTable({ agentType, agentCode }) {
               rows.map((row) => (
                 <TableRow key={row.id} hover>
                   <TableCell>
-                    <Switch checked={row.status} size="small" />
+                    <Switch checked={row.status} onClick={() => changeStatus(row.id)} size="small" />
                   </TableCell>
 
                   <TableCell>

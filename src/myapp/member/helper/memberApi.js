@@ -27,6 +27,18 @@ export const fetchStates = async () => {
   return res.data;
 };
 
+
+
+export const changeUserStatus=async(data)=>{
+    const formData = new FormData();
+  formData.append('type', 'status');
+  formData.append('user_id', data.user_id);
+
+  const res = await api.post(`/member/transaction`, formData);
+
+  return res.data;
+}
+
 export const createAgent = async (data) => {
   const formData = new FormData();
 
