@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Grid, Typography, Card, CardContent, Divider, TextField, Button } from '@mui/material';
 import toast from 'react-hot-toast';
 import { payBbpsBill } from './bbpsApi';
+import { useSelector } from 'react-redux';
 
 // 🔹 Row Component
 const Row = ({ label, value, highlight, color }) => (
@@ -18,6 +19,13 @@ const Row = ({ label, value, highlight, color }) => (
 const RightSide = ({ bill, setLoading, setBill }) => {
   const [amount, setAmount] = useState('');
   const [panCard, setPanCard] = useState('');
+  const userdata = useSelector((state) => state.user.profile.pancard);
+
+  useEffect(() => {
+    if (userdata) {
+      setPanCard(userdata);
+    }
+  }, []);
 
   // 🔹 Helpers
   const formatAmount = (amount) => {
@@ -178,7 +186,6 @@ const RightSide = ({ bill, setLoading, setBill }) => {
                     sx={{ height: '38px' }} // match TextField height
                     onClick={payHandler}
                     disabled={panCard.length !== 10}
-
                   >
                     Pay
                   </Button>
