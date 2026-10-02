@@ -1,4 +1,4 @@
-import { Box,  Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import StatusWithActions from './StatusWithAction';
 
@@ -64,10 +64,10 @@ export const TRANSACTION_COLUMNS = [
     field: 'user',
     headerName: 'User Details',
     searchable: true,
-  filter: {
-    type: 'select',     // ✅ change this
-    key: 'user_id',     // ✅ important for API
-  },
+    filter: {
+      type: 'select', // ✅ change this
+      key: 'user_id' // ✅ important for API
+    },
     renderCell: (row) => (
       <Box sx={{ minWidth: 180 }}>
         <Typography variant="body2" fontWeight={600}>
@@ -88,11 +88,12 @@ export const TRANSACTION_COLUMNS = [
     renderCell: (row) => (
       <Box sx={{ minWidth: 180 }}>
         <Typography variant="body2" fontWeight={600}>
-        Name:  {row.name||"NA"} </Typography>
-        <Typography variant="body2" fontWeight={600}>
-        Mobile:  {row.mobile||"NA"}
+          Name: {row.name || 'NA'}{' '}
         </Typography>
-          <Typography variant="body2" fontWeight={600}>
+        <Typography variant="body2" fontWeight={600}>
+          Mobile: {row.mobile || 'NA'}
+        </Typography>
+        <Typography variant="body2" fontWeight={600}>
           Product: RupayUpi
         </Typography>
       </Box>
@@ -104,7 +105,6 @@ export const TRANSACTION_COLUMNS = [
     field: 'reference',
     headerName: 'Reference Details',
     searchable: true,
-  
 
     renderCell: (row) => (
       <Box sx={{ minWidth: 230 }}>
@@ -114,7 +114,9 @@ export const TRANSACTION_COLUMNS = [
         <Typography variant="body2" fontWeight={600}>
           UTR: {row.utr || 'NA'}
         </Typography>
-      
+        <Typography variant="body2" fontWeight={600}>
+          Qr Vendor: {row.qrvendor || 'NA'}
+        </Typography>
       </Box>
     )
   },
@@ -128,8 +130,7 @@ export const TRANSACTION_COLUMNS = [
       <Box sx={{ minWidth: 150 }}>
         {[
           ['Amount', row.amount],
-          ['Charge', row.charge],
-        
+          ['Charge', row.charge]
         ].map(([label, val]) => (
           <Typography key={label} variant="body2" fontWeight={600}>
             {label}: {Number(val ?? 0).toLocaleString('en-IN')}
@@ -140,55 +141,43 @@ export const TRANSACTION_COLUMNS = [
   },
 
   {
-  field: 'slip',
-  headerName: 'Slip',
-  sortable: false,
-  minWidth: 180,
+    field: 'slip',
+    headerName: 'Slip',
+    sortable: false,
+    minWidth: 180,
 
-  renderCell: (row) => (
-
-    <Box
-      sx={{
-        display: 'flex',
-        gap: 1,
-        alignItems: 'center',
-        height: '100%'
-      }}
-    >
-
-      {row?.screenshot ? (
-
-        <Box
-          component="img"
-          src={import.meta.env.VITE_IMG_URL + row.screenshot}
-          alt="Slip"
-          sx={{
-            width: 60,
-            height: 60,
-            borderRadius: 1,
-            objectFit: 'cover',
-            border: '1px solid #ddd',
-            cursor: 'pointer'
-          }}
-          onClick={() =>
-            window.open(import.meta.env.VITE_IMG_URL + row.screenshot, '_blank')
-          }
-        />
-
-      ) : (
-
-        <Typography
-          variant="body2"
-          color="text.secondary"
-        >
-          No Slip
-        </Typography>
-
-      )}
-
-    </Box>
-  )
-},
+    renderCell: (row) => (
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+          alignItems: 'center',
+          height: '100%'
+        }}
+      >
+        {row?.screenshot ? (
+          <Box
+            component="img"
+            src={import.meta.env.VITE_IMG_URL + row.screenshot}
+            alt="Slip"
+            sx={{
+              width: 60,
+              height: 60,
+              borderRadius: 1,
+              objectFit: 'cover',
+              border: '1px solid #ddd',
+              cursor: 'pointer'
+            }}
+            onClick={() => window.open(import.meta.env.VITE_IMG_URL + row.screenshot, '_blank')}
+          />
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            No Slip
+          </Typography>
+        )}
+      </Box>
+    )
+  },
 
   // ── Status ─────────────────────────────────────────────────────────────────
   // field name matches the API POST param: { status: "success" }
@@ -202,6 +191,5 @@ export const TRANSACTION_COLUMNS = [
     },
 
     renderCell: (row) => <StatusWithActions row={row} />
-
   }
 ];

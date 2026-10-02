@@ -8,6 +8,7 @@ export const uploadSlip = async (form) => {
   formData.append('name', form.name);
   formData.append('mobile', form.mobile);
   formData.append('screenshot', form.slip);
+  formData.append('qrvendor', form.qrvendor);
   // DEBUG
   
 
