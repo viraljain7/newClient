@@ -191,44 +191,7 @@ export default function RupayUpiLoadRequest() {
                     }}
                   />
 
-                  <FormControl fullWidth>
-                    <FormLabel sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>QR Vendor</FormLabel>
-
-                    <RadioGroup name="qrvendor" value={formData.qrvendor} onChange={handleChange} row sx={{ gap: 1.5 }}>
-                      {['VD ', 'Arthsetu', 'TRINETRA', 'DD INFO', 'Bhavy'].map((option) => {
-                        const selected = formData.qrvendor === option;
-
-                        return (
-                          <FormControlLabel
-                            key={option}
-                            value={option}
-                            control={<Radio size="small" />}
-                            label={option}
-                            sx={{
-                              m: 0,
-                              px: 2,
-                              py: 1,
-                              border: '1px solid',
-                              borderColor: selected ? 'primary.main' : 'divider',
-                              borderRadius: 2,
-                              bgcolor: selected ? 'primary.main' : 'background.paper',
-                              color: selected ? '#fff' : 'text.primary',
-                              transition: 'all 0.2s ease',
-                              '&:hover': {
-                                borderColor: 'primary.main'
-                              },
-                              '& .MuiRadio-root': {
-                                color: selected ? '#fff' : 'primary.main'
-                              },
-                              '& .MuiRadio-root.Mui-checked': {
-                                color: '#fff'
-                              }
-                            }}
-                          />
-                        );
-                      })}
-                    </RadioGroup>
-                  </FormControl>
+              
                   <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />}>
                     Upload Payment Slip
                     <input hidden type="file" name="slip" accept="image/*" onChange={handleChange} />

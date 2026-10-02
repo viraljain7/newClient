@@ -114,9 +114,7 @@ export const TRANSACTION_COLUMNS = [
         <Typography variant="body2" fontWeight={600}>
           UTR: {row.utr || 'NA'}
         </Typography>
-        <Typography variant="body2" fontWeight={600}>
-          Qr Vendor: {row.qrvendor || 'NA'}
-        </Typography>
+
       </Box>
     )
   },
