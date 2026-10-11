@@ -68,7 +68,16 @@ const ProtectedRoute = ({ children, roles = [], serviceCode }) => {
   }
 
   if (serviceCode) {
-    const hasService = userServices?.some((service) => service.code === serviceCode && service.value === '1');
+
+    const hasService = userServices?.some((service) => {
+      const sc = service.code;
+      return (
+        (sc === serviceCode ||
+          (serviceCode === 'premiumfeeflexpg6' && sc === 'premiumpg6') ||
+          (serviceCode === 'premiumpg6' && sc === 'premiumfeeflexpg6')) &&
+        service.value === '1'
+      );
+    });
 
     if (!hasService) {
       return <Navigate to="/dashboard/default" replace />;

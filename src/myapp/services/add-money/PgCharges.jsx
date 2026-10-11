@@ -6,8 +6,11 @@ import { Link } from 'react-router-dom';
 function PgCharges({ group }) {
   const [ccList, setCcList] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  
   const fetchCCPrizes = async () => {
+    if (group?.providertype === 'premiumfeeflexpg6') {
+      group.providertype = 'premiumpg6';
+    }
     try {
       setLoading(true);
 
@@ -111,7 +114,7 @@ const cardStyle = {
   transition: '0.3s',
   backgroundColor: '#fff',
   '&:hover': {
-    transform: 'translateY(-4px)',
+    transform: 'translateY(-4px)'
   }
 };
 

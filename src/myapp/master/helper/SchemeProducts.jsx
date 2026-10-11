@@ -67,6 +67,9 @@ function SchemeProducts({ open, onClose }) {
 
       case 'payucruise':
         return 'Silver 4 (Nixa silver 4)';
+        
+      case 'premiumpg6':
+        return 'Silver 5 (Nixa silver 5)';
 
       default:
         return name;

@@ -6,7 +6,16 @@ function AddMoney() {
   const profile = useSelector((state) => state.user.service);
 
   const activeServiceGroups = serviceGroups.filter((group) =>
-    profile.some((service) => service.code === group.providertype && service.value === '1')
+    profile.some((service) => {
+      const serviceCode = service.code;
+      const groupCode = group.providertype;
+      return (
+        (serviceCode === groupCode || 
+         (groupCode === 'premiumfeeflexpg6' && serviceCode === 'premiumpg6') ||
+         (groupCode === 'premiumpg6' && serviceCode === 'premiumfeeflexpg6')) &&
+        service.value === '1'
+      );
+    })
   );
 
   return (
@@ -77,6 +86,13 @@ const serviceGroups = [
     title: 'Silver 4 (T+1 Settlement)',
     providertype: 'payucruise',
     redirect: 'payment11'
+  },
+
+
+  {
+    title: 'Silver 5 (T+1 Settlement)',
+    providertype: 'premiumfeeflexpg6',
+    redirect: 'payment12'
   },
   // /???????????//////////////////?????????????????????????
 ];

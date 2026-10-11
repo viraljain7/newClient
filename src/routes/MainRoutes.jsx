@@ -29,6 +29,8 @@ import PG8Page from '../pages/services/PG/PG8Page';
 import PG9Page from '../pages/services/PG/PG9Page';
 import PG10Page from '../pages/services/PG/PG10Page';
 import PG11Page from '../pages/services/PG/PG11Page';
+import PG12Page from '../pages/services/PG/PG12Page';
+
 
 
 
@@ -565,6 +567,14 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="payucruise">
           <PG11Page />
+        </ProtectedRoute>
+      )
+    },
+      {
+      path: 'services/add-money/payment12',
+      element: (
+        <ProtectedRoute roles={['Retailer']} serviceCode="premiumfeeflexpg6">
+          <PG12Page />
         </ProtectedRoute>
       )
     },
