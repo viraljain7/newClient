@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import api from '../../../../shared/BaseApi';
 
-function Pg1() {
+function Pg12() {
   const [amount, setAmount] = useState('');
   const [finalAmount, setFinalAmount] = useState(null);
 
@@ -19,6 +19,10 @@ function Pg1() {
 
     if (finalAmount < 100) {
       toast.error('Amount must be greater than 100');
+      return;
+    }
+      if (finalAmount > 90000) {
+      toast.error('Amount must be less than or equal to 90000');
       return;
     }
 
@@ -151,4 +155,4 @@ function Pg1() {
   );
 }
 
-export default Pg1;
+export default Pg12;
