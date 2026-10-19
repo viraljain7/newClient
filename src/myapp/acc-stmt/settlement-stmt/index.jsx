@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useSelector } from 'react-redux';
 
 import SmartTable from '../../../components/SmartTable';
 import { getDefaultDateRange } from '../../../shared/Helper';
 import { ROWS_PER_PAGE_OPTIONS } from '../../../shared/Constants';
 import { useTransactions } from './api/useTransactions';
-import { TRANSACTION_COLUMNS } from './columns';
+import { getTransactionColumns } from './columns';
 import { handleExportAllTxnReport } from './api/TransactionApi';
 
 const SettlementLedger = () => {
@@ -33,6 +34,11 @@ const SettlementLedger = () => {
     toDate,
     initialPerPage: ROWS_PER_PAGE_OPTIONS[0]
   });
+
+  // ✅ Role-based columns: User Details + user filter only for Admin
+  const role = useSelector((state) => state?.user?.profile?.role);
+  const isAdmin = role?.name === 'Admin' || role?.slug === 'AD';
+  const columns = useMemo(() => getTransactionColumns(isAdmin), [isAdmin]);
 
   // ✅ Export handler
   const handleExport = () => {
@@ -85,7 +91,7 @@ const SettlementLedger = () => {
 
       <SmartTable
         rows={rows}
-        columns={TRANSACTION_COLUMNS}
+        columns={columns}
         loading={loading}
         error={error}
         rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}

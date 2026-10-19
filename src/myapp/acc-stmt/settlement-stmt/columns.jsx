@@ -1,5 +1,4 @@
-import { Box, Chip, MenuItem, MenuList, Typography } from '@mui/material';
-import TxnDetails from './TxnDetails';
+import { Box, Typography } from '@mui/material';
 import { productName } from '../../../utils/productName';
 import StatusWithActions from './StatusWithAction';
 
@@ -7,7 +6,7 @@ import StatusWithActions from './StatusWithAction';
  * Column definitions for the Transaction Report table.
  *
  * ── How to add a column ─────────────────────────────────────────────────────
- *   1. Add a new object to the array below.
+ *   1. Add a new object to the array returned below.
  *   2. Nothing else needs to change.
  *
  * ── How to remove a column ──────────────────────────────────────────────────
@@ -19,29 +18,22 @@ import StatusWithActions from './StatusWithAction';
  *   headerName  – column header label
  *   sortable    – enable click-to-sort on this column
  *   searchable  – include in global search
- *   filter      – { type: "text" | "select", options?: string[] }
+ *   filter      – { type: "text" | "select" | "number", key?: string, label?: string, options?: string[] }
  *   renderCell  – (row) => ReactNode
  */
+
 /**
- * Column definitions for the Transaction Report table.
+ * Builds the column list for the Settlement Statement table.
  *
- * ── How to add a column ─────────────────────────────────────────────────────
- *   1. Add a new object to the array below.
- *   2. Nothing else needs to change.
+ * The User column is role-aware:
+ *   - Admin   → "User Details" column showing retailer name / mobile / role,
+ *               with an admin-only number filter to type the user ID.
+ *   - Others  → "ID Code" column showing the row's id_code instead.
  *
- * ── How to remove a column ──────────────────────────────────────────────────
- *   1. Delete the object from the array.
- *   2. Nothing else needs to change.
- *
- * ── Column contract (SmartTable props) ─────────────────────────────────────
- *   field       – dot-notation path into the row object
- *   headerName  – column header label
- *   sortable    – enable click-to-sort on this column
- *   searchable  – include in global search
- *   filter      – { type: "text" | "select", options?: string[] }
- *   renderCell  – (row) => ReactNode
+ * @param {boolean} isAdmin - Whether the signed-in user is an admin.
+ * @returns {Array<Object>} SmartTable column definitions.
  */
-export const TRANSACTION_COLUMNS = [
+export const getTransactionColumns = (isAdmin = false) => [
   // ── Date / ID ──────────────────────────────────────────────────────────────
   {
     field: 'created_at',
@@ -60,29 +52,49 @@ export const TRANSACTION_COLUMNS = [
     )
   },
 
-  // ── User ───────────────────────────────────────────────────────────────────
-  {
-    field: 'user',
-    headerName: 'User Details',
-    searchable: true,
-  filter: {
-    type: 'select',     // ✅ change this
-    key: 'user_id',     // ✅ important for API
-  },
-    renderCell: (row) => (
-      <Box sx={{ minWidth: 180 }}>
-        <Typography variant="body2" fontWeight={600}>
-          {row.user?.name} ({row.user_id})
-        </Typography>
-        <Typography variant="body2">{row.user.mobile}</Typography>
-        <Typography variant="caption" color="primary.main">
-          {row.user?.role?.name || 'Retailer'}
-        </Typography>
-      </Box>
-    )
-  },
-
-
+  // ── User (Admin only) ──────────────────────────────────────────────────────
+  ...(isAdmin
+    ? [
+        {
+          field: 'user',
+          headerName: 'User Details',
+          searchable: true,
+          filter: {
+            type: 'number', // ✅ number input – type the user ID
+            key: 'user_id', // ✅ important for API
+            label: 'User Details' // ✅ shown in the filter drawer
+          },
+          renderCell: (row) => (
+            <Box sx={{ minWidth: 180 }}>
+              <Typography variant="body2" fontWeight={600}>
+                {row.user?.name} ({row.user_id})
+              </Typography>
+              <Typography variant="body2">{row.user?.mobile}</Typography>
+              <Typography variant="caption" color="primary.main">
+                {row.user?.role?.name || 'Retailer'}
+              </Typography>
+            </Box>
+          )
+        }
+      ]
+    : [
+        {
+          field: 'id_code',
+          headerName: 'User Details',
+          searchable: true,
+          renderCell: (row) => (
+            <Box sx={{ minWidth: 180 }}>
+              <Typography variant="body2" fontWeight={600}>
+                {row.user?.name} ({row.user_id})
+              </Typography>
+              <Typography variant="body2">{row.user?.mobile}</Typography>
+              <Typography variant="caption" color="primary.main">
+                {row.user?.role?.name || 'Retailer'}
+              </Typography>
+            </Box>
+          )
+        }
+      ]),
 
   // ── Reference ─────────────────────────────────────────────────────────────
   {
@@ -122,7 +134,7 @@ export const TRANSACTION_COLUMNS = [
         <Typography variant="body2" fontWeight={600}>
           Product: {productName(row.product)}
         </Typography>
-          <Typography variant="body2" fontWeight={600}>
+        <Typography variant="body2" fontWeight={600}>
           Desc: {row.remark}
         </Typography>
       </Box>
@@ -138,54 +150,44 @@ export const TRANSACTION_COLUMNS = [
       <Box sx={{ minWidth: 150 }}>
         {[
           ['Amount', row.amount],
-          ['Charge', row.charge],
-        
+          ['Charge', row.charge]
         ].map(([label, val]) => (
           <Typography key={label} variant="body2" fontWeight={600}>
             {label}: {Number(val ?? 0).toLocaleString('en-IN')}
           </Typography>
         ))}
-      <StatusWithActions row={row} />
+        <StatusWithActions row={row} />
       </Box>
     )
   },
 
-    {
+  {
     field: 'amount',
     headerName: 'Opening',
     sortable: true,
     renderCell: (row) => (
       <Box sx={{ minWidth: 150 }}>
-        {[
-        
-          ['Opening', row.opening_balance],
-          
-        ].map(([label, val]) => (
-          <Typography key={label}  fontWeight={700} color='success.main'>
-             {Number(val ?? 0).toLocaleString('en-IN')}
+        {[['Opening', row.opening_balance]].map(([label, val]) => (
+          <Typography key={label} fontWeight={700} color="success.main">
+            {Number(val ?? 0).toLocaleString('en-IN')}
           </Typography>
         ))}
       </Box>
     )
   },
 
-    {
+  {
     field: 'amount',
     headerName: 'Closing',
     sortable: true,
     renderCell: (row) => (
       <Box sx={{ minWidth: 150 }}>
-        {[
-      
-          ['Closing', row.closing_balance]
-        ].map(([label, val]) => (
-          <Typography key={label}  fontWeight={700} color='error.main'>
-             {Number(val ?? 0).toLocaleString('en-IN')}
+        {[['Closing', row.closing_balance]].map(([label, val]) => (
+          <Typography key={label} fontWeight={700} color="error.main">
+            {Number(val ?? 0).toLocaleString('en-IN')}
           </Typography>
         ))}
       </Box>
     )
-  },
-
-
+  }
 ];

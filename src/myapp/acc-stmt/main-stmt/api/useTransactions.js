@@ -36,7 +36,7 @@ export function useTransactions({
 
     try {
       const res = await fetchTransactions({
-        user_id: profile.id,
+        user_id: filters.user_id ? Number(filters.user_id) : profile.id,
         page,
         per_page: perPage,
         date_from: fromDate,

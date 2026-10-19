@@ -41,7 +41,7 @@ import StatusWithActions from './StatusWithAction';
  *   filter      – { type: "text" | "select", options?: string[] }
  *   renderCell  – (row) => ReactNode
  */
-export const TRANSACTION_COLUMNS = [
+export const getTransactionColumns = (isAdmin = false) => [
   // ── Date / ID ──────────────────────────────────────────────────────────────
   {
     field: 'created_at',
@@ -60,27 +60,49 @@ export const TRANSACTION_COLUMNS = [
     )
   },
 
-  // ── User ───────────────────────────────────────────────────────────────────
-  {
-    field: 'user',
-    headerName: 'User Details',
-    searchable: true,
-  filter: {
-    type: 'select',     // ✅ change this
-    key: 'user_id',     // ✅ important for API
-  },
-    renderCell: (row) => (
-      <Box sx={{ minWidth: 180 }}>
-        <Typography variant="body2" fontWeight={600}>
-          {row.user?.name} ({row.user_id})
-        </Typography>
-        <Typography variant="body2">{row.user.mobile}</Typography>
-        <Typography variant="caption" color="primary.main">
-          {row.user?.role?.name || 'Retailer'}
-        </Typography>
-      </Box>
-    )
-  },
+  // ── User (Admin only) ──────────────────────────────────────────────────────
+  ...(isAdmin
+    ? [
+        {
+          field: 'user',
+          headerName: 'User Details',
+          searchable: true,
+          filter: {
+            type: 'number', // ✅ number input – type the user ID
+            key: 'user_id', // ✅ important for API
+            label: 'User Details' // ✅ shown in the filter drawer
+          },
+          renderCell: (row) => (
+            <Box sx={{ minWidth: 180 }}>
+              <Typography variant="body2" fontWeight={600}>
+                {row.user?.name} ({row.user_id})
+              </Typography>
+              <Typography variant="body2">{row.user?.mobile}</Typography>
+              <Typography variant="caption" color="primary.main">
+                {row.user?.role?.name || 'Retailer'}
+              </Typography>
+            </Box>
+          )
+        }
+      ]
+    : [
+        {
+          field: 'id_code',
+          headerName: 'User Details',
+          searchable: true,
+          renderCell: (row) => (
+            <Box sx={{ minWidth: 180 }}>
+              <Typography variant="body2" fontWeight={600}>
+                {row.user?.name} ({row.user_id})
+              </Typography>
+              <Typography variant="body2">{row.user?.mobile}</Typography>
+              <Typography variant="caption" color="primary.main">
+                {row.user?.role?.name || 'Retailer'}
+              </Typography>
+            </Box>
+          )
+        }
+      ]),
 
 
 

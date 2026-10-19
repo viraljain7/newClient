@@ -33,6 +33,7 @@ const FilterDrawer = ({
 
   // -------------------- HELPERS --------------------
   const getKey = (col) => col.filter?.key || col.field;
+  const getLabel = (col) => col.filter?.label || col.headerName;
 
   // -------------------- FETCH USERS --------------------
   const fetchUsers = async () => {
@@ -48,10 +49,12 @@ const FilterDrawer = ({
   };
 
   useEffect(() => {
-    if (open) {
+    // only hit /users when a select filter actually needs the retailer list
+    const hasUserSelect = filterableColumns.some((col) => col.filter?.type === 'select' && col.filter?.key === 'user_id');
+    if (open && hasUserSelect) {
       fetchUsers(); // fetch only when drawer opens
     }
-  }, [open]);
+  }, [open, filterableColumns]);
 
   // -------------------- RENDER --------------------
   return (
@@ -90,11 +93,11 @@ const FilterDrawer = ({
 
             return (
               <FormControl key={key} fullWidth>
-                <InputLabel>{col.headerName}</InputLabel>
+                <InputLabel>{getLabel(col)}</InputLabel>
 
                 <Select
                   value={filters[key] || ""}
-                  label={col.headerName}
+                  label={getLabel(col)}
                   onChange={(e) => onFilterChange(key, e.target.value)}
                 >
                   <MenuItem value="">All</MenuItem>
@@ -125,14 +128,24 @@ const FilterDrawer = ({
             );
           }
 
-          // ---------------- TEXT FILTER ----------------
+          // ---------------- TEXT / NUMBER FILTER ----------------
+          const isNumber = col.filter?.type === 'number';
+
           return (
             <TextField
               key={key}
               fullWidth
-              label={col.headerName}
-              value={filters[key] || ""}
-              onChange={(e) => onFilterChange(key, e.target.value)}
+              type={isNumber ? 'number' : 'text'}
+              label={getLabel(col)}
+              value={filters[key] || ''}
+              onChange={(e) => {
+                const raw = e.target.value;
+                // pass a real number for number filters (empty stays empty)
+                onFilterChange(key, isNumber ? (raw === '' ? '' : Number(raw)) : raw);
+              }}
+              slotProps={{
+                htmlInput: isNumber ? { min: 0, inputMode: 'numeric' } : undefined
+              }}
             />
           );
         })}
