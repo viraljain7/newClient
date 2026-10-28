@@ -24,7 +24,6 @@ import {
 } from '@mui/material';
 
 import SettingsIcon from '@mui/icons-material/Settings';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 import { useNavigate } from 'react-router';
 import { BlueButton, OutlineButton } from '../../../components/CommonComponent';
@@ -38,31 +37,41 @@ import toast from 'react-hot-toast';
 
 /* ================= WALLET MENU ================= */
 
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+
 const WalletDetails = ({ wallet }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
   return (
-    <>
-      <IconButton
-        size="small"
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-        sx={{
-          border: '1px solid #ddd',
-          borderRadius: 2,
-          bgcolor: '#fafafa'
-        }}
-      >
-        <AccountBalanceWalletIcon fontSize="small" />
-      </IconButton>
+    <Stack spacing={0.5} sx={{ fontSize: 14, minWidth: 120 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        <AccountBalanceWalletOutlinedIcon sx={{ fontSize: 12 }} />
+        <Typography sx={{ fontSize: 12, fontWeight:"bold" ,}}>Main: </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto' }}>
+          <CurrencyRupeeIcon sx={{ fontSize: 10 }} />
+          <Typography sx={{ fontSize: 12, fontWeight:"bold" ,}}>{wallet?.main}</Typography>
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        <AccountBalanceOutlinedIcon sx={{ fontSize: 12 }} />
+        <Typography sx={{ fontSize: 12, fontWeight:"bold" ,}}>Settlement: </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto' }}>
+          <CurrencyRupeeIcon sx={{ fontSize: 10 }} />
+          <Typography sx={{ fontSize: 12, fontWeight:"bold" ,}}>{wallet?.settlementwallet}</Typography>
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'red' }}>
+        <LockOutlinedIcon sx={{ fontSize: 12, color: 'red' }} />
+        <Typography sx={{ fontSize: 12,fontWeight:"bold" , color: 'red' }}>Lock: </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto', color: 'red' }}>
+          <CurrencyRupeeIcon sx={{ fontSize: 10 }} />
+          <Typography sx={{ fontSize: 12,fontWeight:"bold" , color: 'red' }}>{wallet?.lock}</Typography>
+        </Box>
+      </Box>
+    
 
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Main Wallet : ₹ {wallet.main}</MenuItem>
-
-        <MenuItem sx={{ fontSize: 12, fontWeight: 600 }}>Settlement : ₹ {wallet.settlementwallet}</MenuItem>
-
-        <MenuItem sx={{ color: 'red', fontSize: 12 }}>Lock : ₹ {wallet.lock}</MenuItem>
-      </Menu>
-    </>
+    </Stack>
   );
 };
 
@@ -90,7 +99,9 @@ const TableSkeleton = ({ rows = 20 }) =>
       </TableCell>
 
       <TableCell align="center">
-        <Skeleton variant="circular" width={34} height={34} />
+        <Skeleton width="60%" />
+        <Skeleton width="60%" />
+        <Skeleton width="60%" />
       </TableCell>
 
       <TableCell align="center">
