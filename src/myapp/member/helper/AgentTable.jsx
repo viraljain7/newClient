@@ -132,7 +132,12 @@ export default function AgentTable({ agentType, agentCode }) {
   /* Mapping */
 
   const rows = React.useMemo(() => {
-    return data.map((item) => ({
+    let source = filteredType === 'sp' ? data.filter((item) => Number(item.settlementwallet) !== 0) : data;
+    source = filteredType === 'submitted' ? source.filter((item) => item.kyc === 'submitted') : source;
+    source = filteredType === 'verified' ? source.filter((item) => item.kyc === 'verified') : source;
+    source = filteredType === 'pending' ? source.filter((item) => item.kyc === 'pending') : source;
+
+    return source.map((item) => ({
       id: item.id,
 
       status: item.status === 'active',
@@ -154,13 +159,13 @@ export default function AgentTable({ agentType, agentCode }) {
       kyc: item.kyc,
       mids: item.mids
     }));
-  }, [data]);
+  }, [data, filteredType]);
 
   const changeStatus = async (id) => {
     const res = await changeUserStatus({ user_id: id });
     if (res.statuscode === 'TXN') {
       toast.success(res.message);
-      refetch()
+      refetch();
     }
   };
 
@@ -219,17 +224,17 @@ export default function AgentTable({ agentType, agentCode }) {
                 const value = e.target.value;
 
                 setFilteredType(value);
-
                 setCurrentPage(1);
               }}
             >
               <MenuItem value="all">All Users</MenuItem>
-
               <MenuItem value="submitted">Submitted KYC</MenuItem>
 
               <MenuItem value="verified">Verified KYC</MenuItem>
 
               <MenuItem value="pending">Pending KYC</MenuItem>
+
+              <MenuItem value="sp">Settlement Pending</MenuItem>
             </Select>
           </FormControl>
 
