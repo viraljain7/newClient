@@ -31,20 +31,14 @@ import PG10Page from '../pages/services/PG/PG10Page';
 import PG11Page from '../pages/services/PG/PG11Page';
 import PG12Page from '../pages/services/PG/PG12Page';
 
-
-
-
-
 import LoginLogsReport from '../pages/account-statement/LoginLogs';
 import OfflineBBPSPage from '../pages/services/OfflineBBPSPage';
-
-
 
 // dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
 
 // master
-const SettlementT1Layer= Loadable(lazy(() => import('../myapp/master/settlementT1')));
+const SettlementT1Layer = Loadable(lazy(() => import('../myapp/master/settlementT1')));
 const SchemeManager = Loadable(lazy(() => import('pages/master/SchemeManager')));
 const ApiManager = Loadable(lazy(() => import('pages/master/ApiManager')));
 const SmsMaster = Loadable(lazy(() => import('pages/master/SmsMaster')));
@@ -86,6 +80,7 @@ const PosLoadReport = Loadable(lazy(() => import('pages/transaction-report/PosLo
 const SummaryReport = Loadable(lazy(() => import('pages/transaction-report/Summary')));
 const UserwiseBusinessReport = Loadable(lazy(() => import('pages/transaction-report/UserwiseBusiness')));
 const CommissionDistributionReport = Loadable(lazy(() => import('pages/transaction-report/CommissionDistribution')));
+const GstReport = Loadable(lazy(() => import('pages/transaction-report/GstReportPage')));
 
 // account statement
 const MainLedger = Loadable(lazy(() => import('pages/account-statement/MainLedger')));
@@ -191,7 +186,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'master/settlement-t1',
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin']}>
@@ -283,10 +278,10 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'fund/rupay-upi-pending-request',
       element: (
-        <ProtectedRoute roles={['Admin', 'Subadmin',]}>
+        <ProtectedRoute roles={['Admin', 'Subadmin']}>
           <RupayUpiApprovePage />
         </ProtectedRoute>
       )
@@ -388,20 +383,20 @@ const MainRoutes = {
     {
       path: 'transaction-report/pos',
       element: (
-        <ProtectedRoute roles={['Admin', 'Subadmin',  'Retailer']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'Retailer']}>
           <POSReport />
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'transaction-report/posload',
       element: (
-        <ProtectedRoute roles={['Admin', 'Subadmin',  'Retailer']}>
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'Retailer']}>
           <PosLoadReport />
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'transaction-report/rupay-upi',
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin', 'Retailer']}>
@@ -409,12 +404,20 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-    
+
     {
       path: 'transaction-report/summary',
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
           <SummaryReport />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'transaction-report/service-wise-report-per-user-report',
+      element: (
+        <ProtectedRoute roles={['Admin']}>
+          <GstReport />
         </ProtectedRoute>
       )
     },
@@ -444,7 +447,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'account-statement/settlement-ledger',
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
@@ -460,7 +463,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'account-statement/login-logs',
       element: (
         <ProtectedRoute roles={['Admin', 'Subadmin']}>
@@ -530,7 +533,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-  {
+    {
       path: 'services/add-money/payment7',
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="platinumpg1">
@@ -538,7 +541,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-  {
+    {
       path: 'services/add-money/payment8',
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="premiumpg4">
@@ -546,7 +549,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'services/add-money/payment9',
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="easebuzz">
@@ -554,7 +557,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'services/add-money/payment10',
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="premiumpg5">
@@ -562,7 +565,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'services/add-money/payment11',
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="payucruise">
@@ -570,7 +573,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'services/add-money/payment12',
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="premiumfeeflexpg6">
@@ -594,7 +597,7 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
-      {
+    {
       path: 'services/bbps-offline',
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="creditcard">
@@ -620,16 +623,15 @@ const MainRoutes = {
       )
     },
 
-
-
-          {
+    {
       path: 'services/bbps2',
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="inspaycc">
           <BBPSPage2 />
         </ProtectedRoute>
       )
-    },  {
+    },
+    {
       path: 'services/bbps2/c15',
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="inspaycc">

@@ -45,7 +45,6 @@ const transactionReport = {
       url: '/transaction-report/credit-card',
       icon: CreditCardOutlined,
       roles: ['Admin', 'Subadmin', 'Retailer']
-
     },
     {
       id: 'creditcard-bill-report',
@@ -79,7 +78,7 @@ const transactionReport = {
       icon: FundProjectionScreenOutlined,
       roles: ['Admin', 'Subadmin', 'Retailer']
     },
-      {
+    {
       id: 'rupay-upi-report',
       title: 'Rupay UPI Report',
       type: 'item',
@@ -117,6 +116,15 @@ const transactionReport = {
       type: 'item',
       url: '/transaction-report/summary',
       roles: ['Admin', 'Subadmin'],
+
+      icon: BarChartOutlined
+    },
+    {
+      id: 'gst-report',
+      title: 'Service Wise Report Per User',
+      type: 'item',
+      url: '/transaction-report/service-wise-report-per-user-report',
+      roles: ['Admin'],
 
       icon: BarChartOutlined
     },

@@ -1,4 +1,4 @@
-import { Box, Chip, MenuItem, MenuList, Typography } from '@mui/material';
+import { Box, Chip,  Typography } from '@mui/material';
 import TxnDetails from './TxnDetails';
 import { productName } from '../../../utils/productName';
 import StatusWithActions from './StatusWithAction';
@@ -65,10 +65,10 @@ export const TRANSACTION_COLUMNS = [
     field: 'user',
     headerName: 'User Details',
     searchable: true,
-  filter: {
-    type: 'select',     // ✅ change this
-    key: 'user_id',     // ✅ important for API
-  },
+    filter: {
+      type: 'select', // ✅ change this
+      key: 'user_id' // ✅ important for API
+    },
     renderCell: (row) => (
       <Box sx={{ minWidth: 180 }}>
         <Typography variant="body2" fontWeight={600}>
@@ -119,7 +119,7 @@ export const TRANSACTION_COLUMNS = [
         'payout',
         'tds',
         'paytm_pos',
-        'premiumpg6',
+        'premiumpg6'
       ]
     },
 
@@ -158,7 +158,6 @@ export const TRANSACTION_COLUMNS = [
       </Box>
     )
   },
-
   // ── Status ─────────────────────────────────────────────────────────────────
   // field name matches the API POST param: { status: "success" }
   {
@@ -171,6 +170,30 @@ export const TRANSACTION_COLUMNS = [
     },
 
     renderCell: (row) => <StatusWithActions row={row} />
+  },
 
+  {
+    field: 'Wallet',
+    headerName: 'Wallet',
+    sortable: false,
+    renderCell: (row) => (
+      <Chip
+        label={row.settlement_type == 'instant' ? 'Main Wallet' : 'Settlement Wallet'}
+        size="small"
+        sx={{
+          minWidth: 60,
+          fontWeight: 600,
+          textTransform: 'capitalize',
+          borderRadius: 2,
+          textTransform: 'capitalize', 
+          borderRadius: 1.5,
+          backgroundColor: '#F5F0FF',
+          color: '#7E57C2',
+          '& .MuiChip-label': {
+            px: 1
+          }
+        }}
+      />
+    )
   }
 ];
