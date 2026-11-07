@@ -33,6 +33,9 @@ import PG12Page from '../pages/services/PG/PG12Page';
 
 import LoginLogsReport from '../pages/account-statement/LoginLogs';
 import OfflineBBPSPage from '../pages/services/OfflineBBPSPage';
+import ReturnReportPage from '../pages/fund/ReturnReportPage';
+import TransferReportPage from '../pages/fund/TransferReportPage';
+
 
 // dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -270,6 +273,25 @@ const MainRoutes = {
         </ProtectedRoute>
       )
     },
+
+  {
+      path: 'fund/transfer-report',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <TransferReportPage />
+        </ProtectedRoute>
+      )
+    },
+
+  {
+      path: 'fund/return-report',
+      element: (
+        <ProtectedRoute roles={['Admin', 'Subadmin', 'NSM', 'CNF', 'SH', 'MasterDistributor', 'Distributor', 'Retailer']}>
+          <ReturnReportPage />
+        </ProtectedRoute>
+      )
+    },
+
     {
       path: 'fund/transfer-return-report',
       element: (

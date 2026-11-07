@@ -185,8 +185,6 @@ export const TRANSACTION_COLUMNS = [
           fontWeight: 600,
           textTransform: 'capitalize',
           borderRadius: 2,
-          textTransform: 'capitalize', 
-          borderRadius: 1.5,
           backgroundColor: '#F5F0FF',
           color: '#7E57C2',
           '& .MuiChip-label': {
@@ -209,8 +207,6 @@ export const TRANSACTION_COLUMNS = [
           fontWeight: 600,
           textTransform: 'capitalize',
           borderRadius: 2,
-          textTransform: 'capitalize', 
-          borderRadius: 1.5,
           backgroundColor: '#F5F0FF',
           color: '#7E57C2',
           '& .MuiChip-label': {
@@ -232,8 +228,6 @@ export const TRANSACTION_COLUMNS = [
           fontWeight: 600,
           textTransform: 'capitalize',
           borderRadius: 2,
-          textTransform: 'capitalize', 
-          borderRadius: 1.5,
           backgroundColor: '#F5F0FF',
           color: '#7E57C2',
           '& .MuiChip-label': {
@@ -255,8 +249,7 @@ export const TRANSACTION_COLUMNS = [
           fontWeight: 600,
           textTransform: 'capitalize',
           borderRadius: 2,
-          textTransform: 'capitalize', 
-          borderRadius: 1.5,
+          
           backgroundColor: '#F5F0FF',
           color: '#7E57C2',
           '& .MuiChip-label': {
@@ -278,8 +271,6 @@ export const TRANSACTION_COLUMNS = [
           fontWeight: 600,
           textTransform: 'capitalize',
           borderRadius: 2,
-          textTransform: 'capitalize', 
-          borderRadius: 1.5,
           backgroundColor: '#F5F0FF',
           color: '#7E57C2',
           '& .MuiChip-label': {

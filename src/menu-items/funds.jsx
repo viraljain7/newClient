@@ -13,6 +13,22 @@ const fund = {
       url: '/fund/transfer-return',
       icon: SwapOutlined
     },
+
+    {
+      id: 'fund-transfer-report',
+      title: 'Transfer Report',
+      type: 'item',
+      url: '/fund/transfer-report',
+      icon: FileTextOutlined
+    },
+
+    {
+      id: 'fund-return-report',
+      title: 'Return Report',
+      type: 'item',
+      url: '/fund/return-report',
+      icon: FileTextOutlined
+    },
     {
       id: 'transfer-return-report',
       title: 'Transfer Return Report',
@@ -61,14 +77,6 @@ const fund = {
       roles: ['Retailer'],
       serviceCode: 'bbps'
     }
-
-    // {
-    //   id: 'all-fund-report',
-    //   title: 'All Fund Report',
-    //   type: 'item',
-    //   url: '/fund/all-fund-report',
-    //   icon: FileTextOutlined
-    // }
   ]
 };
 
