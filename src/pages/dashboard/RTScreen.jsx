@@ -32,11 +32,14 @@ import {
   RiseOutlined,
   BarChartOutlined,
   SendOutlined,
-  QrcodeOutlined,
   ApiOutlined,
   CreditCardOutlined,
-  EllipsisOutlined
+  EllipsisOutlined,
+  WalletOutlined,
+  BankOutlined,
+  QrcodeOutlined
 } from '@ant-design/icons';
+
 import { NavLink } from 'react-router';
 import { RTBussinessStats } from './RTApi';
 import AllTransactionReport from '../../myapp/trns-report/all-txn-report';
@@ -54,7 +57,6 @@ export default function RTScreen() {
   const [orderMenuAnchor, setOrderMenuAnchor] = useState(null);
   const user = useSelector((state) => state.user.profile);
   const [loading, setLoading] = useState(false);
-
 
   const activeService = useSelector((state) => state.user.service);
   const [bussinesStats, setBussinesStats] = useState([]);
@@ -147,9 +149,17 @@ export default function RTScreen() {
         </Typography>
       </Grid>
       {/* KPI CARDS */}
+
       <Grid size={{ xs: 12, sm: 4, lg: 4 }}>
         {loading ? (
-          <AnalyticEcommerce title="Main Wallet" count={`₹ ${user.mainbalance}`} percentage={59.3} extra="35k" sx={cardSX} />
+          <AnalyticEcommerce
+            title="Main Wallet"
+            count={`₹ ${user.mainbalance}`}
+            percentage={59.3}
+            extra="35k"
+            icon={WalletOutlined}
+            sx={cardSX}
+          />
         ) : (
           <WalletSkeleton />
         )}
@@ -163,6 +173,7 @@ export default function RTScreen() {
             percentage={27.4}
             color="warning"
             extra="1,943"
+            icon={BankOutlined}
             sx={cardSX}
           />
         ) : (
@@ -172,7 +183,14 @@ export default function RTScreen() {
 
       <Grid size={{ xs: 12, sm: 4, lg: 4 }}>
         {loading ? (
-          <AnalyticEcommerce title="UPI Wallet" count={`₹ ${user.qrbalance}`} percentage={70.5} extra="8.9k" sx={cardSX} />
+          <AnalyticEcommerce
+            title="UPI Wallet"
+            count={`₹ ${user.qrbalance}`}
+            percentage={70.5}
+            extra="8.9k"
+            icon={QrcodeOutlined}
+            sx={cardSX}
+          />
         ) : (
           <WalletSkeleton />
         )}

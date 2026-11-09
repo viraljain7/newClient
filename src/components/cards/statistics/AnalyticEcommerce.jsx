@@ -1,4 +1,6 @@
+
 import PropTypes from 'prop-types';
+
 // material-ui
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
@@ -13,21 +15,66 @@ import MainCard from 'components/MainCard';
 import RiseOutlined from '@ant-design/icons/RiseOutlined';
 import FallOutlined from '@ant-design/icons/FallOutlined';
 
-const iconSX = { fontSize: '0.75rem', color: 'inherit', marginLeft: 0, marginRight: 0 };
+const iconSX = {
+  fontSize: '0.75rem',
+  color: 'inherit',
+  marginLeft: 0,
+  marginRight: 0
+};
 
-export default function AnalyticEcommerce({ color = 'primary', title, count, percentage, isLoss, extra }) {
+export default function AnalyticEcommerce({
+  color = 'primary',
+  title,
+  count,
+  percentage,
+  isLoss,
+  extra,
+  icon: Icon
+}) {
   return (
-    <MainCard contentSX={{ p: 2.25 }}>
-      <Stack sx={{ gap: 0.5 }}>
+    <MainCard
+      contentSX={{ p: 2.25 }}
+      sx={{
+        position: 'relative',
+        overflow: 'hidden',
+
+        '&:hover .analytic-bg-icon': {
+          opacity: 0.15,
+          transform: 'rotate(-15deg) scale(1.1)'
+        }
+      }}
+    >
+      {/* BACKGROUND ICON - TOP RIGHT */}
+      {Icon && (
+        <Box
+          className="analytic-bg-icon"
+          sx={{
+            position: 'absolute',
+            top: -15,
+            right: -15,
+            opacity: 0.08,
+            color: `${color}.main`,
+            pointerEvents: 'none',
+            transform: 'rotate(-15deg)',
+            transition: 'all 0.3s ease'
+          }}
+        >
+          <Icon style={{ fontSize: 100 }} />
+        </Box>
+      )}
+
+      <Stack sx={{ gap: 0.5, position: 'relative', zIndex: 1 }}>
         <Typography variant="h6" color="text.secondary">
           {title}
         </Typography>
+
         <Grid container sx={{ alignItems: 'center' }}>
           <Grid>
             <Typography variant="h4" color="inherit">
               {count}
             </Typography>
           </Grid>
+
           {percentage && (
             <Grid>
               <Chip
@@ -42,10 +89,15 @@ export default function AnalyticEcommerce({ color = 'primary', title, count, per
           )}
         </Grid>
       </Stack>
-      <Box sx={{ pt: 2.25 }}>
+
+      <Box sx={{ pt: 2.25, position: 'relative', zIndex: 1 }}>
         <Typography variant="caption" color="text.secondary">
           You made an extra{' '}
-          <Typography variant="caption" sx={{ color: `${color || 'primary'}.main` }}>
+          <Typography
+            component="span"
+            variant="caption"
+            sx={{ color: `${color || 'primary'}.main` }}
+          >
             {extra}
           </Typography>{' '}
           this year
@@ -61,5 +113,6 @@ AnalyticEcommerce.propTypes = {
   count: PropTypes.string,
   percentage: PropTypes.number,
   isLoss: PropTypes.bool,
-  extra: PropTypes.string
+  extra: PropTypes.string,
+  icon: PropTypes.elementType
 };
