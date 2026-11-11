@@ -157,7 +157,7 @@ export default function UserProfile() {
               </Typography>
               <Typography fontSize={16} fontWeight={600}></Typography>
 
-              <Stack direction="row" alignItems="center" mt={1}>
+              <Stack direction="row" alignItems="center" mt={1} sx={{ borderRadius: 1, p: 0.75, bgcolor: '#E2E9F0', width: 'fit-content' }}>
                 <Chip
                   size="small"
                   label={`KYC ${userDetails?.kyc || 'Not Verified'}`}
@@ -168,8 +168,12 @@ export default function UserProfile() {
                     textTransform: 'capitalize'
                   }}
                 />
+                <BlueButton
+                  label="Skip Aadhar & Pan"
+                  onClick={SkipHandler}
+                  sx={{ width: '150px', fontSize: 11, fontWeight: 600, p: 0.3, ml: 2 }}
+                />
               </Stack>
-              <BlueButton label="Skip Aadhar & Pan" onClick={SkipHandler} />
             </Box>
           </Stack>
         </Stack>
