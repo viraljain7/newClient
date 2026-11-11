@@ -123,6 +123,8 @@ export default function AgentTable({}) {
   // State for bulk settlement remark
   const [bulkRemark, setBulkRemark] = React.useState('');
 
+  const [bulkAmount, setBulkAmount] = React.useState('');
+
   // State for selected users
   const [selectedIds, setSelectedIds] = React.useState([]);
   const dispatch = useDispatch();
@@ -146,7 +148,7 @@ export default function AgentTable({}) {
         const settlement_value = row.available_settlement.replace(/,/g, '');
         return {
           user_id: userId,
-          amount: settlement_value,
+          amount: bulkAmount.trim() ? Number(bulkAmount) : Number(settlement_value),
           txnid: `STL${userId}${Date.now()}${i}`,
           remark: bulkRemark,
           date: date
@@ -173,7 +175,7 @@ export default function AgentTable({}) {
       setBackdropLoading(false);
       dispatch(stopLoading());
     }
-  }, [selectedIds]);
+  }, [selectedIds, bulkRemark]);
 
   const handleRowSelect = (id) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -216,14 +218,13 @@ export default function AgentTable({}) {
         }}
       >
         <TextField
-          size="small"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(0);
-          }}
-          sx={{ width: 'auto' }}
+          label="Settlement Amount (Optional)"
+          size="medium"
+          type="number"
+          value={bulkAmount}
+          onChange={(e) => setBulkAmount(e.target.value)}
+          InputLabelProps={{ shrink: true }}
+          sx={{ width: 320 }}
         />
         <Stack direction="row" spacing={1.5} alignItems="center">
           {/* check for all selected */}
