@@ -608,7 +608,7 @@ const MainRoutes = {
       {
       path: 'services/add-money/payment13',
       element: (
-        <ProtectedRoute roles={['Retailer']} serviceCode="premiumfeeflexpg6">
+        <ProtectedRoute roles={['Retailer']} serviceCode="premiumpg7">
           <PG13Page />
         </ProtectedRoute>
       )
