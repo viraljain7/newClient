@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // Material UI
-import { Button, Grid, Stack, Typography, Box, TextField, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Button, Grid, Stack, Typography, Box, TextField, Accordion, AccordionSummary, AccordionDetails, Skeleton } from '@mui/material';
 
 // Project imports
 import MainCard from 'components/MainCard';
@@ -112,9 +112,6 @@ function ADScreen() {
           Dashboard
         </Typography>
 
-        <Typography variant="caption" color="text.secondary">
-          Overview & insights
-        </Typography>
       </Grid>
 
       {/* WALLET CARDS */}
@@ -245,7 +242,45 @@ function ADScreen() {
           m: 0
         }}
       >
-        {stats.map((item, index) => {
+        {statsLoading
+    ? Array.from({ length: 4 }).map((_, index) => (
+        <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+          <MainCard
+            content={false}
+            sx={{
+              height: '100%',
+              border: '1.5px dashed',
+              borderColor: 'divider',
+              bgcolor: '#fff'
+            }}
+          >
+            <Box sx={{ p: 2.5 }}>
+              <Skeleton animation="wave" variant="text" width="60%" height={32} />
+              <Skeleton
+                animation="wave"
+                variant="text"
+                width="80%"
+                height={48}
+                sx={{ mt: 2 }}
+              />
+              <Box
+                sx={{
+                  mt: 3,
+                  pt: 2,
+                  borderTop: '1px dashed',
+                  borderColor: 'divider',
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <Skeleton animation="wave" variant="text" width={100} />
+                <Skeleton animation="wave" variant="text" width={40} />
+              </Box>
+            </Box>
+          </MainCard>
+        </Grid>
+      ))
+    : stats.map((item, index) => {
           const Icon = getProductIcon(item.product);
 
           return (

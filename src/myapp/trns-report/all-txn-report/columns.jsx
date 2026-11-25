@@ -119,7 +119,8 @@ export const TRANSACTION_COLUMNS = [
         'payout',
         'tds',
         'paytm_pos',
-        'premiumpg6'
+        'premiumpg6',
+        'premiumpg7',
       ]
     },
 

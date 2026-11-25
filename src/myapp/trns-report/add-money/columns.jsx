@@ -118,7 +118,9 @@ export const TRANSACTION_COLUMNS = [
         'fundloadwallet',
         'payout',
         'tds',
-        'paytm_pos'
+        'paytm_pos',
+        'premiumpg7',
+        'premiumpg6'
       ]
     },
 

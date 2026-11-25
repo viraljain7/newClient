@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-const INACTIVITY_LIMIT = 6 * 60 * 60 * 1000;
+// const INACTIVITY_LIMIT = 6 * 60 * 60 * 1000;  // 6 Hour
+const INACTIVITY_LIMIT = 15 * 60 * 1000;
+
 const STORAGE_KEY = 'lastActivity';
 
 export default function useAutoLogout(logoutFn) {

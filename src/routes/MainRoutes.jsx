@@ -30,6 +30,8 @@ import PG9Page from '../pages/services/PG/PG9Page';
 import PG10Page from '../pages/services/PG/PG10Page';
 import PG11Page from '../pages/services/PG/PG11Page';
 import PG12Page from '../pages/services/PG/PG12Page';
+import PG13Page from '../pages/services/PG/PG13Page';
+
 
 import LoginLogsReport from '../pages/account-statement/LoginLogs';
 import OfflineBBPSPage from '../pages/services/OfflineBBPSPage';
@@ -600,6 +602,14 @@ const MainRoutes = {
       element: (
         <ProtectedRoute roles={['Retailer']} serviceCode="premiumfeeflexpg6">
           <PG12Page />
+        </ProtectedRoute>
+      )
+    },
+      {
+      path: 'services/add-money/payment13',
+      element: (
+        <ProtectedRoute roles={['Retailer']} serviceCode="premiumfeeflexpg6">
+          <PG13Page />
         </ProtectedRoute>
       )
     },

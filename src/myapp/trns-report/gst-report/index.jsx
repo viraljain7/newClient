@@ -18,7 +18,7 @@ const GstReport = () => {
   const { rows, loading, refetch, search } = useTransactions({
     fromDate,
     toDate,
-    initialPerPage: 1000000
+    initialPerPage: 100000000000
   });
 
   // Format currency in Indian format

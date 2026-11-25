@@ -157,11 +157,10 @@ export default function UserProfile() {
               </Typography>
               <Typography fontSize={16} fontWeight={600}></Typography>
 
-              <Stack direction="row" alignItems="center" mt={1} sx={{ borderRadius: 1, p: 0.75, bgcolor: '#E2E9F0', width: 'fit-content' }}>
+              <Stack direction="row" alignItems="center" mt={1} sx={{ borderRadius: 1, p: 0.75, bgcolor: '#f0f5ffff', width: 'fit-content' , border: '2px solid #E2E8F0'}}>
                 <Chip
                   size="small"
                   label={`KYC ${userDetails?.kyc || 'Not Verified'}`}
-                  icon={<CheckCircleRoundedIcon />}
                   sx={{
                     ...currentStyle,
                     fontWeight: 600,

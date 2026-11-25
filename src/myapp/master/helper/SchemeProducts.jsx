@@ -71,6 +71,9 @@ function SchemeProducts({ open, onClose }) {
       case 'premiumpg6':
         return 'Silver 5 (Nixa silver 5)';
 
+        case 'premiumpg7':
+        return 'Premium 6 (Nixa Premium 5)';
+
       default:
         return name;
     }

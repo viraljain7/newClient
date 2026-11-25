@@ -299,6 +299,11 @@ export default function RTScreen() {
               </Grid>
             ))}
           </Grid>
+          {filteredServices.length === 0 && (
+            <Grid container spacing={2}>
+              No Services Available
+            </Grid>
+          )}
         </MainCard>
       </Grid>
 

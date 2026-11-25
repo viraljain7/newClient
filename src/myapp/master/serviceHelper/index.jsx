@@ -104,6 +104,7 @@ export default function ServiceTable() {
     else if (name === 'Premium PG 5') return 'Premium 5 (Nixa Premium 4)';
     else if (name === 'Inspay CC') return 'BBPS 2 (Inspay)';
     else if (name === 'Premium PG Feeflex 6') return 'Silver 5 (Nixa silver 5)';
+    else if (name === 'Premium PG 15') return 'Premium 6 (Nixa Premium 5)';
 
     else return name; // rest unchanged
   };
